@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Building, Users, User, Crown, TrendingUp } from 'lucide-react';
+import { Building, Users, User, Key, Receipt, Briefcase } from 'lucide-react';
 import CompanyDetailsSection from '@/components/company/CompanyDetailsSection';
 import DirectorsSection from '@/components/company/DirectorsSection';
 import ShareholdersSection from '@/components/company/ShareholdersSection';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 
 // Dummy data for company details
 const dummyCompanyData = {
@@ -113,21 +117,21 @@ const dummyShareholders = [
 ];
 
 const OrganizationPage = () => {
-  const [activeTab, setActiveTab] = useState('organization');
+  const [activeTab, setActiveTab] = useState('entity-info');
 
   return (
     <MainLayout>
       <div className="space-y-6">
         <header>
-          <h1 className="text-3xl font-bold tracking-tight">Organization</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Organization Details</h1>
           <p className="text-muted-foreground mt-1">
-            Manage your entity structure and information
+            Manage your entity information, associates, and credentials
           </p>
         </header>
 
-        <Tabs defaultValue="organization" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-4 md:w-[600px]">
-            <TabsTrigger value="organization" className="flex items-center gap-2">
+        <Tabs defaultValue="entity-info" value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid grid-cols-4 w-full">
+            <TabsTrigger value="entity-info" className="flex items-center gap-2">
               <Building className="h-4 w-4" />
               <span className="hidden sm:inline">Entity Info</span>
             </TabsTrigger>
@@ -139,14 +143,14 @@ const OrganizationPage = () => {
               <Users className="h-4 w-4" />
               <span className="hidden sm:inline">Stakeholders</span>
             </TabsTrigger>
-            <TabsTrigger value="assets" className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4" />
-              <span className="hidden sm:inline">Assets</span>
+            <TabsTrigger value="credentials" className="flex items-center gap-2">
+              <Key className="h-4 w-4" />
+              <span className="hidden sm:inline">Credentials</span>
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="organization" className="mt-6">
-            <CompanyDetailsSection company={dummyCompanyData} />
+          <TabsContent value="entity-info" className="mt-6">
+            <EntityInfoSection company={dummyCompanyData} />
           </TabsContent>
           
           <TabsContent value="associates" className="mt-6">
@@ -157,8 +161,8 @@ const OrganizationPage = () => {
             <ShareholdersSection shareholders={dummyShareholders} />
           </TabsContent>
           
-          <TabsContent value="assets" className="mt-6">
-            <AssetsSection />
+          <TabsContent value="credentials" className="mt-6">
+            <CredentialsSection />
           </TabsContent>
         </Tabs>
       </div>
@@ -166,84 +170,159 @@ const OrganizationPage = () => {
   );
 };
 
-const AssetsSection = () => {
-  const dummyAssets = [
+const EntityInfoSection = ({ company }: { company: any }) => {
+  return (
+    <div className="space-y-6">
+      <CompanyDetailsSection company={company} />
+      
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Receipt className="h-5 w-5" />
+            Tax Information
+          </CardTitle>
+          <CardDescription>
+            Tax registration numbers and identifiers
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <Label htmlFor="pan">PAN Number</Label>
+              <Input id="pan" value="ABCDE1234F" readOnly />
+            </div>
+            <div>
+              <Label htmlFor="tan">TAN Number</Label>
+              <Input id="tan" value="KLMN12345O" readOnly />
+            </div>
+            <div>
+              <Label htmlFor="gst">GST Number</Label>
+              <Input id="gst" value="22ABCDE1234F2Z1" readOnly />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Briefcase className="h-5 w-5" />
+            Employee & Contractor Information
+          </CardTitle>
+          <CardDescription>
+            Employment and contractor registration details
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="pf">PF Registration</Label>
+              <Input id="pf" value="HRBLR12345000000123" readOnly />
+            </div>
+            <div>
+              <Label htmlFor="esi">ESI Registration</Label>
+              <Input id="esi" value="31001234560000999" readOnly />
+            </div>
+            <div>
+              <Label htmlFor="pt">Professional Tax</Label>
+              <Input id="pt" value="PTMH123456789" readOnly />
+            </div>
+            <div>
+              <Label htmlFor="lws">Labor Welfare Scheme</Label>
+              <Input id="lws" value="LWS/MH/123456" readOnly />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+const CredentialsSection = () => {
+  const credentials = [
     {
       id: '1',
-      type: 'Subsidiary Entity',
-      name: 'ABC Tech Solutions Pvt Ltd',
-      ownership: '75%',
-      location: 'Mumbai, Maharashtra',
-      acquiredDate: '2021-03-15',
-      value: '₹50,00,000'
+      service: 'Income Tax Portal',
+      username: 'company@example.com',
+      lastUpdated: '2024-01-15',
+      status: 'active'
     },
     {
       id: '2',
-      type: 'Commercial Property',
-      name: 'Office Complex - Sector 18',
-      ownership: '100%',
-      location: 'Gurgaon, Haryana',
-      acquiredDate: '2020-08-20',
-      value: '₹2,50,00,000'
+      service: 'GST Portal',
+      username: 'gst_user@example.com',
+      lastUpdated: '2024-02-10',
+      status: 'active'
     },
     {
       id: '3',
-      type: 'Intellectual Property',
-      name: 'Software Patent - ABC CRM',
-      ownership: '100%',
-      location: 'India',
-      acquiredDate: '2022-01-10',
-      value: '₹15,00,000'
+      service: 'PF Portal',
+      username: 'pf_admin@example.com',
+      lastUpdated: '2024-01-20',
+      status: 'active'
+    },
+    {
+      id: '4',
+      service: 'ESI Portal',
+      username: 'esi_user@example.com',
+      lastUpdated: '2023-12-05',
+      status: 'expired'
     }
   ];
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active': return 'bg-green-100 text-green-800';
+      case 'expired': return 'bg-red-100 text-red-800';
+      case 'pending': return 'bg-yellow-100 text-yellow-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
 
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Asset Portfolio</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Key className="h-5 w-5" />
+            Government Portal Credentials
+          </CardTitle>
           <CardDescription>
-            Assets, subsidiaries, and properties owned by your organization
+            Manage login credentials for various government and regulatory portals
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
-            {dummyAssets.map((asset) => (
-              <Card key={asset.id} className="p-4">
-                <div className="flex justify-between items-start">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-lg">{asset.name}</span>
-                      <span className="text-sm bg-primary/10 text-primary px-2 py-1 rounded">
-                        {asset.type}
-                      </span>
+          <div className="space-y-4">
+            {credentials.map((credential) => (
+              <Card key={credential.id} className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <div className="font-medium">{credential.service}</div>
+                    <div className="text-sm text-muted-foreground">
+                      Username: {credential.username}
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-muted-foreground">
-                      <div>
-                        <span className="font-medium">Ownership:</span>
-                        <br />
-                        {asset.ownership}
-                      </div>
-                      <div>
-                        <span className="font-medium">Location:</span>
-                        <br />
-                        {asset.location}
-                      </div>
-                      <div>
-                        <span className="font-medium">Acquired:</span>
-                        <br />
-                        {asset.acquiredDate}
-                      </div>
-                      <div>
-                        <span className="font-medium">Value:</span>
-                        <br />
-                        {asset.value}
-                      </div>
+                    <div className="text-xs text-muted-foreground">
+                      Last updated: {new Date(credential.lastUpdated).toLocaleDateString()}
                     </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge className={getStatusColor(credential.status)}>
+                      {credential.status.toUpperCase()}
+                    </Badge>
+                    <Button variant="outline" size="sm">
+                      Update
+                    </Button>
                   </div>
                 </div>
               </Card>
             ))}
+          </div>
+          
+          <div className="mt-6 pt-4 border-t">
+            <Button>
+              <Key className="mr-2 h-4 w-4" />
+              Add New Credential
+            </Button>
           </div>
         </CardContent>
       </Card>

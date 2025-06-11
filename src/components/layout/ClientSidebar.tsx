@@ -1,33 +1,33 @@
+
 import React from 'react';
 import { NavLink, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { 
   Home, 
   FileText, 
   ClipboardCheck, 
-  MessageSquare, 
   Settings,
-  CreditCard,
   Building,
   ArrowLeft,
   User,
   Shield,
   Receipt,
-  Scale,
+  Briefcase,
   Users
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const clientNavItems = [
   { icon: Home, label: 'Home', path: '/home' },
-  { icon: Building, label: 'Organization', path: '/organization' },
-  { icon: FileText, label: 'Documents', path: '/documents' },
-  { icon: ClipboardCheck, label: 'Company Compliances', path: '/company-compliances' },
-  { icon: Shield, label: 'Licenses', path: '/licenses' },
+  { icon: Shield, label: 'Assets', path: '/assets' },
+  { icon: ClipboardCheck, label: 'Compliances', path: '/company-compliances' },
   { icon: Receipt, label: 'Taxes', path: '/taxes' },
-  { icon: Scale, label: 'Legal Services', path: '/legal-services' },
+  { icon: Briefcase, label: 'Services', path: '/services' },
+  { icon: FileText, label: 'Documents', path: '/documents' },
+];
+
+const bottomNavItems = [
   { icon: Users, label: 'Team', path: '/team' },
-  { icon: CreditCard, label: 'Payments', path: '/payments' },
-  { icon: MessageSquare, label: 'Messages', path: '/messages' },
+  { icon: Building, label: 'Organization Details', path: '/organization' },
   { icon: Settings, label: 'Settings', path: '/settings' },
 ];
 
@@ -83,7 +83,7 @@ const ClientSidebar = () => {
         </div>
       )}
       
-      <nav className="space-y-1 mt-2">
+      <nav className="space-y-1 mt-2 flex-1">
         {clientNavItems.map((item) => (
           <NavLink
             key={item.path}
@@ -100,19 +100,26 @@ const ClientSidebar = () => {
             <span>{item.label}</span>
           </NavLink>
         ))}
-      </nav>
-      
-      <div className="mt-auto pt-4 border-t">
-        <div className="px-3 py-2">
-          <div className="text-sm font-medium">Need help?</div>
-          <div className="text-xs text-muted-foreground mt-1">
-            {isProfessionalView 
-              ? "You're viewing this client's data as a professional." 
-              : "Contact your professional for assistance."
-            }
-          </div>
+        
+        <div className="my-4 border-t pt-4">
+          {bottomNavItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={getNavPath(item.path)}
+              className={({ isActive }) => 
+                `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+                  isActive 
+                    ? 'bg-primary/10 text-primary font-medium' 
+                    : 'text-foreground hover:bg-muted'
+                }`
+              }
+            >
+              <item.icon className="h-5 w-5 mr-3" />
+              <span>{item.label}</span>
+            </NavLink>
+          ))}
         </div>
-      </div>
+      </nav>
     </aside>
   );
 };

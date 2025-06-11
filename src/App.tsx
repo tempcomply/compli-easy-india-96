@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -25,11 +26,12 @@ import ProfessionalAuth from '@/pages/ProfessionalAuth';
 import Dashboard from '@/pages/Dashboard';
 import ProfessionalDashboard from '@/pages/ProfessionalDashboard';
 import OrganizationPage from '@/pages/OrganizationPage';
+import AssetsPage from '@/pages/AssetsPage';
 import DocumentsPage from '@/pages/DocumentsPage';
 import CompanyCompliancesPage from '@/pages/CompanyCompliancesPage';
 import LicensesPage from '@/pages/LicensesPage';
 import TaxesPage from '@/pages/TaxesPage';
-import LegalServicesPage from '@/pages/LegalServicesPage';
+import ServicesPage from '@/pages/ServicesPage';
 import TeamPage from '@/pages/TeamPage';
 import PaymentsPage from '@/pages/PaymentsPage';
 import MessagesPage from '@/pages/MessagesPage';
@@ -89,6 +91,7 @@ function App() {
                 <Route path="/documents" element={<Navigate to="/client/documents" replace />} />
                 <Route path="/tasks" element={<Navigate to="/client/company-compliances" replace />} />
                 <Route path="/compliances" element={<Navigate to="/client/company-compliances" replace />} />
+                <Route path="/legal-services" element={<Navigate to="/client/services" replace />} />
                 <Route path="/payments" element={<Navigate to="/client/payments" replace />} />
                 <Route path="/messages" element={<Navigate to="/client/messages" replace />} />
                 <Route path="/settings" element={<Navigate to="/client/settings" replace />} />
@@ -96,11 +99,12 @@ function App() {
                 {/* Client Routes */}
                 <Route path="/client/home" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                 <Route path="/client/organization" element={<ProtectedRoute><OrganizationPage /></ProtectedRoute>} />
+                <Route path="/client/assets" element={<ProtectedRoute><AssetsPage /></ProtectedRoute>} />
                 <Route path="/client/documents" element={<ProtectedRoute><DocumentsPage /></ProtectedRoute>} />
                 <Route path="/client/company-compliances" element={<ProtectedRoute><CompanyCompliancesPage /></ProtectedRoute>} />
                 <Route path="/client/licenses" element={<ProtectedRoute><LicensesPage /></ProtectedRoute>} />
                 <Route path="/client/taxes" element={<ProtectedRoute><TaxesPage /></ProtectedRoute>} />
-                <Route path="/client/legal-services" element={<ProtectedRoute><LegalServicesPage /></ProtectedRoute>} />
+                <Route path="/client/services" element={<ProtectedRoute><ServicesPage /></ProtectedRoute>} />
                 <Route path="/client/team" element={<ProtectedRoute><TeamPage /></ProtectedRoute>} />
                 <Route path="/client/payments" element={<ProtectedRoute><PaymentsPage /></ProtectedRoute>} />
                 <Route path="/client/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
@@ -109,11 +113,12 @@ function App() {
                 {/* Professional viewing client routes */}
                 <Route path="/professional/:clientId/home" element={<ProfessionalProtectedRoute><Dashboard /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/organization" element={<ProfessionalProtectedRoute><OrganizationPage /></ProfessionalProtectedRoute>} />
+                <Route path="/professional/:clientId/assets" element={<ProfessionalProtectedRoute><AssetsPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/documents" element={<ProfessionalProtectedRoute><DocumentsPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/company-compliances" element={<ProfessionalProtectedRoute><CompanyCompliancesPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/licenses" element={<ProfessionalProtectedRoute><LicensesPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/taxes" element={<ProfessionalProtectedRoute><TaxesPage /></ProfessionalProtectedRoute>} />
-                <Route path="/professional/:clientId/legal-services" element={<ProfessionalProtectedRoute><LegalServicesPage /></ProfessionalProtectedRoute>} />
+                <Route path="/professional/:clientId/services" element={<ProfessionalProtectedRoute><ServicesPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/team" element={<ProfessionalProtectedRoute><TeamPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/payments" element={<ProfessionalProtectedRoute><PaymentsPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/messages" element={<ProfessionalProtectedRoute><MessagesPage /></ProfessionalProtectedRoute>} />

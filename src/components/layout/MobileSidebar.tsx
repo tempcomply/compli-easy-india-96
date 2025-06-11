@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NavLink, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { 
@@ -5,14 +6,12 @@ import {
   Building,
   FileText,
   ClipboardCheck,
-  MessageSquare, 
-  CreditCard, 
   Settings,
   ArrowLeft,
   User,
   Shield,
   Receipt,
-  Scale,
+  Briefcase,
   Users
 } from 'lucide-react';
 import Logo from '../Logo';
@@ -33,22 +32,21 @@ interface MobileSidebarProps {
 const professionalNavItems = [
   { icon: Home, label: 'Home', path: '/professional/home' },
   { icon: Building, label: 'Companies', path: '/professional/companies' },
-  { icon: CreditCard, label: 'Payments', path: '/professional/payments' },
-  { icon: MessageSquare, label: 'Messages', path: '/professional/messages' },
   { icon: Settings, label: 'Settings', path: '/professional/settings' },
 ];
 
 const clientNavItems = [
   { icon: Home, label: 'Home', path: '/home' },
-  { icon: Building, label: 'Organization', path: '/organization' },
-  { icon: FileText, label: 'Documents', path: '/documents' },
-  { icon: ClipboardCheck, label: 'Company Compliances', path: '/company-compliances' },
-  { icon: Shield, label: 'Licenses', path: '/licenses' },
+  { icon: Shield, label: 'Assets', path: '/assets' },
+  { icon: ClipboardCheck, label: 'Compliances', path: '/company-compliances' },
   { icon: Receipt, label: 'Taxes', path: '/taxes' },
-  { icon: Scale, label: 'Legal Services', path: '/legal-services' },
+  { icon: Briefcase, label: 'Services', path: '/services' },
+  { icon: FileText, label: 'Documents', path: '/documents' },
+];
+
+const clientBottomNavItems = [
   { icon: Users, label: 'Team', path: '/team' },
-  { icon: CreditCard, label: 'Payments', path: '/payments' },
-  { icon: MessageSquare, label: 'Messages', path: '/messages' },
+  { icon: Building, label: 'Organization Details', path: '/organization' },
   { icon: Settings, label: 'Settings', path: '/settings' },
 ];
 
@@ -71,6 +69,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
   
   // Choose navigation items based on route path
   const navItems = (isClientRoute || isProfessionalView) ? clientNavItems : professionalNavItems;
+  const bottomItems = (isClientRoute || isProfessionalView) ? clientBottomNavItems : [];
   
   const getNavPath = (basePath: string) => {
     if (isProfessionalView && clientId) {
@@ -85,12 +84,6 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
     navigate('/professional/home');
     onOpenChange(false);
   };
-  
-  const helpText = isProfessionalView
-    ? "You're viewing this client's data as a professional."
-    : isClientRoute 
-    ? "Contact your professional for assistance."
-    : "Contact your administrator or our support team.";
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -101,7 +94,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
           </SheetTitle>
         </SheetHeader>
         
-        <div className="overflow-y-auto py-2">
+        <div className="overflow-y-auto py-2 flex flex-col h-full">
           {isProfessionalView && (
             <div className="mx-2 mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
               <div className="flex items-center gap-2 mb-2">
@@ -123,7 +116,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
             </div>
           )}
           
-          <nav className="space-y-1 px-2">
+          <nav className="space-y-1 px-2 flex-1">
             {navItems.map((item) => (
               <NavLink
                 key={item.path}
@@ -141,17 +134,30 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
                 <span>{item.label}</span>
               </NavLink>
             ))}
+            
+            {bottomItems.length > 0 && (
+              <div className="mt-4 pt-4 border-t">
+                {bottomItems.map((item) => (
+                  <NavLink
+                    key={item.path}
+                    to={getNavPath(item.path)}
+                    className={({ isActive }) => 
+                      `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+                        isActive 
+                          ? 'bg-primary/10 text-primary font-medium' 
+                          : 'text-foreground hover:bg-muted'
+                      }`
+                    }
+                    onClick={() => onOpenChange(false)}
+                  >
+                    <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
+                    <span>{item.label}</span>
+                  </NavLink>
+                ))}
+              </div>
+            )}
           </nav>
         </div>
-        
-        <SheetFooter className="border-t p-4 mt-auto">
-          <div className="text-sm">
-            <div className="font-medium">Need help?</div>
-            <div className="text-muted-foreground mt-1">
-              {helpText}
-            </div>
-          </div>
-        </SheetFooter>
       </SheetContent>
     </Sheet>
   );
