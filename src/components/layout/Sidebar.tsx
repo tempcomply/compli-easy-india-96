@@ -15,17 +15,17 @@ const professionalNavItems = [
 
 const Sidebar = () => {
   return (
-    <aside className="w-64 border-r bg-card p-4 flex flex-col h-screen overflow-y-auto">
-      <nav className="space-y-1 mt-2">
+    <aside className="w-64 border-r bg-slate-50 dark:bg-slate-900 h-full flex flex-col">
+      <nav className="space-y-2 mt-4 px-3">
         {professionalNavItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) => 
-              `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+              `flex items-center px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${
                 isActive 
-                  ? 'bg-primary/10 text-primary font-medium' 
-                  : 'text-foreground hover:bg-muted'
+                  ? 'bg-primary/15 text-primary' 
+                  : 'text-foreground hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
               }`
             }
           >

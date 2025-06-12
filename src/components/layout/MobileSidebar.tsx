@@ -21,7 +21,6 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetFooter,
 } from "@/components/ui/sheet";
 
 interface MobileSidebarProps {
@@ -35,15 +34,21 @@ const professionalNavItems = [
   { icon: Settings, label: 'Settings', path: '/professional/settings' },
 ];
 
-const clientNavItems = [
+// Top navigation items
+const topNavItems = [
   { icon: Home, label: 'Home', path: '/home' },
-  { icon: Shield, label: 'Assets', path: '/assets' },
   { icon: ClipboardCheck, label: 'Compliances', path: '/company-compliances' },
   { icon: Receipt, label: 'Taxes', path: '/taxes' },
   { icon: Briefcase, label: 'Services', path: '/services' },
+];
+
+// Middle navigation items
+const middleNavItems = [
+  { icon: Shield, label: 'Assets', path: '/assets' },
   { icon: FileText, label: 'Documents', path: '/documents' },
 ];
 
+// Bottom navigation items
 const clientBottomNavItems = [
   { icon: Users, label: 'Team', path: '/team' },
   { icon: Building, label: 'Organization Details', path: '/organization' },
@@ -67,10 +72,6 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
   const clientId = params.clientId;
   const clientName = clientId ? dummyClients[clientId] || `Client ${clientId}` : '';
   
-  // Choose navigation items based on route path
-  const navItems = (isClientRoute || isProfessionalView) ? clientNavItems : professionalNavItems;
-  const bottomItems = (isClientRoute || isProfessionalView) ? clientBottomNavItems : [];
-  
   const getNavPath = (basePath: string) => {
     if (isProfessionalView && clientId) {
       return `/professional/${clientId}${basePath}`;
@@ -87,7 +88,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="left" className="p-0 w-[280px]">
+      <SheetContent side="left" className="p-0 w-[280px] bg-slate-50 dark:bg-slate-900">
         <SheetHeader className="p-4 border-b">
           <SheetTitle className="flex items-center justify-start">
             <Logo />
@@ -96,7 +97,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
         
         <div className="overflow-y-auto py-2 flex flex-col h-full">
           {isProfessionalView && (
-            <div className="mx-2 mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <div className="mx-3 my-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
               <div className="flex items-center gap-2 mb-2">
                 <User className="h-4 w-4 text-blue-600" />
                 <span className="text-sm font-medium text-blue-600">Viewing Client</span>
@@ -116,36 +117,91 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
             </div>
           )}
           
-          <nav className="space-y-1 px-2 flex-1">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.path}
-                to={getNavPath(item.path)}
-                className={({ isActive }) => 
-                  `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                    isActive 
-                      ? 'bg-primary/10 text-primary font-medium' 
-                      : 'text-foreground hover:bg-muted'
-                  }`
-                }
-                onClick={() => onOpenChange(false)}
-              >
-                <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
-                <span>{item.label}</span>
-              </NavLink>
-            ))}
-            
-            {bottomItems.length > 0 && (
-              <div className="mt-4 pt-4 border-t">
-                {bottomItems.map((item) => (
+          <nav className="flex-1 px-3">
+            {(isClientRoute || isProfessionalView) ? (
+              <>
+                {/* Top section */}
+                <div className="mb-4 space-y-1">
+                  {topNavItems.map((item) => (
+                    <NavLink
+                      key={item.path}
+                      to={getNavPath(item.path)}
+                      className={({ isActive }) => 
+                        `flex items-center px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${
+                          isActive 
+                            ? 'bg-primary/15 text-primary' 
+                            : 'text-foreground hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
+                        }`
+                      }
+                      onClick={() => onOpenChange(false)}
+                    >
+                      <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
+                      <span>{item.label}</span>
+                    </NavLink>
+                  ))}
+                </div>
+                
+                {/* Separator */}
+                <div className="border-t my-3 border-slate-200 dark:border-slate-700"></div>
+                
+                {/* Middle section */}
+                <div className="mb-4 space-y-1">
+                  {middleNavItems.map((item) => (
+                    <NavLink
+                      key={item.path}
+                      to={getNavPath(item.path)}
+                      className={({ isActive }) => 
+                        `flex items-center px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${
+                          isActive 
+                            ? 'bg-primary/15 text-primary' 
+                            : 'text-foreground hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
+                        }`
+                      }
+                      onClick={() => onOpenChange(false)}
+                    >
+                      <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
+                      <span>{item.label}</span>
+                    </NavLink>
+                  ))}
+                </div>
+                
+                {/* Double separator */}
+                <div className="border-t my-3 border-slate-200 dark:border-slate-700"></div>
+                <div className="border-t my-1 border-slate-200 dark:border-slate-700"></div>
+                
+                {/* Bottom section */}
+                <div className="space-y-1 mb-4">
+                  {clientBottomNavItems.map((item) => (
+                    <NavLink
+                      key={item.path}
+                      to={getNavPath(item.path)}
+                      className={({ isActive }) => 
+                        `flex items-center px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${
+                          isActive 
+                            ? 'bg-primary/15 text-primary' 
+                            : 'text-foreground hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
+                        }`
+                      }
+                      onClick={() => onOpenChange(false)}
+                    >
+                      <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
+                      <span>{item.label}</span>
+                    </NavLink>
+                  ))}
+                </div>
+              </>
+            ) : (
+              // Professional menu items
+              <div className="space-y-1">
+                {professionalNavItems.map((item) => (
                   <NavLink
                     key={item.path}
-                    to={getNavPath(item.path)}
+                    to={item.path}
                     className={({ isActive }) => 
-                      `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+                      `flex items-center px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${
                         isActive 
-                          ? 'bg-primary/10 text-primary font-medium' 
-                          : 'text-foreground hover:bg-muted'
+                          ? 'bg-primary/15 text-primary' 
+                          : 'text-foreground hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
                       }`
                     }
                     onClick={() => onOpenChange(false)}

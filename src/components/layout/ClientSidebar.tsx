@@ -12,19 +12,26 @@ import {
   Shield,
   Receipt,
   Briefcase,
-  Users
+  Users,
+  FolderArchive
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const clientNavItems = [
+// Top navigation items
+const topNavItems = [
   { icon: Home, label: 'Home', path: '/home' },
-  { icon: Shield, label: 'Assets', path: '/assets' },
   { icon: ClipboardCheck, label: 'Compliances', path: '/company-compliances' },
   { icon: Receipt, label: 'Taxes', path: '/taxes' },
   { icon: Briefcase, label: 'Services', path: '/services' },
+];
+
+// Middle navigation items
+const middleNavItems = [
+  { icon: Shield, label: 'Assets', path: '/assets' },
   { icon: FileText, label: 'Documents', path: '/documents' },
 ];
 
+// Bottom navigation items
 const bottomNavItems = [
   { icon: Users, label: 'Team', path: '/team' },
   { icon: Building, label: 'Organization Details', path: '/organization' },
@@ -61,9 +68,9 @@ const ClientSidebar = () => {
   };
   
   return (
-    <aside className="w-64 border-r bg-card p-4 flex flex-col h-screen overflow-y-auto">
+    <aside className="w-64 border-r bg-slate-50 dark:bg-slate-900 h-full flex flex-col overflow-y-auto">
       {isProfessionalView && (
-        <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+        <div className="mb-4 mx-3 mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
           <div className="flex items-center gap-2 mb-2">
             <User className="h-4 w-4 text-blue-600" />
             <span className="text-sm font-medium text-blue-600">Viewing Client</span>
@@ -83,34 +90,65 @@ const ClientSidebar = () => {
         </div>
       )}
       
-      <nav className="space-y-1 mt-2 flex-1">
-        {clientNavItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={getNavPath(item.path)}
-            className={({ isActive }) => 
-              `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                isActive 
-                  ? 'bg-primary/10 text-primary font-medium' 
-                  : 'text-foreground hover:bg-muted'
-              }`
-            }
-          >
-            <item.icon className="h-5 w-5 mr-3" />
-            <span>{item.label}</span>
-          </NavLink>
-        ))}
+      <nav className="flex-1 px-3">
+        {/* Top section */}
+        <div className="mb-4 space-y-2">
+          {topNavItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={getNavPath(item.path)}
+              className={({ isActive }) => 
+                `flex items-center px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${
+                  isActive 
+                    ? 'bg-primary/15 text-primary' 
+                    : 'text-foreground hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
+                }`
+              }
+            >
+              <item.icon className="h-5 w-5 mr-3" />
+              <span>{item.label}</span>
+            </NavLink>
+          ))}
+        </div>
         
-        <div className="my-4 border-t pt-4">
+        {/* Separator */}
+        <div className="border-t my-3 border-slate-200 dark:border-slate-700"></div>
+        
+        {/* Middle section */}
+        <div className="mb-4 space-y-2">
+          {middleNavItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={getNavPath(item.path)}
+              className={({ isActive }) => 
+                `flex items-center px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${
+                  isActive 
+                    ? 'bg-primary/15 text-primary' 
+                    : 'text-foreground hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
+                }`
+              }
+            >
+              <item.icon className="h-5 w-5 mr-3" />
+              <span>{item.label}</span>
+            </NavLink>
+          ))}
+        </div>
+        
+        {/* Double separator */}
+        <div className="border-t my-3 border-slate-200 dark:border-slate-700"></div>
+        <div className="border-t my-1 border-slate-200 dark:border-slate-700"></div>
+        
+        {/* Bottom section */}
+        <div className="space-y-2 mb-4">
           {bottomNavItems.map((item) => (
             <NavLink
               key={item.path}
               to={getNavPath(item.path)}
               className={({ isActive }) => 
-                `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+                `flex items-center px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${
                   isActive 
-                    ? 'bg-primary/10 text-primary font-medium' 
-                    : 'text-foreground hover:bg-muted'
+                    ? 'bg-primary/15 text-primary' 
+                    : 'text-foreground hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
                 }`
               }
             >

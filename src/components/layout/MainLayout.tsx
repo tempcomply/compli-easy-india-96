@@ -24,10 +24,17 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Navbar />
-      <div className="flex-1 flex">
-        {!isMobile && <SidebarComponent />}
-        <main className="flex-1 p-4 md:p-6 max-w-[1400px] mx-auto w-full">
+      {/* Fixed navbar at the top */}
+      <div className="sticky top-0 z-30">
+        <Navbar />
+      </div>
+      
+      <div className="flex flex-1 overflow-hidden">
+        {/* Fixed sidebar */}
+        {!isMobile && <div className="sticky top-16 h-[calc(100vh-4rem)] overflow-hidden"><SidebarComponent /></div>}
+        
+        {/* Scrollable main content */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 max-w-[1400px] mx-auto w-full">
           {children}
         </main>
       </div>

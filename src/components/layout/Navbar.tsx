@@ -32,7 +32,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="border-b bg-background shadow-sm">
       <div className="flex h-16 items-center px-4 md:px-6">
         {isMobile && (
           <Button 
