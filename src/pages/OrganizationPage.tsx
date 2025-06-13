@@ -1,11 +1,11 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Building, User, Key, Receipt, Briefcase } from 'lucide-react';
+import { Building, Users, User, Key, Receipt, Briefcase } from 'lucide-react';
 import CompanyDetailsSection from '@/components/company/CompanyDetailsSection';
 import DirectorsSection from '@/components/company/DirectorsSection';
+import ShareholdersSection from '@/components/company/ShareholdersSection';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -62,6 +62,60 @@ const dummyDirectors = [
   }
 ];
 
+// Dummy data for shareholders
+const dummyShareholders = [
+  {
+    id: '1',
+    name: 'John Smith',
+    shareholding: '35%',
+    shareClass: 'Ordinary',
+    sharesHeld: '35,000',
+    dateAcquired: '2020-05-15',
+    email: 'john.smith@abccorp.example.com',
+    phone: '+1 (555) 111-2222'
+  },
+  {
+    id: '2',
+    name: 'Jane Doe',
+    shareholding: '25%',
+    shareClass: 'Ordinary',
+    sharesHeld: '25,000',
+    dateAcquired: '2020-05-15',
+    email: 'jane.doe@abccorp.example.com',
+    phone: '+1 (555) 333-4444'
+  },
+  {
+    id: '3',
+    name: 'Venture Capital Partners',
+    shareholding: '20%',
+    shareClass: 'Preferred',
+    sharesHeld: '20,000',
+    dateAcquired: '2020-06-15',
+    email: 'investments@vcpartners.example.com',
+    phone: '+1 (555) 777-8888'
+  },
+  {
+    id: '4',
+    name: 'Employee Stock Option Pool',
+    shareholding: '15%',
+    shareClass: 'Ordinary',
+    sharesHeld: '15,000',
+    dateAcquired: '2020-07-01',
+    email: 'hr@abccorp.example.com',
+    phone: '+1 (555) 999-0000'
+  },
+  {
+    id: '5',
+    name: 'Michael Johnson',
+    shareholding: '5%',
+    shareClass: 'Ordinary',
+    sharesHeld: '5,000',
+    dateAcquired: '2020-06-01',
+    email: 'michael.johnson@abccorp.example.com',
+    phone: '+1 (555) 555-6666'
+  }
+];
+
 const OrganizationPage = () => {
   const [activeTab, setActiveTab] = useState('entity-info');
 
@@ -76,7 +130,7 @@ const OrganizationPage = () => {
         </header>
 
         <Tabs defaultValue="entity-info" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-3 w-full">
+          <TabsList className="grid grid-cols-4 w-full">
             <TabsTrigger value="entity-info" className="flex items-center gap-2">
               <Building className="h-4 w-4" />
               <span className="hidden sm:inline">Entity Info</span>
@@ -84,6 +138,10 @@ const OrganizationPage = () => {
             <TabsTrigger value="associates" className="flex items-center gap-2">
               <User className="h-4 w-4" />
               <span className="hidden sm:inline">Associates</span>
+            </TabsTrigger>
+            <TabsTrigger value="stakeholders" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              <span className="hidden sm:inline">Stakeholders</span>
             </TabsTrigger>
             <TabsTrigger value="credentials" className="flex items-center gap-2">
               <Key className="h-4 w-4" />
@@ -97,6 +155,10 @@ const OrganizationPage = () => {
           
           <TabsContent value="associates" className="mt-6">
             <DirectorsSection directors={dummyDirectors} />
+          </TabsContent>
+          
+          <TabsContent value="stakeholders" className="mt-6">
+            <ShareholdersSection shareholders={dummyShareholders} />
           </TabsContent>
           
           <TabsContent value="credentials" className="mt-6">

@@ -16,21 +16,15 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// Top navigation items (main features)
-const topNavItems = [
+const clientNavItems = [
   { icon: Home, label: 'Home', path: '/home' },
+  { icon: Shield, label: 'Assets', path: '/assets' },
   { icon: ClipboardCheck, label: 'Compliances', path: '/company-compliances' },
   { icon: Receipt, label: 'Taxes', path: '/taxes' },
   { icon: Briefcase, label: 'Services', path: '/services' },
-];
-
-// Middle navigation items (secondary features)
-const middleNavItems = [
-  { icon: Shield, label: 'Assets', path: '/assets' },
   { icon: FileText, label: 'Documents', path: '/documents' },
 ];
 
-// Bottom navigation items (settings and admin)
 const bottomNavItems = [
   { icon: Users, label: 'Team', path: '/team' },
   { icon: Building, label: 'Organization Details', path: '/organization' },
@@ -67,21 +61,21 @@ const ClientSidebar = () => {
   };
   
   return (
-    <aside className="w-64 border-r bg-slate-800 dark:bg-slate-900 h-full flex flex-col overflow-hidden">
+    <aside className="w-64 border-r bg-card p-4 flex flex-col h-screen overflow-y-auto">
       {isProfessionalView && (
-        <div className="mb-4 mx-3 mt-3 p-3 bg-blue-900/30 rounded-lg border border-blue-700">
+        <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
           <div className="flex items-center gap-2 mb-2">
-            <User className="h-4 w-4 text-blue-400" />
-            <span className="text-sm font-medium text-blue-400">Viewing Client</span>
+            <User className="h-4 w-4 text-blue-600" />
+            <span className="text-sm font-medium text-blue-600">Viewing Client</span>
           </div>
-          <div className="text-sm font-semibold text-blue-200 mb-2">
+          <div className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">
             {clientName}
           </div>
           <Button 
             onClick={handleBackToProfessional}
             variant="outline" 
             size="sm" 
-            className="w-full bg-slate-700 border-slate-600 text-slate-200 hover:bg-slate-600"
+            className="w-full"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to My Home
@@ -89,78 +83,40 @@ const ClientSidebar = () => {
         </div>
       )}
       
-      <nav className="flex-1 px-3 flex flex-col">
-        {/* Top section - Main features */}
-        <div className="space-y-1">
-          {topNavItems.map((item) => (
+      <nav className="space-y-1 mt-2 flex-1">
+        {clientNavItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={getNavPath(item.path)}
+            className={({ isActive }) => 
+              `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+                isActive 
+                  ? 'bg-primary/10 text-primary font-medium' 
+                  : 'text-foreground hover:bg-muted'
+              }`
+            }
+          >
+            <item.icon className="h-5 w-5 mr-3" />
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
+        
+        <div className="my-4 border-t pt-4">
+          {bottomNavItems.map((item) => (
             <NavLink
               key={item.path}
               to={getNavPath(item.path)}
               className={({ isActive }) => 
-                `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+                `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
                   isActive 
-                    ? 'bg-primary text-white shadow-md' 
-                    : 'text-slate-300 hover:bg-slate-700 hover:text-white'
+                    ? 'bg-primary/10 text-primary font-medium' 
+                    : 'text-foreground hover:bg-muted'
                 }`
               }
             >
-              <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
+              <item.icon className="h-5 w-5 mr-3" />
               <span>{item.label}</span>
             </NavLink>
-          ))}
-        </div>
-        
-        {/* Small separator */}
-        <div className="border-t my-4 border-slate-600"></div>
-        
-        {/* Middle section - Secondary features */}
-        <div className="space-y-1">
-          {middleNavItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={getNavPath(item.path)}
-              className={({ isActive }) => 
-                `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive 
-                    ? 'bg-primary text-white shadow-md' 
-                    : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                }`
-              }
-            >
-              <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
-              <span>{item.label}</span>
-            </NavLink>
-          ))}
-        </div>
-        
-        {/* Spacer to push bottom section down */}
-        <div className="flex-1"></div>
-        
-        {/* Large separator before bottom section */}
-        <div className="border-t my-4 border-slate-600"></div>
-        
-        {/* Bottom section - Settings and admin */}
-        <div className="space-y-1 pb-4">
-          {bottomNavItems.map((item, index) => (
-            <React.Fragment key={item.path}>
-              <NavLink
-                to={getNavPath(item.path)}
-                className={({ isActive }) => 
-                  `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                    isActive 
-                      ? 'bg-primary text-white shadow-md' 
-                      : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                  }`
-                }
-              >
-                <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
-                <span>{item.label}</span>
-              </NavLink>
-              {/* Small separator after Team */}
-              {index === 0 && (
-                <div className="border-t my-2 border-slate-600"></div>
-              )}
-            </React.Fragment>
           ))}
         </div>
       </nav>

@@ -35,7 +35,7 @@
 
     --radius: 0.5rem;
 
-    --sidebar-background: 210 30% 98%;
+    --sidebar-background: 210 33% 99%;
     --sidebar-foreground: 210 33% 12%;
     --sidebar-primary: 210 60% 34%;
     --sidebar-primary-foreground: 0 0% 98%;
@@ -126,24 +126,5 @@
 
   .status-badge-in-progress {
     @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
-  }
-
-  /* Add custom scroll styling */
-  .custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: hsl(var(--border));
-    border-radius: 20px;
   }
 }
