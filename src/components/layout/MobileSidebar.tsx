@@ -86,6 +86,14 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
     onOpenChange(false);
   };
 
+  const getNavLinkClasses = (isActive: boolean) => {
+    const baseClasses = "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200";
+    const activeClasses = isActive 
+      ? "bg-primary text-white shadow-md" 
+      : "text-slate-300 hover:bg-slate-700 hover:text-white";
+    return `${baseClasses} ${activeClasses}`;
+  };
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="left" className="p-0 w-[280px] bg-slate-800 dark:bg-slate-900 border-slate-700">
@@ -122,23 +130,20 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
               <>
                 {/* Top section */}
                 <div className="space-y-1">
-                  {topNavItems.map((item) => (
-                    <NavLink
-                      key={item.path}
-                      to={getNavPath(item.path)}
-                      className={({ isActive }) => 
-                        `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                          isActive 
-                            ? 'bg-primary text-white shadow-md' 
-                            : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                        }`
-                      }
-                      onClick={() => onOpenChange(false)}
-                    >
-                      <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
-                      <span>{item.label}</span>
-                    </NavLink>
-                  ))}
+                  {topNavItems.map((item) => {
+                    const IconComponent = item.icon;
+                    return (
+                      <NavLink
+                        key={item.path}
+                        to={getNavPath(item.path)}
+                        className={({ isActive }) => getNavLinkClasses(isActive)}
+                        onClick={() => onOpenChange(false)}
+                      >
+                        <IconComponent className="h-5 w-5 mr-3 flex-shrink-0" />
+                        <span>{item.label}</span>
+                      </NavLink>
+                    );
+                  })}
                 </div>
                 
                 {/* Small separator */}
@@ -146,23 +151,20 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
                 
                 {/* Middle section */}
                 <div className="space-y-1">
-                  {middleNavItems.map((item) => (
-                    <NavLink
-                      key={item.path}
-                      to={getNavPath(item.path)}
-                      className={({ isActive }) => 
-                        `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                          isActive 
-                            ? 'bg-primary text-white shadow-md' 
-                            : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                        }`
-                      }
-                      onClick={() => onOpenChange(false)}
-                    >
-                      <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
-                      <span>{item.label}</span>
-                    </NavLink>
-                  ))}
+                  {middleNavItems.map((item) => {
+                    const IconComponent = item.icon;
+                    return (
+                      <NavLink
+                        key={item.path}
+                        to={getNavPath(item.path)}
+                        className={({ isActive }) => getNavLinkClasses(isActive)}
+                        onClick={() => onOpenChange(false)}
+                      >
+                        <IconComponent className="h-5 w-5 mr-3 flex-shrink-0" />
+                        <span>{item.label}</span>
+                      </NavLink>
+                    );
+                  })}
                 </div>
                 
                 {/* Spacer */}
@@ -173,51 +175,45 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
                 
                 {/* Bottom section */}
                 <div className="space-y-1 pb-4">
-                  {clientBottomNavItems.map((item, index) => (
-                    <React.Fragment key={item.path}>
-                      <NavLink
-                        to={getNavPath(item.path)}
-                        className={({ isActive }) => 
-                          `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                            isActive 
-                              ? 'bg-primary text-white shadow-md' 
-                              : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                          }`
-                        }
-                        onClick={() => onOpenChange(false)}
-                      >
-                        <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
-                        <span>{item.label}</span>
-                      </NavLink>
-                      {/* Small separator after Team */}
-                      {index === 0 && (
-                        <div className="border-t my-2 border-slate-600"></div>
-                      )}
-                    </React.Fragment>
-                  ))}
+                  {clientBottomNavItems.map((item, index) => {
+                    const IconComponent = item.icon;
+                    return (
+                      <React.Fragment key={item.path}>
+                        <NavLink
+                          to={getNavPath(item.path)}
+                          className={({ isActive }) => getNavLinkClasses(isActive)}
+                          onClick={() => onOpenChange(false)}
+                        >
+                          <IconComponent className="h-5 w-5 mr-3 flex-shrink-0" />
+                          <span>{item.label}</span>
+                        </NavLink>
+                        {/* Small separator after Team */}
+                        {index === 0 && (
+                          <div className="border-t my-2 border-slate-600"></div>
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
                 </div>
               </>
             ) : (
               // Professional menu items
               <>
                 <div className="space-y-1">
-                  {professionalNavItems.slice(0, -1).map((item) => (
-                    <NavLink
-                      key={item.path}
-                      to={item.path}
-                      className={({ isActive }) => 
-                        `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                          isActive 
-                            ? 'bg-primary text-white shadow-md' 
-                            : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                        }`
-                      }
-                      onClick={() => onOpenChange(false)}
-                    >
-                      <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
-                      <span>{item.label}</span>
-                    </NavLink>
-                  ))}
+                  {professionalNavItems.slice(0, -1).map((item) => {
+                    const IconComponent = item.icon;
+                    return (
+                      <NavLink
+                        key={item.path}
+                        to={item.path}
+                        className={({ isActive }) => getNavLinkClasses(isActive)}
+                        onClick={() => onOpenChange(false)}
+                      >
+                        <IconComponent className="h-5 w-5 mr-3 flex-shrink-0" />
+                        <span>{item.label}</span>
+                      </NavLink>
+                    );
+                  })}
                 </div>
                 
                 {/* Spacer */}
@@ -228,20 +224,20 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
                 
                 {/* Settings at bottom */}
                 <div className="pb-4">
-                  <NavLink
-                    to={professionalNavItems[professionalNavItems.length - 1].path}
-                    className={({ isActive }) => 
-                      `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                        isActive 
-                          ? 'bg-primary text-white shadow-md' 
-                          : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                      }`
-                    }
-                    onClick={() => onOpenChange(false)}
-                  >
-                    <professionalNavItems[professionalNavItems.length - 1].icon className="h-5 w-5 mr-3" />
-                    <span>{professionalNavItems[professionalNavItems.length - 1].label}</span>
-                  </NavLink>
+                  {(() => {
+                    const settingsItem = professionalNavItems[professionalNavItems.length - 1];
+                    const SettingsIcon = settingsItem.icon;
+                    return (
+                      <NavLink
+                        to={settingsItem.path}
+                        className={({ isActive }) => getNavLinkClasses(isActive)}
+                        onClick={() => onOpenChange(false)}
+                      >
+                        <SettingsIcon className="h-5 w-5 mr-3" />
+                        <span>{settingsItem.label}</span>
+                      </NavLink>
+                    );
+                  })()}
                 </div>
               </>
             )}
