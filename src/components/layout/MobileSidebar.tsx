@@ -127,11 +127,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
                       key={item.path}
                       to={getNavPath(item.path)}
                       className={({ isActive }) => 
-                        `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                          isActive 
-                            ? 'bg-primary text-white shadow-md' 
-                            : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                        }`
+                        `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${isActive ? 'bg-primary text-white shadow-md' : 'text-slate-300 hover:bg-slate-700 hover:text-white'}`
                       }
                       onClick={() => onOpenChange(false)}
                     >
@@ -151,11 +147,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
                       key={item.path}
                       to={getNavPath(item.path)}
                       className={({ isActive }) => 
-                        `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                          isActive 
-                            ? 'bg-primary text-white shadow-md' 
-                            : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                        }`
+                        `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${isActive ? 'bg-primary text-white shadow-md' : 'text-slate-300 hover:bg-slate-700 hover:text-white'}`
                       }
                       onClick={() => onOpenChange(false)}
                     >
@@ -178,11 +170,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
                       <NavLink
                         to={getNavPath(item.path)}
                         className={({ isActive }) => 
-                          `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                            isActive 
-                              ? 'bg-primary text-white shadow-md' 
-                              : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                          }`
+                          `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${isActive ? 'bg-primary text-white shadow-md' : 'text-slate-300 hover:bg-slate-700 hover:text-white'}`
                         }
                         onClick={() => onOpenChange(false)}
                       >
@@ -206,11 +194,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
                       key={item.path}
                       to={item.path}
                       className={({ isActive }) => 
-                        `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                          isActive 
-                            ? 'bg-primary text-white shadow-md' 
-                            : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                        }`
+                        `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${isActive ? 'bg-primary text-white shadow-md' : 'text-slate-300 hover:bg-slate-700 hover:text-white'}`
                       }
                       onClick={() => onOpenChange(false)}
                     >
@@ -231,11 +215,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
                   <NavLink
                     to={professionalNavItems[professionalNavItems.length - 1].path}
                     className={({ isActive }) => 
-                      `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                        isActive 
-                          ? 'bg-primary text-white shadow-md' 
-                          : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                      }`
+                      `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${isActive ? 'bg-primary text-white shadow-md' : 'text-slate-300 hover:bg-slate-700 hover:text-white'}`
                     }
                     onClick={() => onOpenChange(false)}
                   >
