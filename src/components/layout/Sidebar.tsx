@@ -15,7 +15,7 @@ const professionalNavItems = [
 
 const Sidebar = () => {
   return (
-    <aside className="w-64 border-r bg-slate-800 dark:bg-slate-900 h-full flex flex-col overflow-hidden">
+    <aside className="w-64 border-r bg-slate-800 dark:bg-slate-900 h-screen sticky top-0 flex flex-col overflow-hidden">
       <nav className="flex-1 px-3 flex flex-col">
         {/* Main navigation items */}
         <div className="space-y-1 mt-4">
