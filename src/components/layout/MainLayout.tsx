@@ -23,15 +23,21 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const SidebarComponent = (isClientRoute || isProfessionalViewingClient) ? ClientSidebar : Sidebar;
   
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col overflow-hidden">
       {/* Fixed navbar at the top */}
-      <div className="sticky top-0 z-30">
+      <div className="sticky top-0 z-30 flex-shrink-0">
         <Navbar />
       </div>
       
       <div className="flex flex-1 overflow-hidden">
         {/* Fixed sidebar */}
-        {!isMobile && <div className="sticky top-16 h-[calc(100vh-4rem)] overflow-hidden"><SidebarComponent /></div>}
+        {!isMobile && (
+          <div className="flex-shrink-0">
+            <div className="sticky top-0 h-screen">
+              <SidebarComponent />
+            </div>
+          </div>
+        )}
         
         {/* Scrollable main content */}
         <main className="flex-1 overflow-y-auto p-4 md:p-6 max-w-[1400px] mx-auto w-full">

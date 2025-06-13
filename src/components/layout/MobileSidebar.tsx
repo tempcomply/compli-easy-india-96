@@ -88,8 +88,8 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="left" className="p-0 w-[280px] bg-slate-50 dark:bg-slate-900">
-        <SheetHeader className="p-4 border-b">
+      <SheetContent side="left" className="p-0 w-[280px] bg-slate-800 dark:bg-slate-900 border-slate-700">
+        <SheetHeader className="p-4 border-b border-slate-700">
           <SheetTitle className="flex items-center justify-start">
             <Logo />
           </SheetTitle>
@@ -97,19 +97,19 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
         
         <div className="overflow-y-auto py-2 flex flex-col h-full">
           {isProfessionalView && (
-            <div className="mx-3 my-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <div className="mx-3 my-3 p-3 bg-blue-900/30 rounded-lg border border-blue-700">
               <div className="flex items-center gap-2 mb-2">
-                <User className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-medium text-blue-600">Viewing Client</span>
+                <User className="h-4 w-4 text-blue-400" />
+                <span className="text-sm font-medium text-blue-400">Viewing Client</span>
               </div>
-              <div className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">
+              <div className="text-sm font-semibold text-blue-200 mb-2">
                 {clientName}
               </div>
               <Button 
                 onClick={handleBackToProfessional}
                 variant="outline" 
                 size="sm" 
-                className="w-full"
+                className="w-full bg-slate-700 border-slate-600 text-slate-200 hover:bg-slate-600"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to My Home
@@ -117,20 +117,20 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
             </div>
           )}
           
-          <nav className="flex-1 px-3">
+          <nav className="flex-1 px-3 flex flex-col">
             {(isClientRoute || isProfessionalView) ? (
               <>
                 {/* Top section */}
-                <div className="mb-4 space-y-1">
+                <div className="space-y-1">
                   {topNavItems.map((item) => (
                     <NavLink
                       key={item.path}
                       to={getNavPath(item.path)}
                       className={({ isActive }) => 
-                        `flex items-center px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${
+                        `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
                           isActive 
-                            ? 'bg-primary/15 text-primary' 
-                            : 'text-foreground hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
+                            ? 'bg-primary text-white shadow-md' 
+                            : 'text-slate-300 hover:bg-slate-700 hover:text-white'
                         }`
                       }
                       onClick={() => onOpenChange(false)}
@@ -141,20 +141,20 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
                   ))}
                 </div>
                 
-                {/* Separator */}
-                <div className="border-t my-3 border-slate-200 dark:border-slate-700"></div>
+                {/* Small separator */}
+                <div className="border-t my-4 border-slate-600"></div>
                 
                 {/* Middle section */}
-                <div className="mb-4 space-y-1">
+                <div className="space-y-1">
                   {middleNavItems.map((item) => (
                     <NavLink
                       key={item.path}
                       to={getNavPath(item.path)}
                       className={({ isActive }) => 
-                        `flex items-center px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${
+                        `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
                           isActive 
-                            ? 'bg-primary/15 text-primary' 
-                            : 'text-foreground hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
+                            ? 'bg-primary text-white shadow-md' 
+                            : 'text-slate-300 hover:bg-slate-700 hover:text-white'
                         }`
                       }
                       onClick={() => onOpenChange(false)}
@@ -165,52 +165,85 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ open, onOpenChange }) => 
                   ))}
                 </div>
                 
-                {/* Double separator */}
-                <div className="border-t my-3 border-slate-200 dark:border-slate-700"></div>
-                <div className="border-t my-1 border-slate-200 dark:border-slate-700"></div>
+                {/* Spacer */}
+                <div className="flex-1"></div>
+                
+                {/* Large separator */}
+                <div className="border-t my-4 border-slate-600"></div>
                 
                 {/* Bottom section */}
-                <div className="space-y-1 mb-4">
-                  {clientBottomNavItems.map((item) => (
-                    <NavLink
-                      key={item.path}
-                      to={getNavPath(item.path)}
-                      className={({ isActive }) => 
-                        `flex items-center px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${
-                          isActive 
-                            ? 'bg-primary/15 text-primary' 
-                            : 'text-foreground hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
-                        }`
-                      }
-                      onClick={() => onOpenChange(false)}
-                    >
-                      <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
-                      <span>{item.label}</span>
-                    </NavLink>
+                <div className="space-y-1 pb-4">
+                  {clientBottomNavItems.map((item, index) => (
+                    <React.Fragment key={item.path}>
+                      <NavLink
+                        to={getNavPath(item.path)}
+                        className={({ isActive }) => 
+                          `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+                            isActive 
+                              ? 'bg-primary text-white shadow-md' 
+                              : 'text-slate-300 hover:bg-slate-700 hover:text-white'
+                          }`
+                        }
+                        onClick={() => onOpenChange(false)}
+                      >
+                        <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
+                        <span>{item.label}</span>
+                      </NavLink>
+                      {/* Small separator after Team */}
+                      {index === 0 && (
+                        <div className="border-t my-2 border-slate-600"></div>
+                      )}
+                    </React.Fragment>
                   ))}
                 </div>
               </>
             ) : (
               // Professional menu items
-              <div className="space-y-1">
-                {professionalNavItems.map((item) => (
+              <>
+                <div className="space-y-1">
+                  {professionalNavItems.slice(0, -1).map((item) => (
+                    <NavLink
+                      key={item.path}
+                      to={item.path}
+                      className={({ isActive }) => 
+                        `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+                          isActive 
+                            ? 'bg-primary text-white shadow-md' 
+                            : 'text-slate-300 hover:bg-slate-700 hover:text-white'
+                        }`
+                      }
+                      onClick={() => onOpenChange(false)}
+                    >
+                      <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
+                      <span>{item.label}</span>
+                    </NavLink>
+                  ))}
+                </div>
+                
+                {/* Spacer */}
+                <div className="flex-1"></div>
+                
+                {/* Large separator */}
+                <div className="border-t my-4 border-slate-600"></div>
+                
+                {/* Settings at bottom */}
+                <div className="pb-4">
                   <NavLink
-                    key={item.path}
-                    to={item.path}
+                    to={professionalNavItems[professionalNavItems.length - 1].path}
                     className={({ isActive }) => 
-                      `flex items-center px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${
+                      `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
                         isActive 
-                          ? 'bg-primary/15 text-primary' 
-                          : 'text-foreground hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
+                          ? 'bg-primary text-white shadow-md' 
+                          : 'text-slate-300 hover:bg-slate-700 hover:text-white'
                       }`
                     }
                     onClick={() => onOpenChange(false)}
                   >
-                    <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
-                    <span>{item.label}</span>
+                    <professionalNavItems[professionalNavItems.length - 1].icon className="h-5 w-5 mr-3" />
+                    <span>{professionalNavItems[professionalNavItems.length - 1].label}</span>
                   </NavLink>
-                ))}
-              </div>
+                </div>
+              </>
             )}
           </nav>
         </div>
