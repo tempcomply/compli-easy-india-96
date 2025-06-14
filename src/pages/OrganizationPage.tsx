@@ -130,7 +130,7 @@ const OrganizationPage = () => {
         </header>
 
         <Tabs defaultValue="entity-info" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-3 w-full">
+          <TabsList className="grid grid-cols-2 w-full">
             <TabsTrigger value="entity-info" className="flex items-center gap-2">
               <Building className="h-4 w-4" />
               <span className="hidden sm:inline">Entity Info</span>
@@ -139,14 +139,6 @@ const OrganizationPage = () => {
               <User className="h-4 w-4" />
               <span className="hidden sm:inline">Associates</span>
             </TabsTrigger>
-            {/* <TabsTrigger value="stakeholders" className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              <span className="hidden sm:inline">Stakeholders</span>
-            </TabsTrigger> */}
-            {/* <TabsTrigger value="credentials" className="flex items-center gap-2">
-              <Key className="h-4 w-4" />
-              <span className="hidden sm:inline">Credentials</span>
-            </TabsTrigger> */}
           </TabsList>
           
           <TabsContent value="entity-info" className="mt-6">
@@ -156,14 +148,6 @@ const OrganizationPage = () => {
           <TabsContent value="associates" className="mt-6">
             <DirectorsSection directors={dummyDirectors} />
           </TabsContent>
-          
-          {/* <TabsContent value="stakeholders" className="mt-6">
-            <ShareholdersSection shareholders={dummyShareholders} />
-          </TabsContent> */}
-          
-          {/* <TabsContent value="credentials" className="mt-6">
-            <CredentialsSection />
-          </TabsContent> */}
         </Tabs>
       </div>
     </MainLayout>

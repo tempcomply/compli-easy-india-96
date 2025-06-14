@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -6,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
-import { User, Wrench, HelpCircle, Link } from 'lucide-react';
+import { User, Wrench, HelpCircle } from 'lucide-react';
 
 const SettingsPage = () => {
   const { userProfile } = useAuth();
@@ -22,7 +21,7 @@ const SettingsPage = () => {
         </header>
         
         <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid grid-cols-4 w-full max-w-4xl">
+          <TabsList className="grid grid-cols-3 w-full max-w-4xl">
             <TabsTrigger value="profile" className="flex items-center gap-2">
               <User className="h-4 w-4" />
               <span className="hidden sm:inline">Profile</span>
@@ -34,10 +33,6 @@ const SettingsPage = () => {
             <TabsTrigger value="support" className="flex items-center gap-2">
               <HelpCircle className="h-4 w-4" />
               <span className="hidden sm:inline">Support</span>
-            </TabsTrigger>
-            <TabsTrigger value="integrations" className="flex items-center gap-2">
-              <Link className="h-4 w-4" />
-              <span className="hidden sm:inline">Integrations</span>
             </TabsTrigger>
           </TabsList>
           
@@ -142,22 +137,6 @@ const SettingsPage = () => {
               <CardContent>
                 <p className="text-sm text-muted-foreground">
                   Support ticket system is being developed. For now, please contact support directly.
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="integrations" className="space-y-4 mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Integrations</CardTitle>
-                <CardDescription>
-                  Connect with third-party services and tools.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Integration capabilities with accounting software, banking, and other business tools coming soon.
                 </p>
               </CardContent>
             </Card>
