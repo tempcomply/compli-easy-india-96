@@ -130,7 +130,7 @@ const OrganizationPage = () => {
         </header>
 
         <Tabs defaultValue="entity-info" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-4 w-full">
+          <TabsList className="grid grid-cols-3 w-full">
             <TabsTrigger value="entity-info" className="flex items-center gap-2">
               <Building className="h-4 w-4" />
               <span className="hidden sm:inline">Entity Info</span>
@@ -139,14 +139,14 @@ const OrganizationPage = () => {
               <User className="h-4 w-4" />
               <span className="hidden sm:inline">Associates</span>
             </TabsTrigger>
-            <TabsTrigger value="stakeholders" className="flex items-center gap-2">
+            {/* <TabsTrigger value="stakeholders" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
               <span className="hidden sm:inline">Stakeholders</span>
-            </TabsTrigger>
-            <TabsTrigger value="credentials" className="flex items-center gap-2">
+            </TabsTrigger> */}
+            {/* <TabsTrigger value="credentials" className="flex items-center gap-2">
               <Key className="h-4 w-4" />
               <span className="hidden sm:inline">Credentials</span>
-            </TabsTrigger>
+            </TabsTrigger> */}
           </TabsList>
           
           <TabsContent value="entity-info" className="mt-6">
@@ -157,13 +157,13 @@ const OrganizationPage = () => {
             <DirectorsSection directors={dummyDirectors} />
           </TabsContent>
           
-          <TabsContent value="stakeholders" className="mt-6">
+          {/* <TabsContent value="stakeholders" className="mt-6">
             <ShareholdersSection shareholders={dummyShareholders} />
-          </TabsContent>
+          </TabsContent> */}
           
-          <TabsContent value="credentials" className="mt-6">
+          {/* <TabsContent value="credentials" className="mt-6">
             <CredentialsSection />
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </div>
     </MainLayout>

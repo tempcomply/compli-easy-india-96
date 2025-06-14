@@ -18,10 +18,10 @@ import { Button } from '@/components/ui/button';
 
 const clientNavItems = [
   { icon: Home, label: 'Home', path: '/home' },
-  { icon: Shield, label: 'Assets', path: '/assets' },
   { icon: ClipboardCheck, label: 'Compliances', path: '/company-compliances' },
   { icon: Receipt, label: 'Taxes', path: '/taxes' },
   { icon: Briefcase, label: 'Services', path: '/services' },
+  { icon: Shield, label: 'Assets', path: '/assets' },
   { icon: FileText, label: 'Documents', path: '/documents' },
 ];
 

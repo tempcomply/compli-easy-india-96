@@ -1,3 +1,4 @@
+
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -5,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
-import { User, Key, Wrench, HelpCircle, Link } from 'lucide-react';
+import { User, Wrench, HelpCircle, Link } from 'lucide-react';
 
 const SettingsPage = () => {
   const { userProfile } = useAuth();
@@ -21,14 +22,10 @@ const SettingsPage = () => {
         </header>
         
         <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid grid-cols-5 w-full max-w-4xl">
+          <TabsList className="grid grid-cols-4 w-full max-w-4xl">
             <TabsTrigger value="profile" className="flex items-center gap-2">
               <User className="h-4 w-4" />
               <span className="hidden sm:inline">Profile</span>
-            </TabsTrigger>
-            <TabsTrigger value="credentials" className="flex items-center gap-2">
-              <Key className="h-4 w-4" />
-              <span className="hidden sm:inline">Credentials</span>
             </TabsTrigger>
             <TabsTrigger value="developer" className="flex items-center gap-2">
               <Wrench className="h-4 w-4" />
@@ -115,22 +112,6 @@ const SettingsPage = () => {
               <CardFooter>
                 <Button>Save Changes</Button>
               </CardFooter>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="credentials" className="space-y-4 mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Credentials Manager</CardTitle>
-                <CardDescription>
-                  Store and manage your government portal credentials securely.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Credentials manager for government portals (GST, ROC, Income Tax, etc.) coming soon.
-                </p>
-              </CardContent>
             </Card>
           </TabsContent>
           
