@@ -10,7 +10,7 @@ interface MainLayoutProps {
   children: React.ReactNode;
 }
 
-const NAVBAR_HEIGHT = 64; // px, matches h-16 from Tailwind (16*4=64)
+const NAVBAR_HEIGHT = 64; // px
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const isMobile = useIsMobile();
@@ -21,29 +21,31 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const isClientRoute = location.pathname.startsWith('/client');
   const isProfessionalViewingClient = location.pathname.startsWith('/professional/') && params.clientId;
 
-  // Use ClientSidebar for client routes or when professional is viewing a client
   const SidebarComponent = (isClientRoute || isProfessionalViewingClient) ? ClientSidebar : Sidebar;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Fixed navbar at the top */}
+    <div className="min-h-screen bg-background">
+      {/* Fixed navbar */}
       <Navbar />
-      <div className="flex-1 flex relative">
-        {/* Fixed sidebar (desktop only) */}
-        {!isMobile && <SidebarComponent />}
-        {/* Main content container with margin and top padding to clear navbar */}
-        <main
-          className={
-            `flex-1 max-w-[1400px] mx-auto w-full overflow-y-auto relative ` +
-            `${!isMobile ? 'ml-64' : ''} ` +
-            `pt-16 p-4 md:p-6`
-          }
-        >
-          {children}
-        </main>
-      </div>
+
+      {/* Sidebar (desktop only, fixed, below navbar) */}
+      {!isMobile && <SidebarComponent />}
+
+      {/* Main content */}
+      <main
+        className={
+          `relative ` +
+          `${!isMobile ? 'ml-64' : ''} ` +      // account for sidebar width on desktop
+          `pt-16 ` +                            // account for navbar height
+          `p-4 md:p-6 ` +
+          `${!isMobile ? 'h-[calc(100vh-4rem)] overflow-y-auto' : ''}` // only main content scrolls on desktop
+        }
+      >
+        {children}
+      </main>
     </div>
   );
 };
 
 export default MainLayout;
+
