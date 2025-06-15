@@ -17,13 +17,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
-// Adjusted: removed divider between Services and Assets
 const clientNavItems = [
   { icon: Home, label: 'Home', path: '/home' },
   { icon: ClipboardCheck, label: 'Compliances', path: '/company-compliances' },
   { icon: Receipt, label: 'Taxes', path: '/taxes' },
   { icon: Briefcase, label: 'Services', path: '/services' },
-  // removed divider here
+  { divider: true },
   { icon: Shield, label: 'Assets', path: '/assets' },
   { icon: FileText, label: 'Documents', path: '/documents' },
 ];
@@ -89,48 +88,35 @@ const ClientSidebar = () => {
       
       {/* Main/top nav */}
       <nav className="space-y-1 mt-2">
-        {clientNavItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={getNavPath(item.path)}
-            className={({ isActive }) => 
-              `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                isActive 
-                  ? 'bg-primary/10 text-primary font-medium' 
-                  : 'text-foreground hover:bg-muted'
-              }`
-            }
-          >
-            <item.icon className="h-5 w-5 mr-3" />
-            <span>{item.label}</span>
-          </NavLink>
-        ))}
+        {clientNavItems.map((item, idx) => {
+          if ('divider' in item && item.divider) {
+            return <Separator key="divider" className="my-2" />;
+          }
+          return (
+            <NavLink
+              key={item.path}
+              to={getNavPath(item.path)}
+              className={({ isActive }) => 
+                `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+                  isActive 
+                    ? 'bg-primary/10 text-primary font-medium' 
+                    : 'text-foreground hover:bg-muted'
+                }`
+              }
+            >
+              <item.icon className="h-5 w-5 mr-3" />
+              <span>{item.label}</span>
+            </NavLink>
+          );
+        })}
       </nav>
       
       {/* Gap pushing bottom group to the base */}
       <div className="flex-1" />
-
+      <Separator className="my-4" />
       {/* Bottom nav group */}
       <nav className="space-y-1">
-        {/* Team */}
-        <NavLink
-          key={bottomNavItems[0].path}
-          to={getNavPath(bottomNavItems[0].path)}
-          className={({ isActive }) => 
-            `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-              isActive 
-                ? 'bg-primary/10 text-primary font-medium' 
-                : 'text-foreground hover:bg-muted'
-            }`
-          }
-        >
-          <bottomNavItems[0].icon className="h-5 w-5 mr-3" />
-          <span>{bottomNavItems[0].label}</span>
-        </NavLink>
-        {/* Now the separator after Team */}
-        <Separator className="my-4" />
-        {/* Org and Settings */}
-        {bottomNavItems.slice(1).map((item) => (
+        {bottomNavItems.map((item) => (
           <NavLink
             key={item.path}
             to={getNavPath(item.path)}
