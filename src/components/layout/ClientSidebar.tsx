@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NavLink, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { 
@@ -22,7 +21,6 @@ const clientNavItems = [
   { icon: ClipboardCheck, label: 'Compliances', path: '/company-compliances' },
   { icon: Receipt, label: 'Taxes', path: '/taxes' },
   { icon: Briefcase, label: 'Services', path: '/services' },
-  { divider: true },
   { icon: Shield, label: 'Assets', path: '/assets' },
   { icon: FileText, label: 'Documents', path: '/documents' },
 ];
@@ -88,27 +86,22 @@ const ClientSidebar = () => {
       
       {/* Main/top nav */}
       <nav className="space-y-1 mt-2">
-        {clientNavItems.map((item, idx) => {
-          if ('divider' in item && item.divider) {
-            return <Separator key="divider" className="my-2" />;
-          }
-          return (
-            <NavLink
-              key={item.path}
-              to={getNavPath(item.path)}
-              className={({ isActive }) => 
-                `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                  isActive 
-                    ? 'bg-primary/10 text-primary font-medium' 
-                    : 'text-foreground hover:bg-muted'
-                }`
-              }
-            >
-              <item.icon className="h-5 w-5 mr-3" />
-              <span>{item.label}</span>
-            </NavLink>
-          );
-        })}
+        {clientNavItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={getNavPath(item.path)}
+            className={({ isActive }) => 
+              `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+                isActive 
+                  ? 'bg-primary/10 text-primary font-medium' 
+                  : 'text-foreground hover:bg-muted'
+              }`
+            }
+          >
+            <item.icon className="h-5 w-5 mr-3" />
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
       </nav>
       
       {/* Gap pushing bottom group to the base */}
