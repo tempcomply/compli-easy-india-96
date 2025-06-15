@@ -38,10 +38,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             `${!isMobile ? 'ml-64' : ''} ` +
             `pt-16 p-4 md:p-6`
           }
-          style={{
-            height: `calc(100vh - ${NAVBAR_HEIGHT}px)`, // Fill space under navbar
-            marginTop: 0, // Already handled by pt-16 (padding-top)
-          }}
         >
           {children}
         </main>
