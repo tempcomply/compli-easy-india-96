@@ -32,8 +32,8 @@ const Navbar = () => {
   };
 
   return (
-    // Fixed and full width navbar, solid background (no translucency or blur)
-    <header className="border-b bg-background fixed top-0 left-0 w-full h-16 z-50">
+    // Fixed and full width navbar with high z-index
+    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 fixed top-0 left-0 w-full h-16 z-50">
       <div className="flex h-16 items-center px-4 md:px-6">
         {isMobile && (
           <Button 
