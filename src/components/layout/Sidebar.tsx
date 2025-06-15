@@ -15,7 +15,8 @@ const professionalNavItems = [
 
 const Sidebar = () => {
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 border-r bg-card p-4 flex flex-col z-40">
+    // Fix: Add top-16 and correct height so sidebar is below navbar and does not overlap it
+    <aside className="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 border-r bg-card p-4 flex flex-col z-40">
       <nav className="space-y-1 mt-2">
         {professionalNavItems.map((item) => (
           <NavLink
