@@ -15,7 +15,8 @@ const professionalNavItems = [
 
 const Sidebar = () => {
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 border-r bg-card p-4 flex flex-col z-40">
+    // Sidebar starts below the navbar (top-16, since navbar is h-16)
+    <aside className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 border-r bg-card p-4 flex flex-col z-40">
       <nav className="space-y-1 mt-2">
         {professionalNavItems.map((item) => (
           <NavLink

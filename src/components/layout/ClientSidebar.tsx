@@ -61,7 +61,8 @@ const ClientSidebar = () => {
   };
   
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 border-r bg-card p-4 flex flex-col z-40">
+    // Sidebar starts below the navbar (top-16, since navbar is h-16)
+    <aside className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 border-r bg-card p-4 flex flex-col z-40">
       {isProfessionalView && (
         <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
           <div className="flex items-center gap-2 mb-2">
