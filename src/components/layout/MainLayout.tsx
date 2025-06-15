@@ -36,7 +36,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           className={
             `flex-1 max-w-[1400px] mx-auto w-full overflow-y-auto relative ` +
             `${!isMobile ? 'ml-64' : ''} ` +
-            `pt-16 p-4 md:p-6`
+            `pt-16 p-4 md:p-6` // pt-16 always present to offset fixed navbar
           }
           style={{
             height: `calc(100vh - ${NAVBAR_HEIGHT}px)`, // Fill space under navbar
@@ -51,3 +51,4 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 };
 
 export default MainLayout;
+
