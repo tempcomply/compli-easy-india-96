@@ -10,37 +10,37 @@ interface MainLayoutProps {
   children: React.ReactNode;
 }
 
-const NAVBAR_HEIGHT = 64; // px, matches h-16 from Tailwind (16*4=64)
+const NAVBAR_HEIGHT = 64; // px
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const isMobile = useIsMobile();
   const location = useLocation();
   const params = useParams();
 
-  // Determine which sidebar to show based on route path
   const isClientRoute = location.pathname.startsWith('/client');
   const isProfessionalViewingClient = location.pathname.startsWith('/professional/') && params.clientId;
-
-  // Use ClientSidebar for client routes or when professional is viewing a client
   const SidebarComponent = (isClientRoute || isProfessionalViewingClient) ? ClientSidebar : Sidebar;
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Fixed navbar at the top */}
+      {/* Navbar fixed at top */}
       <Navbar />
-      <div className="flex-1 flex relative">
-        {/* Fixed sidebar (desktop only) */}
+      {/* Main container, shifted down by navbar height */}
+      <div
+        className="flex-1 flex relative pt-16"
+        style={{ minHeight: `calc(100vh - ${NAVBAR_HEIGHT}px)` }}
+      >
+        {/* Sidebar fixed and outside normal flow, only on desktop */}
         {!isMobile && <SidebarComponent />}
-        {/* Main content container with margin and top padding to clear navbar */}
+        {/* Main content: margin left for sidebar (only on desktop), full height, and Z lower than navbar */}
         <main
           className={
-            `flex-1 max-w-[1400px] mx-auto w-full overflow-y-auto relative ` +
-            `${!isMobile ? 'ml-64' : ''} ` +
-            `pt-16 p-4 md:p-6` // pt-16 always present to offset fixed navbar
+            `flex-1 max-w-[1400px] mx-auto w-full relative z-0 ` +
+            (!isMobile ? 'ml-64' : '') +
+            ' p-4 md:p-6'
           }
           style={{
-            height: `calc(100vh - ${NAVBAR_HEIGHT}px)`, // Fill space under navbar
-            marginTop: 0, // Already handled by pt-16 (padding-top)
+            minHeight: `calc(100vh - ${NAVBAR_HEIGHT}px)`,
           }}
         >
           {children}
