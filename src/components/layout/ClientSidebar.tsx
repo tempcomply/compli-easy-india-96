@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NavLink, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { 
@@ -60,7 +61,7 @@ const ClientSidebar = () => {
   };
   
   return (
-    <aside className="w-64 border-r bg-card p-4 flex flex-col h-screen overflow-y-auto">
+    <aside className="fixed left-0 top-0 h-screen w-64 border-r bg-card p-4 flex flex-col z-40">
       {isProfessionalView && (
         <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
           <div className="flex items-center gap-2 mb-2">
