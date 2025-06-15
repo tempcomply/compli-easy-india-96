@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NavLink, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { 
@@ -90,7 +89,7 @@ const ClientSidebar = () => {
       <nav className="space-y-1 mt-2">
         {clientNavItems.map((item, idx) => {
           if ('divider' in item && item.divider) {
-            return <Separator key="divider" className="my-2" />;
+            return <Separator key="divider" className="my-1" />;
           }
           return (
             <NavLink
