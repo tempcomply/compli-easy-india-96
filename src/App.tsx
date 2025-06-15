@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -55,6 +54,14 @@ import AddComplianceTaskPage from '@/pages/AddComplianceTaskPage';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import ProfessionalProtectedRoute from '@/components/ProfessionalProtectedRoute';
 
+// Tax category pages
+import TaxesGstPage from '@/pages/TaxesGstPage';
+import TaxesTdsTcsPage from '@/pages/TaxesTdsTcsPage';
+import TaxesIncomeTaxPage from '@/pages/TaxesIncomeTaxPage';
+import TaxesEmployeeTaxesPage from '@/pages/TaxesEmployeeTaxesPage';
+import TaxesStateLocalPage from '@/pages/TaxesStateLocalPage';
+import TaxesOtherTaxesPage from '@/pages/TaxesOtherTaxesPage';
+
 const queryClient = new QueryClient();
 
 function App() {
@@ -104,6 +111,12 @@ function App() {
                 <Route path="/client/company-compliances" element={<ProtectedRoute><CompanyCompliancesPage /></ProtectedRoute>} />
                 <Route path="/client/licenses" element={<ProtectedRoute><LicensesPage /></ProtectedRoute>} />
                 <Route path="/client/taxes" element={<ProtectedRoute><TaxesPage /></ProtectedRoute>} />
+                <Route path="/client/taxes/gst" element={<ProtectedRoute><TaxesGstPage /></ProtectedRoute>} />
+                <Route path="/client/taxes/tds-tcs" element={<ProtectedRoute><TaxesTdsTcsPage /></ProtectedRoute>} />
+                <Route path="/client/taxes/income-tax" element={<ProtectedRoute><TaxesIncomeTaxPage /></ProtectedRoute>} />
+                <Route path="/client/taxes/employee-taxes" element={<ProtectedRoute><TaxesEmployeeTaxesPage /></ProtectedRoute>} />
+                <Route path="/client/taxes/state-local" element={<ProtectedRoute><TaxesStateLocalPage /></ProtectedRoute>} />
+                <Route path="/client/taxes/other-taxes" element={<ProtectedRoute><TaxesOtherTaxesPage /></ProtectedRoute>} />
                 <Route path="/client/services" element={<ProtectedRoute><ServicesPage /></ProtectedRoute>} />
                 <Route path="/client/team" element={<ProtectedRoute><TeamPage /></ProtectedRoute>} />
                 <Route path="/client/payments" element={<ProtectedRoute><PaymentsPage /></ProtectedRoute>} />
@@ -118,6 +131,12 @@ function App() {
                 <Route path="/professional/:clientId/company-compliances" element={<ProfessionalProtectedRoute><CompanyCompliancesPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/licenses" element={<ProfessionalProtectedRoute><LicensesPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/taxes" element={<ProfessionalProtectedRoute><TaxesPage /></ProfessionalProtectedRoute>} />
+                <Route path="/professional/:clientId/taxes/gst" element={<ProfessionalProtectedRoute><TaxesGstPage /></ProfessionalProtectedRoute>} />
+                <Route path="/professional/:clientId/taxes/tds-tcs" element={<ProfessionalProtectedRoute><TaxesTdsTcsPage /></ProfessionalProtectedRoute>} />
+                <Route path="/professional/:clientId/taxes/income-tax" element={<ProfessionalProtectedRoute><TaxesIncomeTaxPage /></ProfessionalProtectedRoute>} />
+                <Route path="/professional/:clientId/taxes/employee-taxes" element={<ProfessionalProtectedRoute><TaxesEmployeeTaxesPage /></ProfessionalProtectedRoute>} />
+                <Route path="/professional/:clientId/taxes/state-local" element={<ProfessionalProtectedRoute><TaxesStateLocalPage /></ProfessionalProtectedRoute>} />
+                <Route path="/professional/:clientId/taxes/other-taxes" element={<ProfessionalProtectedRoute><TaxesOtherTaxesPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/services" element={<ProfessionalProtectedRoute><ServicesPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/team" element={<ProfessionalProtectedRoute><TeamPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/payments" element={<ProfessionalProtectedRoute><PaymentsPage /></ProfessionalProtectedRoute>} />
