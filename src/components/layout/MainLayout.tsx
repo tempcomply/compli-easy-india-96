@@ -28,21 +28,31 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       {/* Fixed navbar */}
       <Navbar />
 
-      {/* Sidebar (desktop only, fixed, below navbar) */}
-      {!isMobile && <SidebarComponent />}
+      <div className="flex">
+        {/* Sidebar (desktop only, fixed, below navbar) */}
+        {!isMobile && (
+          <div className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 z-40">
+            <SidebarComponent />
+          </div>
+        )}
 
-      {/* Main content */}
-      <main
-        className={
-          `relative ` +
-          `${!isMobile ? 'ml-64' : ''} ` +      // account for sidebar width on desktop
-          `pt-16 ` +                            // account for navbar height
-          `p-4 md:p-6 ` +
-          `${!isMobile ? 'h-[calc(100vh-4rem)] overflow-y-auto' : ''}` // only main content scrolls on desktop
-        }
-      >
-        {children}
-      </main>
+        {/* Main content */}
+        <main
+          className={
+            `flex-1 ` +
+            // margin left so main content does not overlap sidebar (desktop)
+            `${!isMobile ? 'ml-64' : ''} ` +
+            // padding top for navbar
+            `pt-16 ` +
+            // content padding
+            `p-4 md:p-6 ` +
+            // only main content scrolls on desktop
+            `${!isMobile ? 'h-[calc(100vh-4rem)] overflow-y-auto' : ''}`
+          }
+        >
+          {children}
+        </main>
+      </div>
     </div>
   );
 };
