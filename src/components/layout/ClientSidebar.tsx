@@ -15,12 +15,14 @@ import {
   Users
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 const clientNavItems = [
   { icon: Home, label: 'Home', path: '/home' },
   { icon: ClipboardCheck, label: 'Compliances', path: '/company-compliances' },
   { icon: Receipt, label: 'Taxes', path: '/taxes' },
   { icon: Briefcase, label: 'Services', path: '/services' },
+  { divider: true },
   { icon: Shield, label: 'Assets', path: '/assets' },
   { icon: FileText, label: 'Documents', path: '/documents' },
 ];
@@ -61,7 +63,7 @@ const ClientSidebar = () => {
   };
   
   return (
-    // Fix: Add top-16 and correct height so client sidebar does not overlap top navbar
+    // Sidebar panel and spacing
     <aside className="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 border-r bg-card p-4 flex flex-col z-40">
       {isProfessionalView && (
         <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
@@ -84,8 +86,37 @@ const ClientSidebar = () => {
         </div>
       )}
       
-      <nav className="space-y-1 mt-2 flex-1">
-        {clientNavItems.map((item) => (
+      {/* Main/top nav */}
+      <nav className="space-y-1 mt-2">
+        {clientNavItems.map((item, idx) => {
+          if ('divider' in item && item.divider) {
+            return <Separator key="divider" className="my-2" />;
+          }
+          return (
+            <NavLink
+              key={item.path}
+              to={getNavPath(item.path)}
+              className={({ isActive }) => 
+                `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+                  isActive 
+                    ? 'bg-primary/10 text-primary font-medium' 
+                    : 'text-foreground hover:bg-muted'
+                }`
+              }
+            >
+              <item.icon className="h-5 w-5 mr-3" />
+              <span>{item.label}</span>
+            </NavLink>
+          );
+        })}
+      </nav>
+      
+      {/* Gap pushing bottom group to the base */}
+      <div className="flex-1" />
+      <Separator className="my-4" />
+      {/* Bottom nav group */}
+      <nav className="space-y-1">
+        {bottomNavItems.map((item) => (
           <NavLink
             key={item.path}
             to={getNavPath(item.path)}
@@ -101,25 +132,6 @@ const ClientSidebar = () => {
             <span>{item.label}</span>
           </NavLink>
         ))}
-        
-        <div className="my-4 border-t pt-4">
-          {bottomNavItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={getNavPath(item.path)}
-              className={({ isActive }) => 
-                `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                  isActive 
-                    ? 'bg-primary/10 text-primary font-medium' 
-                    : 'text-foreground hover:bg-muted'
-                }`
-              }
-            >
-              <item.icon className="h-5 w-5 mr-3" />
-              <span>{item.label}</span>
-            </NavLink>
-          ))}
-        </div>
       </nav>
     </aside>
   );
