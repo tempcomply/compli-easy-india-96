@@ -62,14 +62,14 @@ const ClientSidebar = () => {
   };
   
   return (
-    <aside className="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 border-r bg-card p-5 flex flex-col z-40">
+    <aside className="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 border-r bg-card p-4 flex flex-col z-40">
       {isProfessionalView && (
-        <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
+        <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
           <div className="flex items-center gap-2 mb-2">
-            <User className="h-5 w-5 text-blue-600" />
-            <span className="text-base font-medium text-blue-600">Viewing Client</span>
+            <User className="h-4 w-4 text-blue-600" />
+            <span className="text-sm font-medium text-blue-600">Viewing Client</span>
           </div>
-          <div className="text-lg font-bold text-blue-800 dark:text-blue-200 mb-2">
+          <div className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">
             {clientName}
           </div>
           <Button 
@@ -78,7 +78,7 @@ const ClientSidebar = () => {
             size="sm" 
             className="w-full"
           >
-            <ArrowLeft className="mr-2 h-5 w-5" />
+            <ArrowLeft className="mr-2 h-4 w-4" />
             Back to My Home
           </Button>
         </div>
@@ -91,14 +91,14 @@ const ClientSidebar = () => {
             key={item.path}
             to={getNavPath(item.path)}
             className={({ isActive }) => 
-              `flex items-center px-4 py-3 text-base rounded-lg transition-colors gap-3 ${
+              `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
                 isActive 
-                  ? 'bg-primary/10 text-primary font-semibold' 
+                  ? 'bg-primary/10 text-primary font-medium' 
                   : 'text-foreground hover:bg-muted'
               }`
             }
           >
-            <item.icon className="h-6 w-6 mr-2" />
+            <item.icon className="h-5 w-5 mr-3" />
             <span>{item.label}</span>
           </NavLink>
         ))}
@@ -106,7 +106,7 @@ const ClientSidebar = () => {
       
       {/* Gap pushing bottom group to the base */}
       <div className="flex-1" />
-      <Separator className="my-5" />
+      <Separator className="my-4" />
       {/* Bottom nav group */}
       <nav className="space-y-1">
         {bottomNavItems.map((item) => (
@@ -114,14 +114,14 @@ const ClientSidebar = () => {
             key={item.path}
             to={getNavPath(item.path)}
             className={({ isActive }) => 
-              `flex items-center px-4 py-3 text-base rounded-lg transition-colors gap-3 ${
+              `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
                 isActive 
-                  ? 'bg-primary/10 text-primary font-semibold'
+                  ? 'bg-primary/10 text-primary font-medium' 
                   : 'text-foreground hover:bg-muted'
               }`
             }
           >
-            <item.icon className="h-6 w-6 mr-2" />
+            <item.icon className="h-5 w-5 mr-3" />
             <span>{item.label}</span>
           </NavLink>
         ))}
