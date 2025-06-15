@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { 
@@ -9,10 +9,10 @@ import {
   Landmark, 
   Users, 
   Banknote, 
-  Building2, 
-  FilePlus
+  Building2 
 } from 'lucide-react';
 
+// List tax categories with route keys for navigation
 const taxCategories = [
   {
     key: 'gst',
@@ -52,37 +52,16 @@ const taxCategories = [
   },
 ];
 
-
-const EmptyCategoryState = ({
-  icon: Icon,
-  title,
-  description,
-  onAction,
-  actionLabel = "Get Started",
-}: {
-  icon: React.ElementType,
-  title: string,
-  description: string,
-  onAction?: () => void,
-  actionLabel?: string,
-}) => (
-  <div className="flex flex-col items-center justify-center py-16 space-y-3">
-    <div className="mb-2">
-      <Icon className="w-12 h-12 text-muted-foreground" />
-    </div>
-    <h2 className="font-semibold text-xl">{title}</h2>
-    <div className="text-muted-foreground text-center max-w-md">{description}</div>
-    {onAction && (
-      <Button className="mt-3" onClick={onAction}>
-        <FilePlus className="w-4 h-4 mr-2" />
-        {actionLabel}
-      </Button>
-    )}
-  </div>
-);
+// Helper for base path (adapt for client/professional as needed)
+function useTaxesBasePath() {
+  // Could derive from location/params if necessary
+  return '/client/taxes';
+}
 
 const TaxesPage = () => {
-  // For now, all tabs show just an empty state per category.
+  const navigate = useNavigate();
+  const basePath = useTaxesBasePath();
+
   return (
     <MainLayout>
       <div>
@@ -93,28 +72,36 @@ const TaxesPage = () => {
         <p className="text-muted-foreground mb-6 max-w-xl">
           Track, initiate, and file all your Indian business tax obligations from one place. Select a category to get started.
         </p>
-
-        <Tabs defaultValue="gst" className="w-full">
-          <TabsList className="mb-4 flex flex-wrap gap-2">
-            {taxCategories.map(cat => (
-              <TabsTrigger key={cat.key} value={cat.key} className="flex items-center gap-2 px-4 py-2">
-                <cat.icon className="w-5 h-5" />
-                {cat.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
           {taxCategories.map(cat => (
-            <TabsContent key={cat.key} value={cat.key}>
-              <EmptyCategoryState
-                icon={cat.icon}
-                title={cat.label}
-                description={cat.description}
-                // Placeholder: you can attach onAction logic later
-                onAction={() => { /* future: open dialog or navigate */}}
-              />
-            </TabsContent>
+            <div
+              key={cat.key}
+              className="bg-card border rounded-xl shadow hover:shadow-lg transition cursor-pointer flex flex-col items-stretch"
+              onClick={() => navigate(`${basePath}/${cat.key}`)}
+              role="button"
+              tabIndex={0}
+            >
+              <div className="flex flex-row items-center gap-3 px-6 pt-6">
+                <cat.icon className="w-10 h-10 text-muted-foreground" />
+                <span className="text-xl font-semibold">{cat.label}</span>
+              </div>
+              <div className="px-6 py-2 text-muted-foreground flex-1">{cat.description}</div>
+              <div className="px-6 pb-4 pt-2 flex">
+                <Button
+                  onClick={e => {
+                    e.stopPropagation();
+                    navigate(`${basePath}/${cat.key}`);
+                  }}
+                  className="ml-auto"
+                  size="sm"
+                  variant="secondary"
+                >
+                  View Details
+                </Button>
+              </div>
+            </div>
           ))}
-        </Tabs>
+        </div>
       </div>
     </MainLayout>
   );
