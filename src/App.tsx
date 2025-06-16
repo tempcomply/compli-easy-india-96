@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -50,6 +51,10 @@ import AddClientPage from '@/pages/AddClientPage';
 import ClientDetailsPage from '@/pages/ClientDetailsPage';
 import AddComplianceTaskPage from '@/pages/AddComplianceTaskPage';
 
+// New Pages
+import ReportsPage from '@/pages/ReportsPage';
+import CompliancesPageNew from '@/pages/CompliancesPageNew';
+
 // Components
 import ProtectedRoute from '@/components/ProtectedRoute';
 import ProfessionalProtectedRoute from '@/components/ProfessionalProtectedRoute';
@@ -97,7 +102,7 @@ function App() {
                 <Route path="/company" element={<Navigate to="/client/organization" replace />} />
                 <Route path="/documents" element={<Navigate to="/client/documents" replace />} />
                 <Route path="/tasks" element={<Navigate to="/client/company-compliances" replace />} />
-                <Route path="/compliances" element={<Navigate to="/client/company-compliances" replace />} />
+                <Route path="/compliances" element={<Navigate to="/client/compliances" replace />} />
                 <Route path="/legal-services" element={<Navigate to="/client/services" replace />} />
                 <Route path="/payments" element={<Navigate to="/client/payments" replace />} />
                 <Route path="/messages" element={<Navigate to="/client/messages" replace />} />
@@ -109,6 +114,7 @@ function App() {
                 <Route path="/client/assets" element={<ProtectedRoute><AssetsPage /></ProtectedRoute>} />
                 <Route path="/client/documents" element={<ProtectedRoute><DocumentsPage /></ProtectedRoute>} />
                 <Route path="/client/company-compliances" element={<ProtectedRoute><CompanyCompliancesPage /></ProtectedRoute>} />
+                <Route path="/client/compliances" element={<ProtectedRoute><CompliancesPageNew /></ProtectedRoute>} />
                 <Route path="/client/licenses" element={<ProtectedRoute><LicensesPage /></ProtectedRoute>} />
                 <Route path="/client/taxes" element={<ProtectedRoute><TaxesPage /></ProtectedRoute>} />
                 <Route path="/client/taxes/gst" element={<ProtectedRoute><TaxesGstPage /></ProtectedRoute>} />
@@ -122,6 +128,7 @@ function App() {
                 <Route path="/client/payments" element={<ProtectedRoute><PaymentsPage /></ProtectedRoute>} />
                 <Route path="/client/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
                 <Route path="/client/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+                <Route path="/client/reports" element={<ProtectedRoute><ReportsPage /></ProtectedRoute>} />
 
                 {/* Professional viewing client routes */}
                 <Route path="/professional/:clientId/home" element={<ProfessionalProtectedRoute><Dashboard /></ProfessionalProtectedRoute>} />
@@ -129,6 +136,7 @@ function App() {
                 <Route path="/professional/:clientId/assets" element={<ProfessionalProtectedRoute><AssetsPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/documents" element={<ProfessionalProtectedRoute><DocumentsPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/company-compliances" element={<ProfessionalProtectedRoute><CompanyCompliancesPage /></ProfessionalProtectedRoute>} />
+                <Route path="/professional/:clientId/compliances" element={<ProfessionalProtectedRoute><CompliancesPageNew /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/licenses" element={<ProfessionalProtectedRoute><LicensesPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/taxes" element={<ProfessionalProtectedRoute><TaxesPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/taxes/gst" element={<ProfessionalProtectedRoute><TaxesGstPage /></ProfessionalProtectedRoute>} />
@@ -142,6 +150,7 @@ function App() {
                 <Route path="/professional/:clientId/payments" element={<ProfessionalProtectedRoute><PaymentsPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/messages" element={<ProfessionalProtectedRoute><MessagesPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/:clientId/settings" element={<ProfessionalProtectedRoute><SettingsPage /></ProfessionalProtectedRoute>} />
+                <Route path="/professional/:clientId/reports" element={<ProfessionalProtectedRoute><ReportsPage /></ProfessionalProtectedRoute>} />
 
                 {/* Professional Routes */}
                 <Route path="/professional/home" element={<ProfessionalProtectedRoute><ProfessionalDashboard /></ProfessionalProtectedRoute>} />
@@ -155,6 +164,7 @@ function App() {
                 <Route path="/professional/payments" element={<ProfessionalProtectedRoute><PaymentsPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/messages" element={<ProfessionalProtectedRoute><MessagesPage /></ProfessionalProtectedRoute>} />
                 <Route path="/professional/settings" element={<ProfessionalProtectedRoute><SettingsPage /></ProfessionalProtectedRoute>} />
+                <Route path="/professional/reports" element={<ProfessionalProtectedRoute><ReportsPage /></ProfessionalProtectedRoute>} />
                 
                 {/* Document Routes */}
                 <Route path="/documents/upload" element={<ProtectedRoute><DocumentUploadPage /></ProtectedRoute>} />

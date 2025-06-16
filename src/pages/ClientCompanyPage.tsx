@@ -1,13 +1,13 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Building, Users, User } from 'lucide-react';
+import { Building, Users, User, Key } from 'lucide-react';
 import CompanyDetailsSection from '@/components/company/CompanyDetailsSection';
 import DirectorsSection from '@/components/company/DirectorsSection';
 import ShareholdersSection from '@/components/company/ShareholdersSection';
 import AccountantFirmSection from '@/components/company/AccountantFirmSection';
+import CredentialManagerSection from '@/components/company/CredentialManagerSection';
 
 // Dummy data for company details
 const dummyCompanyData = {
@@ -166,7 +166,7 @@ const ClientCompanyPage = () => {
         </header>
 
         <Tabs defaultValue="company" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-4 md:w-[600px]">
+          <TabsList className="grid grid-cols-5 md:w-[750px]">
             <TabsTrigger value="company" className="flex items-center gap-2">
               <Building className="h-4 w-4" />
               <span className="hidden sm:inline">Company</span>
@@ -181,7 +181,11 @@ const ClientCompanyPage = () => {
             </TabsTrigger>
             <TabsTrigger value="accountant" className="flex items-center gap-2">
               <Building className="h-4 w-4" />
-              <span className="hidden sm:inline">Accountant Firm</span>
+              <span className="hidden sm:inline">Accountant</span>
+            </TabsTrigger>
+            <TabsTrigger value="credentials" className="flex items-center gap-2">
+              <Key className="h-4 w-4" />
+              <span className="hidden sm:inline">Credentials</span>
             </TabsTrigger>
           </TabsList>
           
@@ -199,6 +203,10 @@ const ClientCompanyPage = () => {
           
           <TabsContent value="accountant" className="mt-6">
             <AccountantFirmSection firm={dummyAccountantFirm} />
+          </TabsContent>
+          
+          <TabsContent value="credentials" className="mt-6">
+            <CredentialManagerSection />
           </TabsContent>
         </Tabs>
       </div>
