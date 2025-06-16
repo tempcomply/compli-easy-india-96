@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -140,10 +139,9 @@ const ReportsPage = () => {
         </header>
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="reports">My Reports</TabsTrigger>
             <TabsTrigger value="integrations">Integrations</TabsTrigger>
-            <TabsTrigger value="support">Support</TabsTrigger>
           </TabsList>
 
           <TabsContent value="reports" className="space-y-6">
@@ -280,52 +278,6 @@ const ReportsPage = () => {
                   </CardContent>
                 </Card>
               ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="support" className="space-y-6">
-            <div className="grid gap-6 md:grid-cols-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Contact Support</CardTitle>
-                  <CardDescription>
-                    Get help with your reports and compliance requirements
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <Button className="w-full">
-                    <ExternalLink className="mr-2 h-4 w-4" />
-                    Open Support Ticket
-                  </Button>
-                  <Button variant="outline" className="w-full">
-                    <FileText className="mr-2 h-4 w-4" />
-                    Browse Help Articles
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                  <CardDescription>
-                    Common support tasks and resources
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <Button variant="outline" className="w-full justify-start">
-                    <Upload className="mr-2 h-4 w-4" />
-                    Upload Document Issue
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start">
-                    <Settings className="mr-2 h-4 w-4" />
-                    Integration Setup Help
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start">
-                    <FileText className="mr-2 h-4 w-4" />
-                    Report Generation Help
-                  </Button>
-                </CardContent>
-              </Card>
             </div>
           </TabsContent>
         </Tabs>

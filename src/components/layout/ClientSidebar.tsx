@@ -1,10 +1,8 @@
-
 import React from 'react';
 import { NavLink, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { 
   Home, 
   FileText, 
-  ClipboardCheck, 
   Settings,
   Building,
   ArrowLeft,
@@ -19,8 +17,7 @@ import { Separator } from '@/components/ui/separator';
 
 const clientNavItems = [
   { icon: Home, label: 'Home', path: '/home' },
-  { icon: Shield, label: 'Assets & Compliance', path: '/compliances' },
-  { icon: ClipboardCheck, label: 'Company Tasks', path: '/company-compliances' },
+  { icon: Shield, label: 'Compliances', path: '/compliances' },
   { icon: Receipt, label: 'Taxes', path: '/taxes' },
   { icon: FileText, label: 'Reports', path: '/reports' },
   { icon: Briefcase, label: 'Services', path: '/services' },
