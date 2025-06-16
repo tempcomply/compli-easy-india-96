@@ -6,6 +6,7 @@ import { Building, Users, User, Key, Receipt, Briefcase } from 'lucide-react';
 import CompanyDetailsSection from '@/components/company/CompanyDetailsSection';
 import DirectorsSection from '@/components/company/DirectorsSection';
 import ShareholdersSection from '@/components/company/ShareholdersSection';
+import CredentialManagerSection from '@/components/company/CredentialManagerSection';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -130,7 +131,7 @@ const OrganizationPage = () => {
         </header>
 
         <Tabs defaultValue="entity-info" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-2 w-full">
+          <TabsList className="grid grid-cols-3 w-full">
             <TabsTrigger value="entity-info" className="flex items-center gap-2">
               <Building className="h-4 w-4" />
               <span className="hidden sm:inline">Entity Info</span>
@@ -138,6 +139,10 @@ const OrganizationPage = () => {
             <TabsTrigger value="associates" className="flex items-center gap-2">
               <User className="h-4 w-4" />
               <span className="hidden sm:inline">Associates</span>
+            </TabsTrigger>
+            <TabsTrigger value="credentials" className="flex items-center gap-2">
+              <Key className="h-4 w-4" />
+              <span className="hidden sm:inline">Credentials</span>
             </TabsTrigger>
           </TabsList>
           
@@ -147,6 +152,10 @@ const OrganizationPage = () => {
           
           <TabsContent value="associates" className="mt-6">
             <DirectorsSection directors={dummyDirectors} />
+          </TabsContent>
+          
+          <TabsContent value="credentials" className="mt-6">
+            <CredentialManagerSection />
           </TabsContent>
         </Tabs>
       </div>
@@ -215,98 +224,6 @@ const EntityInfoSection = ({ company }: { company: any }) => {
               <Label htmlFor="lws">Labor Welfare Scheme</Label>
               <Input id="lws" value="LWS/MH/123456" readOnly />
             </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-};
-
-const CredentialsSection = () => {
-  const credentials = [
-    {
-      id: '1',
-      service: 'Income Tax Portal',
-      username: 'company@example.com',
-      lastUpdated: '2024-01-15',
-      status: 'active'
-    },
-    {
-      id: '2',
-      service: 'GST Portal',
-      username: 'gst_user@example.com',
-      lastUpdated: '2024-02-10',
-      status: 'active'
-    },
-    {
-      id: '3',
-      service: 'PF Portal',
-      username: 'pf_admin@example.com',
-      lastUpdated: '2024-01-20',
-      status: 'active'
-    },
-    {
-      id: '4',
-      service: 'ESI Portal',
-      username: 'esi_user@example.com',
-      lastUpdated: '2023-12-05',
-      status: 'expired'
-    }
-  ];
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'expired': return 'bg-red-100 text-red-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Key className="h-5 w-5" />
-            Government Portal Credentials
-          </CardTitle>
-          <CardDescription>
-            Manage login credentials for various government and regulatory portals
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {credentials.map((credential) => (
-              <Card key={credential.id} className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <div className="font-medium">{credential.service}</div>
-                    <div className="text-sm text-muted-foreground">
-                      Username: {credential.username}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      Last updated: {new Date(credential.lastUpdated).toLocaleDateString()}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge className={getStatusColor(credential.status)}>
-                      {credential.status.toUpperCase()}
-                    </Badge>
-                    <Button variant="outline" size="sm">
-                      Update
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-          
-          <div className="mt-6 pt-4 border-t">
-            <Button>
-              <Key className="mr-2 h-4 w-4" />
-              Add New Credential
-            </Button>
           </div>
         </CardContent>
       </Card>
