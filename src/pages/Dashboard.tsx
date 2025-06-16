@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import StatsCard from '@/components/dashboard/StatsCard';
@@ -59,10 +58,10 @@ const Dashboard = () => {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatsCard title="Revenue" value="$250,000" />
-          <StatsCard title="Expenses" value="$180,000" />
-          <StatsCard title="Net Profit" value="$70,000" />
-          <StatsCard title="Compliance Score" value="95%" />
+          <StatsCard title="Revenue" value="$250,000" delta="+12%" />
+          <StatsCard title="Expenses" value="$180,000" delta="-8%" />
+          <StatsCard title="Net Profit" value="$70,000" delta="+20%" />
+          <StatsCard title="Compliance Score" value="95%" delta="+5%" />
         </div>
 
         {/* Main Content */}
@@ -74,24 +73,8 @@ const Dashboard = () => {
 
           {/* Right Sidebar */}
           <div className="space-y-6">
-            <ComplianceHealth 
-              score={85} 
-              tasksCompleted={3}
-              totalTasks={4}
-              nextSteps={[
-                "File pending GST return",
-                "Renew business license",
-                "Update compliance documentation"
-              ]}
-            />
-            <CompanyStatusCard 
-              companyInfo={{
-                name: "TechInnovate Solutions Pvt Ltd",
-                registrationNumber: "U72200DL2020PTC123456",
-                status: "Active",
-                incorporationDate: "2020-03-15"
-              }}
-            />
+            <ComplianceHealth score={85} />
+            <CompanyStatusCard />
             <DocumentsCard />
           </div>
         </div>
