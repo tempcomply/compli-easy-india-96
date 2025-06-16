@@ -19,10 +19,11 @@ import { Separator } from '@/components/ui/separator';
 
 const clientNavItems = [
   { icon: Home, label: 'Home', path: '/home' },
-  { icon: ClipboardCheck, label: 'Compliances', path: '/company-compliances' },
+  { icon: Shield, label: 'Assets & Compliance', path: '/compliances' },
+  { icon: ClipboardCheck, label: 'Company Tasks', path: '/company-compliances' },
   { icon: Receipt, label: 'Taxes', path: '/taxes' },
+  { icon: FileText, label: 'Reports', path: '/reports' },
   { icon: Briefcase, label: 'Services', path: '/services' },
-  { icon: Shield, label: 'Assets', path: '/assets' },
   { icon: FileText, label: 'Documents', path: '/documents' },
 ];
 
@@ -131,4 +132,3 @@ const ClientSidebar = () => {
 };
 
 export default ClientSidebar;
-
