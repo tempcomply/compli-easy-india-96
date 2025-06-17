@@ -4,7 +4,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Building, Shield, Home, Users, Calendar, AlertCircle, CheckCircle } from 'lucide-react';
+import { Plus, Building, Shield, Home, Users, Calendar, AlertCircle, CheckCircle, Clock, ArrowRight } from 'lucide-react';
 import AddAssetDialog from '@/components/compliances/AddAssetDialog';
 import AssetDetailsDialog from '@/components/compliances/AssetDetailsDialog';
 
@@ -109,8 +109,8 @@ const CompliancesPage = () => {
     switch (status) {
       case 'completed': return CheckCircle;
       case 'overdue': return AlertCircle;
-      case 'pending': return Calendar;
-      default: return Calendar;
+      case 'pending': return Clock;
+      default: return Clock;
     }
   };
 
@@ -119,7 +119,7 @@ const CompliancesPage = () => {
 
   return (
     <MainLayout>
-      <div className="space-y-6">
+      <div className="space-y-8">
         <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Compliances</h1>
@@ -151,7 +151,7 @@ const CompliancesPage = () => {
             </div>
           </CardHeader>
           <CardContent className="pt-2 pb-6">
-            <div className="h-6"></div>
+            <div className="h-8"></div>
           </CardContent>
         </Card>
 
@@ -233,44 +233,57 @@ const CompliancesPage = () => {
           </AssetDetailsDialog>
         </div>
 
-        {/* Compliance Requirements Section */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold tracking-tight">Compliance Requirements</h2>
-            <p className="text-muted-foreground">
-              {compliances.filter(c => c.status === 'pending').length} pending, {compliances.filter(c => c.status === 'overdue').length} overdue
+        {/* Compliance Requirements Section - Redesigned */}
+        <div className="space-y-6">
+          <div className="border-t pt-6">
+            <h2 className="text-2xl font-bold tracking-tight mb-2">Compliance Requirements</h2>
+            <p className="text-muted-foreground mb-6">
+              Track and manage your ongoing compliance obligations
             </p>
           </div>
           
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-4">
             {compliances.map((compliance) => {
               const StatusIcon = getStatusIcon(compliance.status);
               return (
-                <Card key={compliance.id} className="hover:shadow-md transition-shadow">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-2">
-                        <StatusIcon className="h-4 w-4 text-muted-foreground" />
-                        <CardTitle className="text-lg">{compliance.title}</CardTitle>
+                <div key={compliance.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow bg-card">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-2">
+                        <StatusIcon className={`h-5 w-5 ${
+                          compliance.status === 'completed' ? 'text-green-600' :
+                          compliance.status === 'overdue' ? 'text-red-600' : 'text-yellow-600'
+                        }`} />
+                        <h3 className="text-lg font-semibold">{compliance.title}</h3>
+                        <Badge className={getStatusColor(compliance.status)} variant="outline">
+                          {compliance.status}
+                        </Badge>
                       </div>
-                      <Badge className={getStatusColor(compliance.status)} variant="outline">
-                        {compliance.status}
-                      </Badge>
+                      <p className="text-muted-foreground mb-3 leading-relaxed">
+                        {compliance.description}
+                      </p>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          <span>Due: {compliance.dueDate}</span>
+                        </div>
+                        <div>
+                          Related to: {compliance.relatedAsset}
+                        </div>
+                      </div>
                     </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <p className="text-sm text-muted-foreground">
-                      {compliance.description}
-                    </p>
-                    <div className="flex items-center gap-1 text-sm">
-                      <Calendar className="w-4 h-4" />
-                      <span className="font-medium">Due: {compliance.dueDate}</span>
+                    <div className="ml-4 flex-shrink-0">
+                      <Button 
+                        variant={compliance.status === 'completed' ? 'outline' : 'default'}
+                        size="sm"
+                        disabled={compliance.status === 'completed'}
+                      >
+                        {compliance.status === 'completed' ? 'Completed' : 'Initiate'}
+                        {compliance.status !== 'completed' && <ArrowRight className="ml-1 h-4 w-4" />}
+                      </Button>
                     </div>
-                    <div className="text-xs text-muted-foreground">
-                      Related to: {compliance.relatedAsset}
-                    </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               );
             })}
           </div>
