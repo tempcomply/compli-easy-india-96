@@ -1,11 +1,10 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, FileText } from 'lucide-react';
+import { FileText } from 'lucide-react';
 import GstSetupDialog from '@/components/taxes/GstSetupDialog';
 import MakePaymentDialog from '@/components/taxes/MakePaymentDialog';
 
@@ -41,7 +40,6 @@ const gstForms = [
 ];
 
 const TaxesGstPage = () => {
-  const navigate = useNavigate();
   const [isSetup, setIsSetup] = useState(false);
   
   const handleSetupComplete = () => {
@@ -99,7 +97,6 @@ const TaxesGstPage = () => {
                     {form.frequency}
                   </Badge>
                 </div>
-                <Badge variant="secondary">Available</Badge>
               </div>
             </CardHeader>
             <CardContent>
@@ -126,20 +123,14 @@ const TaxesGstPage = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" size="sm" onClick={() => navigate('/client/taxes')}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
-          </Button>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-              <FileText className="h-8 w-8 text-blue-600" />
-              GST
-            </h1>
-            <p className="text-muted-foreground">
-              Goods and Services Tax filing and compliance
-            </p>
-          </div>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+            <FileText className="h-8 w-8 text-blue-600" />
+            GST
+          </h1>
+          <p className="text-muted-foreground">
+            Goods and Services Tax filing and compliance
+          </p>
         </div>
 
         {!isSetup ? <EmptyState /> : <SetupComplete />}

@@ -17,54 +17,36 @@ const taxCategories = [
     label: 'GST',
     icon: FileText,
     description: 'File your Goods and Services Tax (GST) returns.',
-    color: 'from-blue-500/10 to-blue-600/20',
-    borderColor: 'border-blue-200',
-    iconColor: 'text-blue-600',
   },
   {
     key: 'income-tax',
     label: 'Income Tax',
     icon: Receipt,
     description: 'Advance tax, Self-assessment, ITR & Regular Assessments in one place.',
-    color: 'from-green-500/10 to-green-600/20',
-    borderColor: 'border-green-200',
-    iconColor: 'text-green-600',
   },
   {
     key: 'tds-tcs',
     label: 'TDS & TCS',
     icon: Landmark,
     description: 'Manage Tax Deducted/Collected at Source (TDS & TCS) filings.',
-    color: 'from-purple-500/10 to-purple-600/20',
-    borderColor: 'border-purple-200',
-    iconColor: 'text-purple-600',
   },
   {
     key: 'employee-taxes',
     label: 'Employee-related Taxes',
     icon: Users,
     description: 'Handle PF, ESI, Professional Tax, and other employee taxes.',
-    color: 'from-orange-500/10 to-orange-600/20',
-    borderColor: 'border-orange-200',
-    iconColor: 'text-orange-600',
   },
   {
     key: 'state-local',
     label: 'State & Local Taxes',
     icon: Building2,
     description: 'Track state-specific and local body tax registrations and obligations.',
-    color: 'from-indigo-500/10 to-indigo-600/20',
-    borderColor: 'border-indigo-200',
-    iconColor: 'text-indigo-600',
   },
   {
     key: 'other-taxes',
     label: 'Other Taxes',
     icon: Banknote,
     description: 'Excise, customs, and other miscellaneous business tax filings.',
-    color: 'from-gray-500/10 to-gray-600/20',
-    borderColor: 'border-gray-200',
-    iconColor: 'text-gray-600',
   },
 ];
 
@@ -96,23 +78,12 @@ const TaxesPage = () => {
               className="cursor-pointer"
               onClick={() => navigate(`${basePath}/${cat.key}`)}
             >
-              <div className={`
-                p-6 
-                bg-gradient-to-br ${cat.color} 
-                border ${cat.borderColor} 
-                rounded-lg 
-                hover:shadow-md 
-                transition-shadow duration-200 
-                flex flex-col 
-                space-y-4
-              `}>
-                <div className={`
-                  p-2 rounded-lg bg-white/80 w-fit
-                `}>
-                  <cat.icon className={`w-6 h-6 ${cat.iconColor}`} />
+              <div className="p-6 bg-card border rounded-lg hover:shadow-md transition-shadow duration-200 flex flex-col space-y-4">
+                <div className="p-2 rounded-lg bg-muted w-fit">
+                  <cat.icon className="w-6 h-6 text-muted-foreground" />
                 </div>
                 <div className="space-y-2">
-                  <h3 className={`text-lg font-semibold ${cat.iconColor}`}>
+                  <h3 className="text-lg font-semibold">
                     {cat.label}
                   </h3>
                   <p className="text-sm text-muted-foreground">
