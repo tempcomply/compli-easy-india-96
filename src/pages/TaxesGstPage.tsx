@@ -5,7 +5,9 @@ import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, FileText, Play, CreditCard, Calendar } from 'lucide-react';
+import { ArrowLeft, FileText } from 'lucide-react';
+import GstSetupDialog from '@/components/taxes/GstSetupDialog';
+import MakePaymentDialog from '@/components/taxes/MakePaymentDialog';
 
 const gstForms = [
   {
@@ -13,28 +15,28 @@ const gstForms = [
     name: 'GSTR-1',
     description: 'Details of outward supplies of taxable goods and/or services effected',
     frequency: 'Monthly/Quarterly',
-    status: 'available'
+    importance: 'high',
   },
   {
     id: 'gstr3b',
     name: 'GSTR-3B',
     description: 'Monthly return to be furnished by every registered person',
     frequency: 'Monthly',
-    status: 'available'
+    importance: 'high',
   },
   {
     id: 'gstr9',
     name: 'GSTR-9',
     description: 'Annual return to be furnished by every registered person',
     frequency: 'Annual',
-    status: 'available'
+    importance: 'medium',
   },
   {
     id: 'gstr4',
     name: 'GSTR-4',
     description: 'Return for composition taxable person',
     frequency: 'Quarterly',
-    status: 'available'
+    importance: 'low',
   }
 ];
 
@@ -42,9 +44,21 @@ const TaxesGstPage = () => {
   const navigate = useNavigate();
   const [isSetup, setIsSetup] = useState(false);
   
-  const handleGetStarted = () => {
-    // In a real app, this would open a setup wizard
+  const handleSetupComplete = () => {
     setIsSetup(true);
+  };
+
+  const getCardSize = (importance: string) => {
+    switch (importance) {
+      case 'high':
+        return 'md:col-span-2';
+      case 'medium':
+        return 'md:col-span-1';
+      case 'low':
+        return 'md:col-span-1';
+      default:
+        return 'md:col-span-1';
+    }
   };
 
   const EmptyState = () => (
@@ -59,10 +73,7 @@ const TaxesGstPage = () => {
         </p>
       </div>
       <div className="space-y-4">
-        <Button size="lg" onClick={handleGetStarted} className="px-8">
-          <Play className="mr-2 h-5 w-5" />
-          Get Started with GST
-        </Button>
+        <GstSetupDialog onSetupComplete={handleSetupComplete} />
         <p className="text-sm text-muted-foreground">
           Setup takes less than 5 minutes
         </p>
@@ -72,73 +83,42 @@ const TaxesGstPage = () => {
 
   const SetupComplete = () => (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">GST Dashboard</h2>
-          <p className="text-muted-foreground">Manage your GST filings and payments</p>
-        </div>
-        <Button>
-          <CreditCard className="mr-2 h-4 w-4" />
-          Make Payment
-        </Button>
+      <div>
+        <h2 className="text-2xl font-bold">GST Filing Forms</h2>
+        <p className="text-muted-foreground">Select a form to file your GST return</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calendar className="h-5 w-5" />
-              Next Due Date
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-orange-600">20th Jan 2025</div>
-            <p className="text-sm text-muted-foreground">GSTR-3B for December 2024</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <Button variant="outline" className="w-full justify-start">
-              File GSTR-3B
-            </Button>
-            <Button variant="outline" className="w-full justify-start">
-              View Payment History
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="space-y-4">
-        <h3 className="text-xl font-semibold">Available GST Forms</h3>
-        <div className="grid gap-4 md:grid-cols-2">
-          {gstForms.map((form) => (
-            <Card key={form.id} className="hover:shadow-md transition-shadow cursor-pointer">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle className="text-lg">{form.name}</CardTitle>
-                    <Badge variant="outline" className="mt-1">
-                      {form.frequency}
-                    </Badge>
-                  </div>
-                  <Badge variant="secondary">Available</Badge>
+      <div className="grid gap-6 md:grid-cols-3">
+        {gstForms.map((form) => (
+          <Card key={form.id} className={`${getCardSize(form.importance)} hover:shadow-md transition-shadow`}>
+            <CardHeader className="pb-3">
+              <div className="flex items-start justify-between">
+                <div>
+                  <CardTitle className="text-lg">{form.name}</CardTitle>
+                  <Badge variant="outline" className="mt-1">
+                    {form.frequency}
+                  </Badge>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
-                  {form.description}
-                </p>
-                <Button size="sm" className="w-full">
-                  File {form.name}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                <Badge variant="secondary">Available</Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">
+                {form.description}
+              </p>
+              <MakePaymentDialog
+                triggerLabel={`File ${form.name}`}
+                fields={[]}
+                paymentFields={[
+                  { name: "amount", label: "Amount to Pay (INR)", required: true, type: "number" }
+                ]}
+                onPay={(data) => {
+                  console.log(`Filing ${form.name} with payment:`, data);
+                }}
+              />
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </div>
   );
@@ -147,9 +127,9 @@ const TaxesGstPage = () => {
     <MainLayout>
       <div className="space-y-6">
         <div className="flex items-center gap-4">
-          <Button variant="outline" size="sm" onClick={() => navigate('/client/taxes')}>
+          <Button variant="ghost" size="sm" onClick={() => navigate('/client/taxes')}>
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Taxes
+            Back
           </Button>
           <div>
             <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">

@@ -17,7 +17,6 @@ const taxCategories = [
     label: 'GST',
     icon: FileText,
     description: 'File your Goods and Services Tax (GST) returns.',
-    importance: 'high',
     color: 'from-blue-500/10 to-blue-600/20',
     borderColor: 'border-blue-200',
     iconColor: 'text-blue-600',
@@ -27,7 +26,6 @@ const taxCategories = [
     label: 'Income Tax',
     icon: Receipt,
     description: 'Advance tax, Self-assessment, ITR & Regular Assessments in one place.',
-    importance: 'high',
     color: 'from-green-500/10 to-green-600/20',
     borderColor: 'border-green-200',
     iconColor: 'text-green-600',
@@ -37,7 +35,6 @@ const taxCategories = [
     label: 'TDS & TCS',
     icon: Landmark,
     description: 'Manage Tax Deducted/Collected at Source (TDS & TCS) filings.',
-    importance: 'medium',
     color: 'from-purple-500/10 to-purple-600/20',
     borderColor: 'border-purple-200',
     iconColor: 'text-purple-600',
@@ -47,7 +44,6 @@ const taxCategories = [
     label: 'Employee-related Taxes',
     icon: Users,
     description: 'Handle PF, ESI, Professional Tax, and other employee taxes.',
-    importance: 'medium',
     color: 'from-orange-500/10 to-orange-600/20',
     borderColor: 'border-orange-200',
     iconColor: 'text-orange-600',
@@ -57,7 +53,6 @@ const taxCategories = [
     label: 'State & Local Taxes',
     icon: Building2,
     description: 'Track state-specific and local body tax registrations and obligations.',
-    importance: 'low',
     color: 'from-indigo-500/10 to-indigo-600/20',
     borderColor: 'border-indigo-200',
     iconColor: 'text-indigo-600',
@@ -67,7 +62,6 @@ const taxCategories = [
     label: 'Other Taxes',
     icon: Banknote,
     description: 'Excise, customs, and other miscellaneous business tax filings.',
-    importance: 'low',
     color: 'from-gray-500/10 to-gray-600/20',
     borderColor: 'border-gray-200',
     iconColor: 'text-gray-600',
@@ -82,32 +76,6 @@ const TaxesPage = () => {
   const navigate = useNavigate();
   const basePath = useTaxesBasePath();
 
-  const getCardClass = (importance: string) => {
-    switch (importance) {
-      case 'high':
-        return 'md:col-span-2 lg:col-span-1 xl:col-span-2';
-      case 'medium':
-        return 'md:col-span-1 lg:col-span-1 xl:col-span-1';
-      case 'low':
-        return 'md:col-span-1 lg:col-span-1 xl:col-span-1';
-      default:
-        return 'md:col-span-1';
-    }
-  };
-
-  const getCardHeight = (importance: string) => {
-    switch (importance) {
-      case 'high':
-        return 'h-40';
-      case 'medium':
-        return 'h-36';
-      case 'low':
-        return 'h-32';
-      default:
-        return 'h-36';
-    }
-  };
-
   return (
     <MainLayout>
       <section className="space-y-8">
@@ -121,15 +89,15 @@ const TaxesPage = () => {
           </p>
         </div>
         
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {taxCategories.map((cat) => (
             <div
               key={cat.key}
-              className={`${getCardClass(cat.importance)} cursor-pointer`}
+              className="cursor-pointer"
               onClick={() => navigate(`${basePath}/${cat.key}`)}
             >
               <div className={`
-                ${getCardHeight(cat.importance)} 
+                h-40 
                 bg-gradient-to-br ${cat.color} 
                 border-2 ${cat.borderColor} 
                 rounded-xl p-6 
