@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Dialog,
@@ -11,7 +10,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Calendar, MapPin, User, Building, Shield } from 'lucide-react';
+import { Plus, Calendar, MapPin, User, Building, Shield, Car, Factory } from 'lucide-react';
 
 interface Asset {
   id: string;
@@ -71,48 +70,6 @@ const sampleLicences: Asset[] = [
   }
 ];
 
-const sampleProperties: Asset[] = [
-  {
-    id: '1',
-    name: 'Corporate Office - Pune',
-    type: 'Commercial Property',
-    status: 'active',
-    details: { 
-      state: 'Maharashtra', 
-      district: 'Pune', 
-      surveyNumber: 'S.No. 123/1A', 
-      area: '2500 sq ft',
-      registrationNumber: 'MH-PUNE-2020-001234'
-    }
-  },
-  {
-    id: '2',
-    name: 'Warehouse - Mumbai',
-    type: 'Industrial Property',
-    status: 'active',
-    details: { 
-      state: 'Maharashtra', 
-      district: 'Mumbai Suburban', 
-      surveyNumber: 'S.No. 456/2B', 
-      area: '5000 sq ft',
-      registrationNumber: 'MH-MUM-2021-005678'
-    }
-  },
-  {
-    id: '3',
-    name: 'Branch Office - Bangalore',
-    type: 'Commercial Property',
-    status: 'pending',
-    details: { 
-      state: 'Karnataka', 
-      district: 'Bangalore Urban', 
-      surveyNumber: 'S.No. 789/3C', 
-      area: '1800 sq ft',
-      registrationNumber: 'KA-BLR-2024-001122'
-    }
-  }
-];
-
 const sampleEmployees: Asset[] = [
   {
     id: '1',
@@ -151,6 +108,59 @@ const sampleEmployees: Asset[] = [
   }
 ];
 
+const sampleAssets: Asset[] = [
+  {
+    id: '1',
+    name: 'Corporate Office - Pune',
+    type: 'Commercial Property',
+    status: 'active',
+    details: { 
+      state: 'Maharashtra', 
+      district: 'Pune', 
+      surveyNumber: 'S.No. 123/1A', 
+      area: '2500 sq ft',
+      registrationNumber: 'MH-PUNE-2020-001234'
+    }
+  },
+  {
+    id: '2',
+    name: 'Company Vehicle - MH12AB1234',
+    type: 'Vehicle',
+    status: 'active',
+    details: { 
+      vehicleNumber: 'MH12AB1234',
+      model: 'Toyota Innova',
+      year: '2022',
+      insuranceExpiry: '2024-08-15'
+    }
+  },
+  {
+    id: '3',
+    name: 'Manufacturing Equipment',
+    type: 'Machinery',
+    status: 'active',
+    details: { 
+      equipmentType: 'CNC Machine',
+      model: 'Haas VF-2',
+      serialNumber: 'HV2-2023-001',
+      purchaseDate: '2023-01-15'
+    }
+  },
+  {
+    id: '4',
+    name: 'Warehouse - Mumbai',
+    type: 'Industrial Property',
+    status: 'active',
+    details: { 
+      state: 'Maharashtra', 
+      district: 'Mumbai Suburban', 
+      surveyNumber: 'S.No. 456/2B', 
+      area: '5000 sq ft',
+      registrationNumber: 'MH-MUM-2021-005678'
+    }
+  }
+];
+
 const AssetDetailsDialog: React.FC<AssetDetailsDialogProps> = ({
   children,
   categoryTitle,
@@ -163,7 +173,7 @@ const AssetDetailsDialog: React.FC<AssetDetailsDialogProps> = ({
   // Use sample data based on category
   const getSampleAssets = () => {
     if (categoryTitle === 'Licences') return sampleLicences;
-    if (categoryTitle === 'Properties') return sampleProperties;
+    if (categoryTitle === 'Assets') return sampleAssets;
     if (categoryTitle === 'Employees') return sampleEmployees;
     return propAssets;
   };
@@ -181,7 +191,7 @@ const AssetDetailsDialog: React.FC<AssetDetailsDialogProps> = ({
 
   const getIcon = () => {
     if (categoryTitle === 'Licences') return Shield;
-    if (categoryTitle === 'Properties') return Building;
+    if (categoryTitle === 'Assets') return Building;
     if (categoryTitle === 'Employees') return User;
     return Shield;
   };
@@ -266,24 +276,36 @@ const AssetDetailsDialog: React.FC<AssetDetailsDialogProps> = ({
                       </>
                     )}
                     
-                    {categoryTitle === 'Properties' && (
+                    {categoryTitle === 'Assets' && (
                       <>
-                        <div className="flex items-center gap-1 text-sm">
-                          <MapPin className="w-4 h-4" />
-                          {asset.details.district}, {asset.details.state}
-                        </div>
-                        <div className="text-sm">
-                          <span className="font-medium">Survey No: </span>
-                          {asset.details.surveyNumber}
-                        </div>
-                        <div className="text-sm">
-                          <span className="font-medium">Area: </span>
-                          {asset.details.area}
-                        </div>
-                        {asset.details.registrationNumber && (
+                        {asset.details.state && asset.details.district && (
+                          <div className="flex items-center gap-1 text-sm">
+                            <MapPin className="w-4 h-4" />
+                            {asset.details.district}, {asset.details.state}
+                          </div>
+                        )}
+                        {asset.details.vehicleNumber && (
                           <div className="text-sm">
-                            <span className="font-medium">Reg. No: </span>
-                            {asset.details.registrationNumber}
+                            <span className="font-medium">Vehicle No: </span>
+                            {asset.details.vehicleNumber}
+                          </div>
+                        )}
+                        {asset.details.model && (
+                          <div className="text-sm">
+                            <span className="font-medium">Model: </span>
+                            {asset.details.model}
+                          </div>
+                        )}
+                        {asset.details.area && (
+                          <div className="text-sm">
+                            <span className="font-medium">Area: </span>
+                            {asset.details.area}
+                          </div>
+                        )}
+                        {asset.details.serialNumber && (
+                          <div className="text-sm">
+                            <span className="font-medium">Serial No: </span>
+                            {asset.details.serialNumber}
                           </div>
                         )}
                       </>
