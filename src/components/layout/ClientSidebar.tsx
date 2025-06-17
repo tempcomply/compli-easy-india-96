@@ -38,7 +38,7 @@ const dummyClients: { [key: string]: string } = {
   '3': 'Marketing Pros LLC',
 };
 
-const ClientSidebar = () => {
+const ClientSidebar: React.FC = () => {
   const location = useLocation();
   const params = useParams();
   const navigate = useNavigate();
