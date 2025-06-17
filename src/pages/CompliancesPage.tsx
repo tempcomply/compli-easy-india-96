@@ -2,91 +2,32 @@ import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Plus, Building, Shield, Home, FileText } from 'lucide-react';
+import { Plus, Building, Shield, Home, Users } from 'lucide-react';
 import AddAssetDialog from '@/components/compliances/AddAssetDialog';
-import ComplianceCategoryDialog from '@/components/compliances/ComplianceCategoryDialog';
+import AssetDetailsDialog from '@/components/compliances/AssetDetailsDialog';
 
-interface ComplianceItem {
+interface Asset {
   id: string;
-  title: string;
-  description: string;
-  dueDate?: string;
-  status: 'pending' | 'filed' | 'completed';
-  frequency?: string;
+  name: string;
+  type: string;
+  status: 'active' | 'expired' | 'pending';
+  details: any;
+  issueDate?: string;
+  expiryDate?: string;
 }
 
 const CompliancesPage = () => {
-  // Sample data for different compliance categories
-  const [companyCompliances, setCompanyCompliances] = useState<ComplianceItem[]>([
-    {
-      id: '1',
-      title: 'Annual Return Filing',
-      description: 'Submit annual return to Registrar of Companies',
-      dueDate: '2024-12-31',
-      status: 'pending',
-      frequency: 'Annual'
-    },
-    {
-      id: '2',
-      title: 'Board Meeting Minutes',
-      description: 'Quarterly board meeting documentation',
-      dueDate: '2024-03-31',
-      status: 'completed',
-      frequency: 'Quarterly'
-    }
-  ]);
-
-  const [licenceCompliances, setLicenceCompliances] = useState<ComplianceItem[]>([
-    {
-      id: '3',
-      title: 'Trade License Renewal',
-      description: 'Municipal trade license renewal',
-      dueDate: '2024-06-30',
-      status: 'pending',
-      frequency: 'Annual'
-    },
-    {
-      id: '4',
-      title: 'GST Registration',
-      description: 'Goods and Services Tax registration',
-      status: 'completed'
-    }
-  ]);
-
-  const [propertyCompliances, setPropertyCompliances] = useState<ComplianceItem[]>([
-    {
-      id: '5',
-      title: 'Property Tax Payment',
-      description: 'Municipal property tax payment',
-      dueDate: '2024-04-15',
-      status: 'filed',
-      frequency: 'Annual'
-    }
-  ]);
-
-  const [otherCompliances, setOtherCompliances] = useState<ComplianceItem[]>([]);
+  const [licenceAssets] = useState<Asset[]>([]);
+  const [propertyAssets] = useState<Asset[]>([]);
+  const [employeeAssets] = useState<Asset[]>([]);
 
   const handleAddAsset = (assetType: string) => {
     console.log('Adding asset of type:', assetType);
     // Here you would implement the logic to add new assets
   };
 
-  const handleAddCompliance = (category: string) => {
-    console.log('Adding compliance for category:', category);
-    // Here you would implement the logic to add new compliances
-  };
-
-  const handleFileCompliance = (id: string) => {
-    console.log('Filing compliance:', id);
-    // Here you would implement the logic to file compliances
-  };
-
-  const getComplianceStats = (compliances: ComplianceItem[]) => {
-    const pending = compliances.filter(c => c.status === 'pending').length;
-    const total = compliances.length;
-    return { pending, total };
-  };
+  // Dummy company name - in real app this would come from context/API
+  const companyName = "TechInnovate Solutions Pvt Ltd";
 
   return (
     <MainLayout>
@@ -107,54 +48,39 @@ const CompliancesPage = () => {
         </header>
 
         {/* Company Asset - Full width card */}
-        <ComplianceCategoryDialog
-          categoryTitle="Company Compliances"
-          categoryDescription="Annual returns, board meetings, and corporate governance requirements"
-          compliances={companyCompliances}
-          onAddCompliance={() => handleAddCompliance('company')}
-          onFileCompliance={handleFileCompliance}
-        >
-          <Card className="cursor-pointer border-2 border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10 hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-primary/10 rounded-lg">
-                    <Building className="h-8 w-8 text-primary" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-2xl">The Company Itself</CardTitle>
-                    <p className="text-muted-foreground text-lg">Corporate governance and statutory compliances</p>
-                    <div className="flex items-center gap-4 mt-2">
-                      <Badge variant="secondary">
-                        {getComplianceStats(companyCompliances).pending} pending
-                      </Badge>
-                      <Badge variant="outline">
-                        {getComplianceStats(companyCompliances).total} total
-                      </Badge>
-                    </div>
-                  </div>
+        <Card className="cursor-pointer hover:shadow-lg transition-all duration-200">
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-gray-100 rounded-lg">
+                  <Building className="h-8 w-8 text-gray-600" />
                 </div>
-                <FileText className="h-6 w-6 text-muted-foreground" />
+                <div>
+                  <CardTitle className="text-2xl">{companyName}</CardTitle>
+                  <p className="text-muted-foreground text-lg">Corporate governance and statutory compliances</p>
+                </div>
               </div>
-            </CardHeader>
-          </Card>
-        </ComplianceCategoryDialog>
+            </div>
+          </CardHeader>
+          <CardContent className="pt-2 pb-6">
+            <div className="h-4"></div>
+          </CardContent>
+        </Card>
 
         {/* Other categories in a grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {/* Licences */}
-          <ComplianceCategoryDialog
+          <AssetDetailsDialog
             categoryTitle="Licences"
             categoryDescription="Business licenses, permits, and regulatory approvals"
-            compliances={licenceCompliances}
-            onAddCompliance={() => handleAddCompliance('licences')}
-            onFileCompliance={handleFileCompliance}
+            assets={licenceAssets}
+            onAddAsset={() => handleAddAsset('licences')}
           >
-            <Card className="cursor-pointer hover:shadow-lg transition-all duration-200 h-48">
+            <Card className="cursor-pointer hover:shadow-lg transition-all duration-200 h-56">
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <Shield className="h-6 w-6 text-blue-600" />
+                  <div className="p-2 bg-gray-100 rounded-lg">
+                    <Shield className="h-6 w-6 text-gray-600" />
                   </div>
                   <CardTitle className="text-xl">Licences</CardTitle>
                 </div>
@@ -163,31 +89,23 @@ const CompliancesPage = () => {
                 <p className="text-sm text-muted-foreground">
                   Business licenses, permits, and regulatory approvals
                 </p>
-                <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="text-xs">
-                    {getComplianceStats(licenceCompliances).pending} pending
-                  </Badge>
-                  <Badge variant="outline" className="text-xs">
-                    {getComplianceStats(licenceCompliances).total} total
-                  </Badge>
-                </div>
+                <div className="h-8"></div>
               </CardContent>
             </Card>
-          </ComplianceCategoryDialog>
+          </AssetDetailsDialog>
 
           {/* Properties */}
-          <ComplianceCategoryDialog
+          <AssetDetailsDialog
             categoryTitle="Properties"
             categoryDescription="Real estate properties, land, buildings, and premises"
-            compliances={propertyCompliances}
-            onAddCompliance={() => handleAddCompliance('properties')}
-            onFileCompliance={handleFileCompliance}
+            assets={propertyAssets}
+            onAddAsset={() => handleAddAsset('properties')}
           >
-            <Card className="cursor-pointer hover:shadow-lg transition-all duration-200 h-48">
+            <Card className="cursor-pointer hover:shadow-lg transition-all duration-200 h-56">
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <Home className="h-6 w-6 text-green-600" />
+                  <div className="p-2 bg-gray-100 rounded-lg">
+                    <Home className="h-6 w-6 text-gray-600" />
                   </div>
                   <CardTitle className="text-xl">Properties</CardTitle>
                 </div>
@@ -196,50 +114,35 @@ const CompliancesPage = () => {
                 <p className="text-sm text-muted-foreground">
                   Real estate properties and premises compliance
                 </p>
-                <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="text-xs">
-                    {getComplianceStats(propertyCompliances).pending} pending
-                  </Badge>
-                  <Badge variant="outline" className="text-xs">
-                    {getComplianceStats(propertyCompliances).total} total
-                  </Badge>
-                </div>
+                <div className="h-8"></div>
               </CardContent>
             </Card>
-          </ComplianceCategoryDialog>
+          </AssetDetailsDialog>
 
-          {/* Others */}
-          <ComplianceCategoryDialog
-            categoryTitle="Other Compliances"
-            categoryDescription="Miscellaneous compliance requirements and obligations"
-            compliances={otherCompliances}
-            onAddCompliance={() => handleAddCompliance('others')}
-            onFileCompliance={handleFileCompliance}
+          {/* Employees */}
+          <AssetDetailsDialog
+            categoryTitle="Employees"
+            categoryDescription="Employee records, documentation, and compliance"
+            assets={employeeAssets}
+            onAddAsset={() => handleAddAsset('employees')}
           >
-            <Card className="cursor-pointer hover:shadow-lg transition-all duration-200 h-48">
+            <Card className="cursor-pointer hover:shadow-lg transition-all duration-200 h-56">
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-gray-100 rounded-lg">
-                    <FileText className="h-6 w-6 text-gray-600" />
+                    <Users className="h-6 w-6 text-gray-600" />
                   </div>
-                  <CardTitle className="text-xl">Others</CardTitle>
+                  <CardTitle className="text-xl">Employees</CardTitle>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-sm text-muted-foreground">
-                  Miscellaneous compliance requirements
+                  Employee records and compliance requirements
                 </p>
-                <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="text-xs">
-                    {getComplianceStats(otherCompliances).pending} pending
-                  </Badge>
-                  <Badge variant="outline" className="text-xs">
-                    {getComplianceStats(otherCompliances).total} total
-                  </Badge>
-                </div>
+                <div className="h-8"></div>
               </CardContent>
             </Card>
-          </ComplianceCategoryDialog>
+          </AssetDetailsDialog>
         </div>
       </div>
     </MainLayout>
