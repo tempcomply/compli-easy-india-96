@@ -97,39 +97,27 @@ const TaxesPage = () => {
               onClick={() => navigate(`${basePath}/${cat.key}`)}
             >
               <div className={`
-                h-40 
+                p-6 
                 bg-gradient-to-br ${cat.color} 
-                border-2 ${cat.borderColor} 
-                rounded-xl p-6 
-                hover:shadow-lg hover:scale-105 
-                transition-all duration-300 
-                flex flex-col justify-between
-                group
+                border ${cat.borderColor} 
+                rounded-lg 
+                hover:shadow-md 
+                transition-shadow duration-200 
+                flex flex-col 
+                space-y-4
               `}>
-                <div className="space-y-3">
-                  <div className={`
-                    p-3 rounded-lg bg-white/80 w-fit
-                    group-hover:bg-white transition-colors duration-300
-                  `}>
-                    <cat.icon className={`w-8 h-8 ${cat.iconColor}`} />
-                  </div>
-                  <div>
-                    <h3 className={`text-xl font-bold ${cat.iconColor} mb-1`}>
-                      {cat.label}
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {cat.description}
-                    </p>
-                  </div>
+                <div className={`
+                  p-2 rounded-lg bg-white/80 w-fit
+                `}>
+                  <cat.icon className={`w-6 h-6 ${cat.iconColor}`} />
                 </div>
-                
-                <div className="mt-4">
-                  <div className={`
-                    inline-flex items-center text-sm font-medium ${cat.iconColor}
-                    group-hover:translate-x-1 transition-transform duration-300
-                  `}>
-                    View {cat.label} →
-                  </div>
+                <div className="space-y-2">
+                  <h3 className={`text-lg font-semibold ${cat.iconColor}`}>
+                    {cat.label}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {cat.description}
+                  </p>
                 </div>
               </div>
             </div>
