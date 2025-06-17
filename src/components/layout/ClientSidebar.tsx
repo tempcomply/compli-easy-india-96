@@ -20,9 +20,9 @@ const clientNavItems = [
   { icon: Home, label: 'Home', path: '/home' },
   { icon: Shield, label: 'Compliances', path: '/compliances' },
   { icon: Receipt, label: 'Taxes', path: '/taxes' },
+  { icon: FileText, label: 'Documents', path: '/documents' },
   { icon: FileText, label: 'Reports', path: '/reports' },
   { icon: Briefcase, label: 'Services and Approvals', path: '/services' },
-  { icon: FileText, label: 'Documents', path: '/documents' },
 ];
 
 const bottomNavItems = [
@@ -108,7 +108,23 @@ const ClientSidebar = () => {
       <Separator className="my-4" />
       {/* Bottom nav group */}
       <nav className="space-y-1">
-        {bottomNavItems.map((item) => (
+        <NavLink
+          to={getNavPath(bottomNavItems[0].path)}
+          className={({ isActive }) => 
+            `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+              isActive 
+                ? 'bg-primary/10 text-primary font-medium' 
+                : 'text-foreground hover:bg-muted'
+            }`
+          }
+        >
+          <bottomNavItems[0].icon className="h-5 w-5 mr-3" />
+          <span>{bottomNavItems[0].label}</span>
+        </NavLink>
+        
+        <Separator className="my-2" />
+        
+        {bottomNavItems.slice(1).map((item) => (
           <NavLink
             key={item.path}
             to={getNavPath(item.path)}

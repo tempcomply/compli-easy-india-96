@@ -184,10 +184,10 @@ const ServicesPage = () => {
           <div>
             <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
               <Briefcase className="h-8 w-8" />
-              Business Services
+              Services and Approvals
             </h1>
             <p className="text-muted-foreground">
-              Complete business services from registrations to compliance and legal support
+              Professional services for business registrations, licenses, legal documentation, and regulatory approvals
             </p>
           </div>
         </div>
