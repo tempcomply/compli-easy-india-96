@@ -1,61 +1,131 @@
 
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { 
-  LayoutDashboard, 
-  Building2, 
+  Home, 
   FileText, 
-  Receipt, 
-  Briefcase, 
-  FolderOpen,
-  BarChart3,
   Settings,
-  Shield
+  Building,
+  ArrowLeft,
+  User,
+  Shield,
+  Receipt,
+  Briefcase,
+  Users
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
-const sidebarItems = [
-  { name: 'Dashboard', href: '/client/dashboard', icon: LayoutDashboard },
-  { name: 'Company', href: '/client/company', icon: Building2 },
-  { name: 'Compliances', href: '/client/compliances', icon: Shield },
-  { name: 'Taxes', href: '/client/taxes', icon: Receipt },
-  { name: 'Services', href: '/client/services', icon: Briefcase },
-  { name: 'Documents', href: '/client/documents', icon: FolderOpen },
-  { name: 'Reports', href: '/client/reports', icon: BarChart3 },
-  { name: 'Settings', href: '/client/settings', icon: Settings },
+const clientNavItems = [
+  { icon: Home, label: 'Home', path: '/home' },
+  { icon: Shield, label: 'Compliances', path: '/compliances' },
+  { icon: Receipt, label: 'Taxes', path: '/taxes' },
+  { icon: FileText, label: 'Documents', path: '/documents' },
+  { icon: FileText, label: 'Reports', path: '/reports' },
+  { icon: Briefcase, label: 'Services and Approvals', path: '/services' },
 ];
+
+const bottomNavItems = [
+  { icon: Users, label: 'Team', path: '/team' },
+  { icon: Building, label: 'Organization Details', path: '/organization' },
+  { icon: Settings, label: 'Settings', path: '/settings' },
+];
+
+// Dummy client data for display
+const dummyClients: { [key: string]: string } = {
+  '1': 'Tech Solutions Inc.',
+  '2': 'Green Energy Corp.',
+  '3': 'Marketing Pros LLC',
+};
 
 const ClientSidebar = () => {
   const location = useLocation();
-
+  const params = useParams();
+  const navigate = useNavigate();
+  
+  // Check if this is being viewed by a professional using new route structure
+  const isProfessionalView = location.pathname.startsWith('/professional/') && params.clientId;
+  const clientId = params.clientId;
+  const clientName = clientId ? dummyClients[clientId] || `Client ${clientId}` : '';
+  
+  // Adjust paths based on context
+  const getNavPath = (basePath: string) => {
+    if (isProfessionalView && clientId) {
+      return `/professional/${clientId}${basePath}`;
+    }
+    return `/client${basePath}`;
+  };
+  
+  const handleBackToProfessional = () => {
+    navigate('/professional/home');
+  };
+  
   return (
-    <div className="flex h-full w-64 flex-col bg-card border-r">
-      <div className="flex h-16 items-center px-6 border-b">
-        <h2 className="text-lg font-semibold">Client Portal</h2>
-      </div>
-      <nav className="flex-1 space-y-1 p-4">
-        {sidebarItems.map((item) => {
-          const isActive = location.pathname === item.href || 
-                          (item.href !== '/client/dashboard' && location.pathname.startsWith(item.href));
-          
-          return (
-            <Link
-              key={item.name}
-              to={item.href}
-              className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-                isActive
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-              )}
-            >
-              <item.icon className="h-4 w-4" />
-              {item.name}
-            </Link>
-          );
-        })}
+    <aside className="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 border-r bg-card p-4 flex flex-col z-40">
+      {isProfessionalView && (
+        <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+          <div className="flex items-center gap-2 mb-2">
+            <User className="h-4 w-4 text-blue-600" />
+            <span className="text-sm font-medium text-blue-600">Viewing Client</span>
+          </div>
+          <div className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">
+            {clientName}
+          </div>
+          <Button 
+            onClick={handleBackToProfessional}
+            variant="outline" 
+            size="sm" 
+            className="w-full"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to My Home
+          </Button>
+        </div>
+      )}
+      
+      {/* Main/top nav */}
+      <nav className="space-y-1 mt-2">
+        {clientNavItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={getNavPath(item.path)}
+            className={({ isActive }) => 
+              `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+                isActive 
+                  ? 'bg-primary/10 text-primary font-medium' 
+                  : 'text-foreground hover:bg-muted'
+              }`
+            }
+          >
+            <item.icon className="h-5 w-5 mr-3" />
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
       </nav>
-    </div>
+      
+      {/* Gap pushing bottom group to the base */}
+      <div className="flex-1" />
+      <Separator className="my-4" />
+      {/* Bottom nav group */}
+      <nav className="space-y-1">
+        {bottomNavItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={getNavPath(item.path)}
+            className={({ isActive }) => 
+              `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+                isActive 
+                  ? 'bg-primary/10 text-primary font-medium' 
+                  : 'text-foreground hover:bg-muted'
+              }`
+            }
+          >
+            <item.icon className="h-5 w-5 mr-3" />
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
+      </nav>
+    </aside>
   );
 };
 
