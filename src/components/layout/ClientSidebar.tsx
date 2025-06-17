@@ -20,9 +20,9 @@ const clientNavItems = [
   { icon: Home, label: 'Home', path: '/home' },
   { icon: Shield, label: 'Compliances', path: '/compliances' },
   { icon: Receipt, label: 'Taxes', path: '/taxes' },
+  { icon: FileText, label: 'Documents', path: '/documents' },
   { icon: FileText, label: 'Reports', path: '/reports' },
   { icon: Briefcase, label: 'Services and Approvals', path: '/services' },
-  { icon: FileText, label: 'Documents', path: '/documents' },
 ];
 
 const bottomNavItems = [
