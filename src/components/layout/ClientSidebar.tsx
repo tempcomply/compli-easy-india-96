@@ -31,7 +31,6 @@ const bottomNavItems = [
   { icon: Settings, label: 'Settings', path: '/settings' },
 ];
 
-// Dummy client data for display
 const dummyClients: { [key: string]: string } = {
   '1': 'Tech Solutions Inc.',
   '2': 'Green Energy Corp.',
@@ -43,12 +42,10 @@ const ClientSidebar: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   
-  // Check if this is being viewed by a professional using new route structure
   const isProfessionalView = location.pathname.startsWith('/professional/') && params.clientId;
   const clientId = params.clientId;
   const clientName = clientId ? dummyClients[clientId] || `Client ${clientId}` : '';
   
-  // Adjust paths based on context
   const getNavPath = (basePath: string) => {
     if (isProfessionalView && clientId) {
       return `/professional/${clientId}${basePath}`;
@@ -58,6 +55,14 @@ const ClientSidebar: React.FC = () => {
   
   const handleBackToProfessional = () => {
     navigate('/professional/home');
+  };
+
+  const getNavLinkClasses = (isActive: boolean) => {
+    const baseClasses = 'flex items-center px-3 py-2 text-sm rounded-md transition-colors';
+    const activeClasses = isActive 
+      ? 'bg-primary/10 text-primary font-medium' 
+      : 'text-foreground hover:bg-muted';
+    return `${baseClasses} ${activeClasses}`;
   };
   
   return (
@@ -88,13 +93,7 @@ const ClientSidebar: React.FC = () => {
           <NavLink
             key={item.path}
             to={getNavPath(item.path)}
-            className={({ isActive }) => {
-              const baseClasses = 'flex items-center px-3 py-2 text-sm rounded-md transition-colors';
-              const activeClasses = isActive 
-                ? 'bg-primary/10 text-primary font-medium' 
-                : 'text-foreground hover:bg-muted';
-              return `${baseClasses} ${activeClasses}`;
-            }}
+            className={({ isActive }) => getNavLinkClasses(isActive)}
           >
             <item.icon className="h-5 w-5 mr-3" />
             <span>{item.label}</span>
@@ -108,13 +107,7 @@ const ClientSidebar: React.FC = () => {
       <nav className="space-y-1">
         <NavLink
           to={getNavPath(bottomNavItems[0].path)}
-          className={({ isActive }) => {
-            const baseClasses = 'flex items-center px-3 py-2 text-sm rounded-md transition-colors';
-            const activeClasses = isActive 
-              ? 'bg-primary/10 text-primary font-medium' 
-              : 'text-foreground hover:bg-muted';
-            return `${baseClasses} ${activeClasses}`;
-          }}
+          className={({ isActive }) => getNavLinkClasses(isActive)}
         >
           <bottomNavItems[0].icon className="h-5 w-5 mr-3" />
           <span>{bottomNavItems[0].label}</span>
@@ -126,13 +119,7 @@ const ClientSidebar: React.FC = () => {
           <NavLink
             key={item.path}
             to={getNavPath(item.path)}
-            className={({ isActive }) => {
-              const baseClasses = 'flex items-center px-3 py-2 text-sm rounded-md transition-colors';
-              const activeClasses = isActive 
-                ? 'bg-primary/10 text-primary font-medium' 
-                : 'text-foreground hover:bg-muted';
-              return `${baseClasses} ${activeClasses}`;
-            }}
+            className={({ isActive }) => getNavLinkClasses(isActive)}
           >
             <item.icon className="h-5 w-5 mr-3" />
             <span>{item.label}</span>
