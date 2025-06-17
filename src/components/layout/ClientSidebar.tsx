@@ -89,11 +89,11 @@ const ClientSidebar: React.FC = () => {
             key={item.path}
             to={getNavPath(item.path)}
             className={({ isActive }) => {
-              return `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                isActive 
-                  ? 'bg-primary/10 text-primary font-medium' 
-                  : 'text-foreground hover:bg-muted'
-              }`;
+              const baseClasses = 'flex items-center px-3 py-2 text-sm rounded-md transition-colors';
+              const activeClasses = isActive 
+                ? 'bg-primary/10 text-primary font-medium' 
+                : 'text-foreground hover:bg-muted';
+              return `${baseClasses} ${activeClasses}`;
             }}
           >
             <item.icon className="h-5 w-5 mr-3" />
@@ -109,11 +109,11 @@ const ClientSidebar: React.FC = () => {
         <NavLink
           to={getNavPath(bottomNavItems[0].path)}
           className={({ isActive }) => {
-            return `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-              isActive 
-                ? 'bg-primary/10 text-primary font-medium' 
-                : 'text-foreground hover:bg-muted'
-            }`;
+            const baseClasses = 'flex items-center px-3 py-2 text-sm rounded-md transition-colors';
+            const activeClasses = isActive 
+              ? 'bg-primary/10 text-primary font-medium' 
+              : 'text-foreground hover:bg-muted';
+            return `${baseClasses} ${activeClasses}`;
           }}
         >
           <bottomNavItems[0].icon className="h-5 w-5 mr-3" />
@@ -127,11 +127,11 @@ const ClientSidebar: React.FC = () => {
             key={item.path}
             to={getNavPath(item.path)}
             className={({ isActive }) => {
-              return `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                isActive 
-                  ? 'bg-primary/10 text-primary font-medium' 
-                  : 'text-foreground hover:bg-muted'
-              }`;
+              const baseClasses = 'flex items-center px-3 py-2 text-sm rounded-md transition-colors';
+              const activeClasses = isActive 
+                ? 'bg-primary/10 text-primary font-medium' 
+                : 'text-foreground hover:bg-muted';
+              return `${baseClasses} ${activeClasses}`;
             }}
           >
             <item.icon className="h-5 w-5 mr-3" />
