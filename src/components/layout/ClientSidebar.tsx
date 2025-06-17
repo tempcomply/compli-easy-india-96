@@ -83,19 +83,18 @@ const ClientSidebar: React.FC = () => {
         </div>
       )}
       
-      {/* Main/top nav */}
       <nav className="space-y-1 mt-2">
         {clientNavItems.map((item) => (
           <NavLink
             key={item.path}
             to={getNavPath(item.path)}
-            className={({ isActive }) => 
-              `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+            className={({ isActive }) => {
+              return `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
                 isActive 
                   ? 'bg-primary/10 text-primary font-medium' 
                   : 'text-foreground hover:bg-muted'
-              }`
-            }
+              }`;
+            }}
           >
             <item.icon className="h-5 w-5 mr-3" />
             <span>{item.label}</span>
@@ -103,20 +102,19 @@ const ClientSidebar: React.FC = () => {
         ))}
       </nav>
       
-      {/* Gap pushing bottom group to the base */}
       <div className="flex-1" />
       <Separator className="my-4" />
-      {/* Bottom nav group */}
+      
       <nav className="space-y-1">
         <NavLink
           to={getNavPath(bottomNavItems[0].path)}
-          className={({ isActive }) => 
-            `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+          className={({ isActive }) => {
+            return `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
               isActive 
                 ? 'bg-primary/10 text-primary font-medium' 
                 : 'text-foreground hover:bg-muted'
-            }`
-          }
+            }`;
+          }}
         >
           <bottomNavItems[0].icon className="h-5 w-5 mr-3" />
           <span>{bottomNavItems[0].label}</span>
@@ -128,13 +126,13 @@ const ClientSidebar: React.FC = () => {
           <NavLink
             key={item.path}
             to={getNavPath(item.path)}
-            className={({ isActive }) => 
-              `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+            className={({ isActive }) => {
+              return `flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
                 isActive 
                   ? 'bg-primary/10 text-primary font-medium' 
                   : 'text-foreground hover:bg-muted'
-              }`
-            }
+              }`;
+            }}
           >
             <item.icon className="h-5 w-5 mr-3" />
             <span>{item.label}</span>
