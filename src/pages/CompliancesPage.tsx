@@ -4,7 +4,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Building, Shield, Home, Users, Calendar, AlertCircle, CheckCircle } from 'lucide-react';
+import { Plus, Building, Shield, Home, Users, Calendar, AlertCircle, CheckCircle, Clock } from 'lucide-react';
 import AddAssetDialog from '@/components/compliances/AddAssetDialog';
 import AssetDetailsDialog from '@/components/compliances/AssetDetailsDialog';
 
@@ -26,6 +26,7 @@ interface Compliance {
   status: 'pending' | 'completed' | 'overdue';
   category: 'licence' | 'asset' | 'employee';
   relatedAsset: string;
+  priority: 'high' | 'medium' | 'low';
 }
 
 const CompliancesPage = () => {
@@ -42,7 +43,8 @@ const CompliancesPage = () => {
       dueDate: '2024-07-30',
       status: 'pending',
       category: 'licence',
-      relatedAsset: 'FSSAI License'
+      relatedAsset: 'FSSAI License',
+      priority: 'high'
     },
     {
       id: '2',
@@ -51,7 +53,8 @@ const CompliancesPage = () => {
       dueDate: '2024-04-20',
       status: 'overdue',
       category: 'licence',
-      relatedAsset: 'GST Registration'
+      relatedAsset: 'GST Registration',
+      priority: 'high'
     },
     {
       id: '3',
@@ -60,7 +63,8 @@ const CompliancesPage = () => {
       dueDate: '2024-06-15',
       status: 'completed',
       category: 'asset',
-      relatedAsset: 'Corporate Office - Pune'
+      relatedAsset: 'Corporate Office - Pune',
+      priority: 'medium'
     },
     {
       id: '4',
@@ -69,7 +73,8 @@ const CompliancesPage = () => {
       dueDate: '2024-06-14',
       status: 'pending',
       category: 'licence',
-      relatedAsset: 'Fire Safety Certificate'
+      relatedAsset: 'Fire Safety Certificate',
+      priority: 'medium'
     },
     {
       id: '5',
@@ -78,7 +83,8 @@ const CompliancesPage = () => {
       dueDate: '2024-04-10',
       status: 'completed',
       category: 'employee',
-      relatedAsset: 'All Employees'
+      relatedAsset: 'All Employees',
+      priority: 'high'
     },
     {
       id: '6',
@@ -87,13 +93,13 @@ const CompliancesPage = () => {
       dueDate: '2024-08-20',
       status: 'pending',
       category: 'asset',
-      relatedAsset: 'Company Vehicles'
+      relatedAsset: 'Company Vehicles',
+      priority: 'low'
     }
   ]);
 
   const handleAddAsset = (assetType: string) => {
     console.log('Adding asset of type:', assetType);
-    // Here you would implement the logic to add new assets
   };
 
   const getStatusColor = (status: string) => {
@@ -105,21 +111,32 @@ const CompliancesPage = () => {
     }
   };
 
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high': return 'bg-red-50 text-red-700 border-red-200';
+      case 'medium': return 'bg-yellow-50 text-yellow-700 border-yellow-200';
+      case 'low': return 'bg-blue-50 text-blue-700 border-blue-200';
+      default: return 'bg-gray-50 text-gray-700 border-gray-200';
+    }
+  };
+
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed': return CheckCircle;
       case 'overdue': return AlertCircle;
-      case 'pending': return Calendar;
+      case 'pending': return Clock;
       default: return Calendar;
     }
   };
 
-  // Dummy company name - in real app this would come from context/API
   const companyName = "TechInnovate Solutions Pvt Ltd";
+
+  const pendingCount = compliances.filter(c => c.status === 'pending').length;
+  const overdueCount = compliances.filter(c => c.status === 'overdue').length;
 
   return (
     <MainLayout>
-      <div className="space-y-6">
+      <div className="space-y-8">
         <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Compliances</h1>
@@ -151,7 +168,7 @@ const CompliancesPage = () => {
             </div>
           </CardHeader>
           <CardContent className="pt-2 pb-6">
-            <div className="h-6"></div>
+            <div className="h-8"></div>
           </CardContent>
         </Card>
 
@@ -233,41 +250,60 @@ const CompliancesPage = () => {
           </AssetDetailsDialog>
         </div>
 
-        {/* Compliance Requirements Section */}
-        <div className="space-y-4">
+        {/* Compliance Requirements Section - New Design */}
+        <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold tracking-tight">Compliance Requirements</h2>
-            <p className="text-muted-foreground">
-              {compliances.filter(c => c.status === 'pending').length} pending, {compliances.filter(c => c.status === 'overdue').length} overdue
-            </p>
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight">Compliance Requirements</h2>
+              <p className="text-muted-foreground mt-1">
+                Track and manage all compliance deadlines and requirements
+              </p>
+            </div>
+            <div className="flex items-center gap-4 text-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                <span>{pendingCount} Pending</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+                <span>{overdueCount} Overdue</span>
+              </div>
+            </div>
           </div>
           
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-3">
             {compliances.map((compliance) => {
               const StatusIcon = getStatusIcon(compliance.status);
               return (
-                <Card key={compliance.id} className="hover:shadow-md transition-shadow">
-                  <CardHeader className="pb-3">
+                <Card key={compliance.id} className="hover:shadow-sm transition-shadow border-l-4 border-l-primary/20">
+                  <CardContent className="p-4">
                     <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-2">
-                        <StatusIcon className="h-4 w-4 text-muted-foreground" />
-                        <CardTitle className="text-lg">{compliance.title}</CardTitle>
+                      <div className="flex items-start gap-3 flex-1">
+                        <div className={`p-2 rounded-lg ${compliance.status === 'completed' ? 'bg-green-100' : compliance.status === 'overdue' ? 'bg-red-100' : 'bg-yellow-100'}`}>
+                          <StatusIcon className={`h-4 w-4 ${compliance.status === 'completed' ? 'text-green-600' : compliance.status === 'overdue' ? 'text-red-600' : 'text-yellow-600'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h3 className="font-semibold text-base">{compliance.title}</h3>
+                            <Badge className={getPriorityColor(compliance.priority)} variant="outline">
+                              {compliance.priority}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            {compliance.description}
+                          </p>
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Calendar className="w-3 h-3" />
+                              <span>Due: {compliance.dueDate}</span>
+                            </div>
+                            <div>Related to: {compliance.relatedAsset}</div>
+                          </div>
+                        </div>
                       </div>
                       <Badge className={getStatusColor(compliance.status)} variant="outline">
                         {compliance.status}
                       </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <p className="text-sm text-muted-foreground">
-                      {compliance.description}
-                    </p>
-                    <div className="flex items-center gap-1 text-sm">
-                      <Calendar className="w-4 h-4" />
-                      <span className="font-medium">Due: {compliance.dueDate}</span>
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      Related to: {compliance.relatedAsset}
                     </div>
                   </CardContent>
                 </Card>
