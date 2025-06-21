@@ -20,7 +20,8 @@ import {
   Landmark,
   CheckCircle,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  History
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useDocuments, documentCategories, Document } from '@/hooks/useDocuments';
@@ -144,6 +145,10 @@ const DocumentsPage = () => {
     return matchesSearch && matchesCategory;
   });
 
+  // Separate pending and uploaded documents
+  const pendingDocuments = filteredRequiredDocuments.filter(doc => doc.status === 'pending' || doc.status === 'overdue');
+  const uploadedDocuments = filteredRequiredDocuments.filter(doc => doc.status === 'uploaded');
+
   // Handle document view
   const handleViewDocument = (documentId: string) => {
     navigate(`/documents/${documentId}`);
@@ -174,11 +179,11 @@ const DocumentsPage = () => {
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'banking': return <CreditCard className="h-4 w-4" />;
-      case 'tax': return <Receipt className="h-4 w-4" />;
-      case 'compliance': return <Landmark className="h-4 w-4" />;
-      case 'financial': return <Building className="h-4 w-4" />;
-      default: return <FileText className="h-4 w-4" />;
+      case 'banking': return <CreditCard className="h-5 w-5" />;
+      case 'tax': return <Receipt className="h-5 w-5" />;
+      case 'compliance': return <Landmark className="h-5 w-5" />;
+      case 'financial': return <Building className="h-5 w-5" />;
+      default: return <FileText className="h-5 w-5" />;
     }
   };
 
@@ -294,7 +299,7 @@ const DocumentsPage = () => {
             )}
           </TabsContent>
 
-          <TabsContent value="required" className="space-y-4">
+          <TabsContent value="required" className="space-y-6">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex gap-2 flex-wrap">
                 {requiredDocsCategories.map((category) => (
@@ -310,77 +315,42 @@ const DocumentsPage = () => {
               </div>
             </div>
 
-            <div className="grid gap-4">
-              {filteredRequiredDocuments.map((document) => (
-                <Card key={document.id} className="hover:shadow-md transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          {getCategoryIcon(document.category)}
-                          <h3 className="font-semibold text-lg">{document.name}</h3>
-                          <Badge className={getCategoryColor(document.category)} variant="secondary">
-                            {document.category.toUpperCase()}
-                          </Badge>
-                          <Badge className={getStatusColor(document.status)}>
-                            <div className="flex items-center gap-1">
-                              {getStatusIcon(document.status)}
-                              {document.status.toUpperCase()}
-                            </div>
-                          </Badge>
-                          <Badge variant="outline">
-                            {document.frequency}
-                          </Badge>
-                        </div>
-                        
-                        <p className="text-sm text-muted-foreground mb-3">
-                          {document.description}
-                        </p>
+            {/* Pending Documents Section */}
+            {pendingDocuments.length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xl font-semibold">Documents Required</h2>
+                  <Badge variant="destructive" className="text-xs">
+                    {pendingDocuments.length} pending
+                  </Badge>
+                </div>
+                
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {pendingDocuments.map((document) => (
+                    <RequiredDocumentCard key={document.id} document={document} />
+                  ))}
+                </div>
+              </div>
+            )}
 
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                            {document.lastUpdated && (
-                              <span>Last Updated: {new Date(document.lastUpdated).toLocaleDateString()}</span>
-                            )}
-                            {document.dueDate && (
-                              <span className="flex items-center gap-1">
-                                <Calendar className="h-4 w-4" />
-                                Due: {new Date(document.dueDate).toLocaleDateString()}
-                              </span>
-                            )}
-                          </div>
-                          
-                          <div className="space-y-1">
-                            <p className="text-sm font-medium">Used for:</p>
-                            <div className="flex flex-wrap gap-1">
-                              {document.usedFor.map((usage, index) => (
-                                <Badge key={index} variant="outline" className="text-xs">
-                                  {usage}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex gap-2">
-                        {document.status === 'uploaded' ? (
-                          <Button variant="outline" size="sm">
-                            <Download className="mr-2 h-4 w-4" />
-                            Download
-                          </Button>
-                        ) : (
-                          <Button size="sm">
-                            <Upload className="mr-2 h-4 w-4" />
-                            Upload
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            {/* Uploaded Documents History */}
+            {uploadedDocuments.length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <History className="h-5 w-5 text-muted-foreground" />
+                  <h2 className="text-lg font-medium text-muted-foreground">Previously Uploaded</h2>
+                  <Badge variant="outline" className="text-xs">
+                    {uploadedDocuments.length} documents
+                  </Badge>
+                </div>
+                
+                <div className="grid gap-3">
+                  {uploadedDocuments.map((document) => (
+                    <UploadedDocumentRow key={document.id} document={document} />
+                  ))}
+                </div>
+              </div>
+            )}
 
             {filteredRequiredDocuments.length === 0 && (
               <div className="text-center py-16">
@@ -433,6 +403,134 @@ const DocumentCard: React.FC<{
             <Download className="h-4 w-4 mr-1" />
             Download
           </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+const RequiredDocumentCard: React.FC<{ document: RequiredDocument }> = ({ document }) => {
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case 'banking': return <CreditCard className="h-5 w-5" />;
+      case 'tax': return <Receipt className="h-5 w-5" />;
+      case 'compliance': return <Landmark className="h-5 w-5" />;
+      case 'financial': return <Building className="h-5 w-5" />;
+      default: return <FileText className="h-5 w-5" />;
+    }
+  };
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'banking': return 'bg-blue-100 text-blue-800';
+      case 'tax': return 'bg-purple-100 text-purple-800';
+      case 'compliance': return 'bg-orange-100 text-orange-800';
+      case 'financial': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'pending': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'overdue': return 'bg-red-100 text-red-800 border-red-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
+  return (
+    <Card className={`relative border-2 ${document.status === 'overdue' ? 'border-red-200' : 'border-yellow-200'} hover:shadow-lg transition-all`}>
+      <CardContent className="p-6">
+        <div className="flex items-start gap-3 mb-4">
+          <div className={`p-2 rounded-lg ${getCategoryColor(document.category)}`}>
+            {getCategoryIcon(document.category)}
+          </div>
+          <div className="flex-1">
+            <h3 className="font-semibold text-lg mb-1">{document.name}</h3>
+            <p className="text-sm text-muted-foreground mb-2">{document.description}</p>
+            
+            <div className="flex items-center gap-2 mb-3">
+              <Badge className={getCategoryColor(document.category)} variant="secondary">
+                {document.category.toUpperCase()}
+              </Badge>
+              <Badge className={getStatusColor(document.status)}>
+                {document.status === 'overdue' ? 'OVERDUE' : 'REQUIRED'}
+              </Badge>
+              {document.dueDate && (
+                <span className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Calendar className="h-3 w-3" />
+                  Due: {new Date(document.dueDate).toLocaleDateString()}
+                </span>
+              )}
+            </div>
+
+            <div className="space-y-2 mb-4">
+              <p className="text-xs font-medium text-muted-foreground">Used for:</p>
+              <div className="flex flex-wrap gap-1">
+                {document.usedFor.slice(0, 3).map((usage, index) => (
+                  <Badge key={index} variant="outline" className="text-xs">
+                    {usage}
+                  </Badge>
+                ))}
+                {document.usedFor.length > 3 && (
+                  <Badge variant="outline" className="text-xs">
+                    +{document.usedFor.length - 3} more
+                  </Badge>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <Button 
+          className="w-full" 
+          size="lg"
+          variant={document.status === 'overdue' ? 'destructive' : 'default'}
+        >
+          <Upload className="mr-2 h-5 w-5" />
+          Upload {document.name}
+        </Button>
+      </CardContent>
+    </Card>
+  );
+};
+
+const UploadedDocumentRow: React.FC<{ document: RequiredDocument }> = ({ document }) => {
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case 'banking': return <CreditCard className="h-4 w-4" />;
+      case 'tax': return <Receipt className="h-4 w-4" />;
+      case 'compliance': return <Landmark className="h-4 w-4" />;
+      case 'financial': return <Building className="h-4 w-4" />;
+      default: return <FileText className="h-4 w-4" />;
+    }
+  };
+
+  return (
+    <Card className="hover:shadow-sm transition-shadow">
+      <CardContent className="p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-1.5 rounded bg-green-100 text-green-700">
+              {getCategoryIcon(document.category)}
+            </div>
+            <div>
+              <h4 className="font-medium text-sm">{document.name}</h4>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <CheckCircle className="h-3 w-3 text-green-600" />
+                Uploaded on {document.lastUpdated && new Date(document.lastUpdated).toLocaleDateString()}
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex gap-1">
+            <Button variant="ghost" size="sm">
+              <Eye className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="sm">
+              <Download className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
