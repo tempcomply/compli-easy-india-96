@@ -28,7 +28,6 @@ import TaxesTdsTcsPage from "./pages/TaxesTdsTcsPage";
 import TaxesEmployeeTaxesPage from "./pages/TaxesEmployeeTaxesPage";
 import TaxesStateLocalPage from "./pages/TaxesStateLocalPage";
 import TaxesOtherTaxesPage from "./pages/TaxesOtherTaxesPage";
-import ReportsPage from "./pages/ReportsPage";
 import ServicesPage from "./pages/ServicesPage";
 import DocumentsPage from "./pages/DocumentsPage";
 import DocumentUploadPage from "./pages/DocumentUploadPage";
@@ -98,7 +97,6 @@ const App = () => (
               <Route path="/client/taxes/employee-taxes" element={<ProtectedRoute><TaxesEmployeeTaxesPage /></ProtectedRoute>} />
               <Route path="/client/taxes/state-local" element={<ProtectedRoute><TaxesStateLocalPage /></ProtectedRoute>} />
               <Route path="/client/taxes/other-taxes" element={<ProtectedRoute><TaxesOtherTaxesPage /></ProtectedRoute>} />
-              <Route path="/client/reports" element={<ProtectedRoute><ReportsPage /></ProtectedRoute>} />
               <Route path="/client/services" element={<ProtectedRoute><ServicesPage /></ProtectedRoute>} />
               <Route path="/client/documents" element={<ProtectedRoute><DocumentsPage /></ProtectedRoute>} />
               <Route path="/client/documents/upload" element={<ProtectedRoute><DocumentUploadPage /></ProtectedRoute>} />
@@ -134,7 +132,6 @@ const App = () => (
               <Route path="/professional/:clientId/taxes/employee-taxes" element={<ProfessionalProtectedRoute><TaxesEmployeeTaxesPage /></ProfessionalProtectedRoute>} />
               <Route path="/professional/:clientId/taxes/state-local" element={<ProfessionalProtectedRoute><TaxesStateLocalPage /></ProfessionalProtectedRoute>} />
               <Route path="/professional/:clientId/taxes/other-taxes" element={<ProfessionalProtectedRoute><TaxesOtherTaxesPage /></ProfessionalProtectedRoute>} />
-              <Route path="/professional/:clientId/reports" element={<ProfessionalProtectedRoute><ReportsPage /></ProfessionalProtectedRoute>} />
               <Route path="/professional/:clientId/services" element={<ProfessionalProtectedRoute><ServicesPage /></ProfessionalProtectedRoute>} />
               <Route path="/professional/:clientId/documents" element={<ProfessionalProtectedRoute><DocumentsPage /></ProfessionalProtectedRoute>} />
               <Route path="/professional/:clientId/team" element={<ProfessionalProtectedRoute><TeamPage /></ProfessionalProtectedRoute>} />
