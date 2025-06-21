@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NavLink, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { 
@@ -20,7 +21,6 @@ const clientNavItems = [
   { icon: Shield, label: 'Compliances', path: '/compliances' },
   { icon: Receipt, label: 'Taxes', path: '/taxes' },
   { icon: FileText, label: 'Documents', path: '/documents' },
-  { icon: FileText, label: 'Reports', path: '/reports' },
   { icon: Briefcase, label: 'Services', path: '/services' },
 ];
 

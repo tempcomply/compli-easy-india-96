@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -125,7 +126,6 @@ const DocumentsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const { documents, loading, downloadDocument, viewDocument } = useDocuments();
   const [activeCategory, setActiveCategory] = useState('All Documents');
-  const [requiredDocsCategory, setRequiredDocsCategory] = useState<string>('all');
   
   // Filter documents based on search query and active category
   const filteredDocuments = documents.filter((doc) => {
@@ -136,12 +136,11 @@ const DocumentsPage = () => {
     return matchesSearch && doc.category === activeCategory;
   });
 
-  // Filter required documents
+  // Filter required documents based on search only
   const filteredRequiredDocuments = requiredDocuments.filter(doc => {
     const matchesSearch = doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          doc.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = requiredDocsCategory === 'all' || doc.category === requiredDocsCategory;
-    return matchesSearch && matchesCategory;
+    return matchesSearch;
   });
 
   // Separate pending and uploaded documents
@@ -175,34 +174,6 @@ const DocumentsPage = () => {
       default: return 'bg-gray-100 text-gray-800';
     }
   };
-
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'banking': return <CreditCard className="h-5 w-5" />;
-      case 'tax': return <Receipt className="h-5 w-5" />;
-      case 'compliance': return <Landmark className="h-5 w-5" />;
-      case 'financial': return <Building className="h-5 w-5" />;
-      default: return <FileText className="h-5 w-5" />;
-    }
-  };
-
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'banking': return 'bg-blue-100 text-blue-800';
-      case 'tax': return 'bg-purple-100 text-purple-800';
-      case 'compliance': return 'bg-orange-100 text-orange-800';
-      case 'financial': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const requiredDocsCategories = [
-    { value: 'all', label: 'All Documents' },
-    { value: 'banking', label: 'Banking' },
-    { value: 'tax', label: 'Tax Documents' },
-    { value: 'compliance', label: 'Compliance' },
-    { value: 'financial', label: 'Financial' }
-  ];
   
   return (
     <MainLayout>
@@ -299,26 +270,11 @@ const DocumentsPage = () => {
           </TabsContent>
 
           <TabsContent value="requested" className="space-y-6">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex gap-2 flex-wrap">
-                {requiredDocsCategories.map((category) => (
-                  <Button
-                    key={category.value}
-                    variant={requiredDocsCategory === category.value ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setRequiredDocsCategory(category.value)}
-                  >
-                    {category.label}
-                  </Button>
-                ))}
-              </div>
-            </div>
-
             {/* Pending Documents Section */}
             {pendingDocuments.length > 0 && (
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-semibold">Reports Required</h2>
+                  <h2 className="text-xl font-semibold">Requested Reports</h2>
                   <Badge variant="destructive" className="text-xs">
                     {pendingDocuments.length} pending
                   </Badge>
@@ -356,7 +312,7 @@ const DocumentsPage = () => {
                 <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No documents found</h3>
                 <p className="text-muted-foreground">
-                  Try adjusting your search or filter criteria.
+                  Try adjusting your search criteria.
                 </p>
               </div>
             )}
@@ -410,47 +366,23 @@ const DocumentCard: React.FC<{
 
 const RequiredDocumentCard: React.FC<{ document: RequiredDocument }> = ({ document }) => {
   return (
-    <Card className="hover:shadow-md transition-shadow">
-      <CardContent className="p-6">
-        <div className="space-y-4">
+    <Card className="hover:shadow-md transition-shadow border border-gray-200">
+      <CardContent className="p-4">
+        <div className="space-y-3">
           <div>
-            <h3 className="font-semibold text-lg mb-1">{document.name}</h3>
-            <p className="text-sm text-muted-foreground mb-3">{document.description}</p>
-            
-            <div className="flex items-center gap-2 mb-3">
-              <Badge variant="outline" className="text-xs">
-                {document.category.toUpperCase()}
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                {document.frequency}
-              </Badge>
-              {document.dueDate && (
-                <span className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Calendar className="h-3 w-3" />
-                  Due: {new Date(document.dueDate).toLocaleDateString()}
-                </span>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-xs font-medium text-muted-foreground">Used for:</p>
-              <div className="flex flex-wrap gap-1">
-                {document.usedFor.slice(0, 3).map((usage, index) => (
-                  <Badge key={index} variant="outline" className="text-xs">
-                    {usage}
-                  </Badge>
-                ))}
-                {document.usedFor.length > 3 && (
-                  <Badge variant="outline" className="text-xs">
-                    +{document.usedFor.length - 3} more
-                  </Badge>
-                )}
-              </div>
-            </div>
+            <h3 className="font-medium text-base mb-1">{document.name}</h3>
+            <p className="text-sm text-muted-foreground">{document.description}</p>
           </div>
           
-          <Button className="w-full" size="lg">
-            <Upload className="mr-2 h-5 w-5" />
+          {document.dueDate && (
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <Calendar className="h-3 w-3" />
+              Due: {new Date(document.dueDate).toLocaleDateString()}
+            </div>
+          )}
+          
+          <Button className="w-full" variant="outline">
+            <Upload className="mr-2 h-4 w-4" />
             Upload
           </Button>
         </div>
@@ -460,23 +392,13 @@ const RequiredDocumentCard: React.FC<{ document: RequiredDocument }> = ({ docume
 };
 
 const UploadedDocumentRow: React.FC<{ document: RequiredDocument }> = ({ document }) => {
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'banking': return <CreditCard className="h-4 w-4" />;
-      case 'tax': return <Receipt className="h-4 w-4" />;
-      case 'compliance': return <Landmark className="h-4 w-4" />;
-      case 'financial': return <Building className="h-4 w-4" />;
-      default: return <FileText className="h-4 w-4" />;
-    }
-  };
-
   return (
     <Card className="hover:shadow-sm transition-shadow">
-      <CardContent className="p-4">
+      <CardContent className="p-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-1.5 rounded bg-green-100 text-green-700">
-              {getCategoryIcon(document.category)}
+              <FileText className="h-4 w-4" />
             </div>
             <div>
               <h4 className="font-medium text-sm">{document.name}</h4>
