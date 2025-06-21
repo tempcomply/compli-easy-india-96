@@ -4,284 +4,294 @@ import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { 
   FileText, 
   Upload, 
   Download, 
-  Plus, 
   Search, 
   Calendar,
-  ExternalLink,
-  Settings,
+  Building,
+  CreditCard,
+  Receipt,
+  Landmark,
+  Users,
   CheckCircle,
-  AlertCircle
+  Clock,
+  AlertTriangle
 } from 'lucide-react';
 
-interface Report {
+interface RequiredDocument {
   id: string;
   name: string;
-  type: 'tax' | 'compliance' | 'financial';
-  uploadDate: string;
-  dueDate?: string;
-  size: string;
-  status: 'draft' | 'submitted' | 'approved' | 'rejected';
-}
-
-interface Integration {
-  id: string;
-  name: string;
-  logo: string;
-  connected: boolean;
   description: string;
-  features: string[];
+  category: 'banking' | 'tax' | 'compliance' | 'financial';
+  frequency: 'monthly' | 'quarterly' | 'yearly' | 'as-needed';
+  status: 'uploaded' | 'pending' | 'overdue';
+  lastUpdated?: string;
+  dueDate?: string;
+  usedFor: string[];
 }
 
-const dummyReports: Report[] = [
+const requiredDocuments: RequiredDocument[] = [
   {
     id: '1',
-    name: 'GST Return March 2024',
-    type: 'tax',
-    uploadDate: '2024-04-05',
-    dueDate: '2024-04-20',
-    size: '2.5 MB',
-    status: 'submitted'
+    name: 'Monthly Bank Statement',
+    description: 'Current account bank statement for the month',
+    category: 'banking',
+    frequency: 'monthly',
+    status: 'uploaded',
+    lastUpdated: '2024-03-15',
+    usedFor: ['GST Filing', 'Income Tax', 'TDS Returns', 'Financial Audit']
   },
   {
     id: '2',
-    name: 'ITR for FY 2023-24',
-    type: 'tax',
-    uploadDate: '2024-03-15',
+    name: 'Sales Invoices',
+    description: 'All sales invoices issued during the period',
+    category: 'financial',
+    frequency: 'monthly',
+    status: 'pending',
+    dueDate: '2024-04-10',
+    usedFor: ['GST Filing', 'Income Tax', 'Sales Tax Returns']
+  },
+  {
+    id: '3',
+    name: 'Purchase Invoices',
+    description: 'All purchase invoices and bills received',
+    category: 'financial',
+    frequency: 'monthly',
+    status: 'uploaded',
+    lastUpdated: '2024-03-20',
+    usedFor: ['GST Filing', 'Income Tax', 'Input Tax Credit']
+  },
+  {
+    id: '4',
+    name: 'Salary Register',
+    description: 'Employee salary details and payroll summary',
+    category: 'compliance',
+    frequency: 'monthly',
+    status: 'overdue',
+    dueDate: '2024-03-31',
+    usedFor: ['TDS on Salary', 'PF Returns', 'ESI Returns', 'Professional Tax']
+  },
+  {
+    id: '5',
+    name: 'TDS Certificates',
+    description: 'Form 16A and other TDS certificates received',
+    category: 'tax',
+    frequency: 'quarterly',
+    status: 'uploaded',
+    lastUpdated: '2024-01-15',
+    usedFor: ['Income Tax Filing', 'TDS Returns', 'Advance Tax Calculation']
+  },
+  {
+    id: '6',
+    name: 'Investment Proofs',
+    description: 'Investment receipts for tax saving under 80C, 80D etc.',
+    category: 'tax',
+    frequency: 'yearly',
+    status: 'pending',
     dueDate: '2024-07-31',
-    size: '1.8 MB',
-    status: 'draft'
+    usedFor: ['Income Tax Filing', 'Tax Planning']
   },
   {
-    id: '3',
-    name: 'Annual Compliance Report',
-    type: 'compliance',
-    uploadDate: '2024-03-20',
-    dueDate: '2024-06-30',
-    size: '4.2 MB',
-    status: 'approved'
-  }
-];
-
-const integrations: Integration[] = [
-  {
-    id: '1',
-    name: 'Zoho Books',
-    logo: '/api/placeholder/40/40',
-    connected: false,
-    description: 'Accounting software for small businesses',
-    features: ['Financial Reports', 'Tax Reports', 'Invoice Data', 'Expense Reports']
+    id: '7',
+    name: 'Fixed Deposit Statements',
+    description: 'FD certificates and interest statements',
+    category: 'financial',
+    frequency: 'yearly',
+    status: 'uploaded',
+    lastUpdated: '2024-02-28',
+    usedFor: ['Income Tax Filing', 'TDS on Interest', 'Financial Planning']
   },
   {
-    id: '2',
-    name: 'RazorpayX Banking',
-    logo: '/api/placeholder/40/40',
-    connected: true,
-    description: 'Business banking and financial services',
-    features: ['Bank Statements', 'Transaction Reports', 'Tax Documents', 'Compliance Reports']
-  },
-  {
-    id: '3',
-    name: 'Tally',
-    logo: '/api/placeholder/40/40',
-    connected: false,
-    description: 'Complete business management software',
-    features: ['GST Reports', 'Financial Statements', 'Inventory Reports', 'Payroll Reports']
+    id: '8',
+    name: 'Property Documents',
+    description: 'Property tax receipts, rent agreements, sale deeds',
+    category: 'compliance',
+    frequency: 'yearly',
+    status: 'uploaded',
+    lastUpdated: '2024-01-10',
+    usedFor: ['Income Tax Filing', 'Property Tax', 'Capital Gains']
   }
 ];
 
 const ReportsPage = () => {
-  const [reports, setReports] = useState<Report[]>(dummyReports);
+  const [documents, setDocuments] = useState<RequiredDocument[]>(requiredDocuments);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('reports');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  const filteredReports = reports.filter(report =>
-    report.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    report.type.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredDocuments = documents.filter(doc => {
+    const matchesSearch = doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         doc.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || doc.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'uploaded': return <CheckCircle className="h-4 w-4 text-green-600" />;
+      case 'pending': return <Clock className="h-4 w-4 text-yellow-600" />;
+      case 'overdue': return <AlertTriangle className="h-4 w-4 text-red-600" />;
+      default: return <Clock className="h-4 w-4 text-gray-400" />;
+    }
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'draft': return 'bg-yellow-100 text-yellow-800';
-      case 'submitted': return 'bg-blue-100 text-blue-800';
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
+      case 'uploaded': return 'bg-green-100 text-green-800';
+      case 'pending': return 'bg-yellow-100 text-yellow-800';
+      case 'overdue': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case 'banking': return <CreditCard className="h-4 w-4" />;
+      case 'tax': return <Receipt className="h-4 w-4" />;
+      case 'compliance': return <Landmark className="h-4 w-4" />;
+      case 'financial': return <Building className="h-4 w-4" />;
+      default: return <FileText className="h-4 w-4" />;
+    }
+  };
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'banking': return 'bg-blue-100 text-blue-800';
       case 'tax': return 'bg-purple-100 text-purple-800';
       case 'compliance': return 'bg-orange-100 text-orange-800';
-      case 'financial': return 'bg-blue-100 text-blue-800';
+      case 'financial': return 'bg-green-100 text-green-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
+
+  const categories = [
+    { value: 'all', label: 'All Documents' },
+    { value: 'banking', label: 'Banking' },
+    { value: 'tax', label: 'Tax Documents' },
+    { value: 'compliance', label: 'Compliance' },
+    { value: 'financial', label: 'Financial' }
+  ];
 
   return (
     <MainLayout>
       <div className="space-y-6">
-        <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-              <FileText className="h-8 w-8" />
-              Reports & Documents
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              Upload, manage, and download reports for tax filing and compliance
-            </p>
-          </div>
+        <header>
+          <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+            <FileText className="h-8 w-8" />
+            Required Documents
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            Documents needed for tax filing and compliance requirements
+          </p>
         </header>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="reports">My Reports</TabsTrigger>
-            <TabsTrigger value="integrations">Integrations</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="reports" className="space-y-6">
-            <div className="flex gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search reports..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9"
-                />
-              </div>
-              <Button>
-                <Upload className="mr-2 h-4 w-4" />
-                Upload Report
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search documents..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            {categories.map((category) => (
+              <Button
+                key={category.value}
+                variant={selectedCategory === category.value ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedCategory(category.value)}
+              >
+                {category.label}
               </Button>
-            </div>
+            ))}
+          </div>
+        </div>
 
-            <div className="grid gap-4">
-              {filteredReports.map((report) => (
-                <Card key={report.id} className="hover:shadow-md transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <FileText className="h-5 w-5 text-muted-foreground" />
-                          <h3 className="font-semibold text-lg">{report.name}</h3>
-                          <Badge className={getTypeColor(report.type)} variant="secondary">
-                            {report.type.toUpperCase()}
-                          </Badge>
-                          <Badge className={getStatusColor(report.status)}>
-                            {report.status.toUpperCase()}
-                          </Badge>
+        <div className="grid gap-4">
+          {filteredDocuments.map((document) => (
+            <Card key={document.id} className="hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      {getCategoryIcon(document.category)}
+                      <h3 className="font-semibold text-lg">{document.name}</h3>
+                      <Badge className={getCategoryColor(document.category)} variant="secondary">
+                        {document.category.toUpperCase()}
+                      </Badge>
+                      <Badge className={getStatusColor(document.status)}>
+                        <div className="flex items-center gap-1">
+                          {getStatusIcon(document.status)}
+                          {document.status.toUpperCase()}
                         </div>
-                        
-                        <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                          <span>Uploaded: {new Date(report.uploadDate).toLocaleDateString()}</span>
-                          {report.dueDate && (
-                            <span className="flex items-center gap-1">
-                              <Calendar className="h-4 w-4" />
-                              Due: {new Date(report.dueDate).toLocaleDateString()}
-                            </span>
-                          )}
-                          <span>Size: {report.size}</span>
-                        </div>
+                      </Badge>
+                      <Badge variant="outline">
+                        {document.frequency}
+                      </Badge>
+                    </div>
+                    
+                    <p className="text-sm text-muted-foreground mb-3">
+                      {document.description}
+                    </p>
+
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                        {document.lastUpdated && (
+                          <span>Last Updated: {new Date(document.lastUpdated).toLocaleDateString()}</span>
+                        )}
+                        {document.dueDate && (
+                          <span className="flex items-center gap-1">
+                            <Calendar className="h-4 w-4" />
+                            Due: {new Date(document.dueDate).toLocaleDateString()}
+                          </span>
+                        )}
                       </div>
                       
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm">
-                          <Download className="mr-2 h-4 w-4" />
-                          Download
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          <ExternalLink className="mr-2 h-4 w-4" />
-                          View
-                        </Button>
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium">Used for:</p>
+                        <div className="flex flex-wrap gap-1">
+                          {document.usedFor.map((usage, index) => (
+                            <Badge key={index} variant="outline" className="text-xs">
+                              {usage}
+                            </Badge>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    {document.status === 'uploaded' ? (
+                      <Button variant="outline" size="sm">
+                        <Download className="mr-2 h-4 w-4" />
+                        Download
+                      </Button>
+                    ) : (
+                      <Button size="sm">
+                        <Upload className="mr-2 h-4 w-4" />
+                        Upload
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
-          <TabsContent value="integrations" className="space-y-6">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {integrations.map((integration) => (
-                <Card key={integration.id} className="hover:shadow-md transition-shadow">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                          <img 
-                            src={integration.logo} 
-                            alt={integration.name}
-                            className="w-6 h-6"
-                            onError={(e) => {
-                              e.currentTarget.style.display = 'none';
-                            }}
-                          />
-                        </div>
-                        <div>
-                          <CardTitle className="text-lg">{integration.name}</CardTitle>
-                          <div className="flex items-center gap-2 mt-1">
-                            {integration.connected ? (
-                              <div className="flex items-center gap-1">
-                                <CheckCircle className="h-4 w-4 text-green-600" />
-                                <span className="text-sm text-green-600">Connected</span>
-                              </div>
-                            ) : (
-                              <div className="flex items-center gap-1">
-                                <AlertCircle className="h-4 w-4 text-gray-400" />
-                                <span className="text-sm text-gray-500">Not Connected</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-muted-foreground">
-                      {integration.description}
-                    </p>
-                    
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-medium">Features:</h4>
-                      <div className="flex flex-wrap gap-1">
-                        {integration.features.map((feature, index) => (
-                          <Badge key={index} variant="outline" className="text-xs">
-                            {feature}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <Button 
-                      className="w-full" 
-                      variant={integration.connected ? "outline" : "default"}
-                    >
-                      {integration.connected ? (
-                        <>
-                          <Settings className="mr-2 h-4 w-4" />
-                          Manage
-                        </>
-                      ) : (
-                        <>
-                          <Plus className="mr-2 h-4 w-4" />
-                          Connect
-                        </>
-                      )}
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
+        {filteredDocuments.length === 0 && (
+          <div className="text-center py-16">
+            <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+            <h3 className="text-lg font-semibold mb-2">No documents found</h3>
+            <p className="text-muted-foreground">
+              Try adjusting your search or filter criteria.
+            </p>
+          </div>
+        )}
       </div>
     </MainLayout>
   );
