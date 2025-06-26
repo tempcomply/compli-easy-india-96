@@ -1,13 +1,12 @@
 
 import React, { useState } from 'react';
-import { MessageCircle, X, Send, Minimize2, Paperclip, ArrowLeft, Plus, File } from 'lucide-react';
+import { MessageCircle, X, Send, Minimize2, Paperclip, Plus, File } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface TeamMember {
   id: string;
@@ -44,19 +43,19 @@ interface Chat {
   lastActivity: Date;
 }
 
-const teamMembers: TeamMember[] = [
-  { id: '1', name: 'CA Sharma', role: 'ca', isOnline: true },
-  { id: '2', name: 'CS Patel', role: 'cs', isOnline: false },
-  { id: '3', name: 'Advocate Kumar', role: 'lawyer', isOnline: true },
-  { id: '4', name: 'Compliance Manager', role: 'compliance_manager', isOnline: true },
-];
+const complianceManager: TeamMember = {
+  id: '1',
+  name: 'Compliance Manager',
+  role: 'compliance_manager',
+  isOnline: true
+};
 
 const dummyChats: Chat[] = [
   {
     id: '1',
     title: 'GST Filing - March 2024',
     serviceType: 'GST Compliance',
-    teamMember: teamMembers[0],
+    teamMember: { id: '2', name: 'CA Sharma', role: 'ca', isOnline: true },
     unreadCount: 2,
     lastActivity: new Date(Date.now() - 3600000),
     messages: [
@@ -80,7 +79,7 @@ const dummyChats: Chat[] = [
     id: '2',
     title: 'Company Registration',
     serviceType: 'Legal Service',
-    teamMember: teamMembers[2],
+    teamMember: { id: '3', name: 'Advocate Kumar', role: 'lawyer', isOnline: true },
     unreadCount: 0,
     lastActivity: new Date(Date.now() - 86400000),
     messages: [
@@ -98,12 +97,10 @@ const dummyChats: Chat[] = [
 const FloatingCommunication = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
-  const [currentView, setCurrentView] = useState<'list' | 'chat' | 'new'>('list');
+  const [currentView, setCurrentView] = useState<'list' | 'chat'>('list');
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [chats, setChats] = useState<Chat[]>(dummyChats);
   const [newMessage, setNewMessage] = useState('');
-  const [selectedTeamMember, setSelectedTeamMember] = useState<string>('');
-  const [newChatTitle, setNewChatTitle] = useState('');
   const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
 
   const totalUnreadCount = chats.reduce((sum, chat) => sum + chat.unreadCount, 0);
@@ -146,31 +143,23 @@ const FloatingCommunication = () => {
   };
 
   const handleCreateNewChat = () => {
-    if (newChatTitle.trim() && selectedTeamMember) {
-      const teamMember = teamMembers.find(tm => tm.id === selectedTeamMember);
-      if (teamMember) {
-        const newChat: Chat = {
-          id: Date.now().toString(),
-          title: newChatTitle,
-          serviceType: 'New Service',
-          teamMember,
-          messages: [],
-          unreadCount: 0,
-          lastActivity: new Date()
-        };
-        setChats([newChat, ...chats]);
-        setSelectedChat(newChat);
-        setCurrentView('chat');
-        setNewChatTitle('');
-        setSelectedTeamMember('');
-      }
-    }
+    const newChat: Chat = {
+      id: Date.now().toString(),
+      title: 'General Inquiry',
+      serviceType: 'General Support',
+      teamMember: complianceManager,
+      messages: [],
+      unreadCount: 0,
+      lastActivity: new Date()
+    };
+    setChats([newChat, ...chats]);
+    setSelectedChat(newChat);
+    setCurrentView('chat');
   };
 
   const handleChatSelect = (chat: Chat) => {
     setSelectedChat(chat);
     setCurrentView('chat');
-    // Mark as read
     setChats(chats.map(c => c.id === chat.id ? { ...c, unreadCount: 0 } : c));
   };
 
@@ -214,31 +203,15 @@ const FloatingCommunication = () => {
 
       {/* Communication Panel */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-80 sm:w-96">
-          <Card className="shadow-xl border-0 bg-background">
-            <CardHeader className="pb-3">
+        <div className="fixed bottom-6 right-6 z-50 w-80 sm:w-96 h-[600px]">
+          <Card className="shadow-xl border-0 bg-background h-full flex flex-col">
+            <CardHeader className="pb-3 flex-shrink-0">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  {currentView !== 'list' && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => {
-                        if (currentView === 'chat') setCurrentView('list');
-                        if (currentView === 'new') setCurrentView('list');
-                      }}
-                      className="h-8 w-8 p-0 mr-1"
-                    >
-                      <ArrowLeft className="h-4 w-4" />
-                    </Button>
-                  )}
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <MessageCircle className="h-5 w-5" />
-                    {currentView === 'list' && 'Communications'}
-                    {currentView === 'chat' && selectedChat?.title}
-                    {currentView === 'new' && 'New Chat'}
-                  </CardTitle>
-                </div>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <MessageCircle className="h-5 w-5" />
+                  {currentView === 'list' && 'Messages'}
+                  {currentView === 'chat' && selectedChat?.title}
+                </CardTitle>
                 <div className="flex gap-1">
                   <Button
                     variant="ghost"
@@ -261,21 +234,11 @@ const FloatingCommunication = () => {
             </CardHeader>
             
             {!isMinimized && (
-              <CardContent className="p-0">
+              <CardContent className="p-0 flex flex-col flex-1 overflow-hidden">
                 {/* Chat List View */}
                 {currentView === 'list' && (
-                  <>
-                    <div className="p-4 pb-2">
-                      <Button
-                        onClick={() => setCurrentView('new')}
-                        className="w-full"
-                        size="sm"
-                      >
-                        <Plus className="mr-2 h-4 w-4" />
-                        New Chat
-                      </Button>
-                    </div>
-                    <ScrollArea className="h-64 px-4">
+                  <div className="flex flex-col h-full">
+                    <ScrollArea className="flex-1 px-4">
                       <div className="space-y-2">
                         {chats.map((chat) => (
                           <div
@@ -305,53 +268,37 @@ const FloatingCommunication = () => {
                         ))}
                       </div>
                     </ScrollArea>
-                  </>
-                )}
-
-                {/* New Chat View */}
-                {currentView === 'new' && (
-                  <div className="p-4 space-y-4">
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Chat Title</label>
-                      <Input
-                        placeholder="e.g., GST Filing - April 2024"
-                        value={newChatTitle}
-                        onChange={(e) => setNewChatTitle(e.target.value)}
-                      />
+                    
+                    {/* New Chat Button - Bottom Left */}
+                    <div className="p-4 border-t">
+                      <Button
+                        onClick={handleCreateNewChat}
+                        className="w-full"
+                        size="sm"
+                      >
+                        <Plus className="mr-2 h-4 w-4" />
+                        New Chat
+                      </Button>
                     </div>
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Select Team Member</label>
-                      <Select value={selectedTeamMember} onValueChange={setSelectedTeamMember}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Choose professional" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {teamMembers.map((member) => (
-                            <SelectItem key={member.id} value={member.id}>
-                              <div className="flex items-center gap-2">
-                                <div className={`w-2 h-2 rounded-full ${member.isOnline ? 'bg-green-500' : 'bg-gray-300'}`} />
-                                {member.name}
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <Button
-                      onClick={handleCreateNewChat}
-                      disabled={!newChatTitle.trim() || !selectedTeamMember}
-                      className="w-full"
-                    >
-                      Start Chat
-                    </Button>
                   </div>
                 )}
 
                 {/* Chat View */}
                 {currentView === 'chat' && selectedChat && (
-                  <>
-                    <ScrollArea className="h-64 px-4">
-                      <div className="space-y-3">
+                  <div className="flex flex-col h-full">
+                    <div className="px-4 pb-2 border-b">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setCurrentView('list')}
+                        className="h-8 mb-2"
+                      >
+                        ← Back to Messages
+                      </Button>
+                    </div>
+                    
+                    <ScrollArea className="flex-1 px-4">
+                      <div className="space-y-3 py-4">
                         {selectedChat.messages.map((message) => (
                           <div
                             key={message.id}
@@ -449,7 +396,7 @@ const FloatingCommunication = () => {
                         Press Enter to send, Shift+Enter for new line
                       </div>
                     </div>
-                  </>
+                  </div>
                 )}
               </CardContent>
             )}

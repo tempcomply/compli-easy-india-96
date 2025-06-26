@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -21,7 +20,8 @@ import {
   CheckCircle,
   Clock,
   AlertTriangle,
-  History
+  History,
+  Settings
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useDocuments, documentCategories, Document } from '@/hooks/useDocuments';
@@ -152,7 +152,6 @@ const DocumentsPage = () => {
     navigate(`/documents/${documentId}`);
   };
 
-  // Handle document download
   const handleDownloadDocument = (documentId: string) => {
     downloadDocument(documentId);
   };
@@ -270,6 +269,14 @@ const DocumentsPage = () => {
           </TabsContent>
 
           <TabsContent value="requested" className="space-y-6">
+            {/* Setup Integrations Button */}
+            <div className="flex justify-end">
+              <Button onClick={() => navigate('/settings?tab=integrations')} variant="outline">
+                <Settings className="h-4 w-4 mr-2" />
+                Setup Integrations
+              </Button>
+            </div>
+
             {/* Pending Documents Section */}
             {pendingDocuments.length > 0 && (
               <div className="space-y-4">
@@ -366,7 +373,7 @@ const DocumentCard: React.FC<{
 
 const RequiredDocumentCard: React.FC<{ document: RequiredDocument }> = ({ document }) => {
   return (
-    <Card className="hover:shadow-md transition-shadow border border-gray-200">
+    <Card className="hover:shadow-md transition-shadow">
       <CardContent className="p-4">
         <div className="space-y-3">
           <div>
