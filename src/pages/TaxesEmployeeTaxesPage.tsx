@@ -2,21 +2,17 @@
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Users, Play } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Users } from 'lucide-react';
+import GetStartedCard from '@/components/taxes/GetStartedCard';
 import MakePaymentDialog from '@/components/taxes/MakePaymentDialog';
 import { toast } from "@/hooks/use-toast";
+
+const EMPLOYEE_TAX_FIELDS = [
+  { name: "pf_code", label: "PF Establishment Code" },
+  { name: "esi_code", label: "ESI Number" },
+  { name: "pt_state", label: "PT State" },
+];
 
 const employeeTaxForms = [
   {
@@ -51,22 +47,21 @@ const employeeTaxForms = [
 
 const TaxesEmployeeTaxesPage = () => {
   const [isSetup, setIsSetup] = useState(false);
-  const [setupOpen, setSetupOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    pfCode: '',
-    esiCode: '',
-    ptState: '',
-  });
   
-  const handleSetupSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSetupComplete = (data: any) => {
     setIsSetup(true);
-    setSetupOpen(false);
     toast({ title: "Employee Tax Setup Complete", description: "You can now manage employee tax compliance." });
   };
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const getCardSize = (importance: string) => {
+    switch (importance) {
+      case 'high':
+        return 'md:col-span-2';
+      case 'medium':
+        return 'md:col-span-1';
+      default:
+        return 'md:col-span-1';
+    }
   };
 
   const EmptyState = () => (
@@ -81,69 +76,13 @@ const TaxesEmployeeTaxesPage = () => {
         </p>
       </div>
       <div className="space-y-4">
-        <Dialog open={setupOpen} onOpenChange={setSetupOpen}>
-          <DialogTrigger asChild>
-            <Button size="lg" className="px-8">
-              <Play className="mr-2 h-5 w-5" />
-              Get Started with Employee Taxes
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                Employee Taxes Setup
-              </DialogTitle>
-              <DialogDescription>
-                Setup your employee-related tax details to begin.
-              </DialogDescription>
-            </DialogHeader>
-            
-            <form onSubmit={handleSetupSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="pfCode">PF Establishment Code</Label>
-                <Input
-                  id="pfCode"
-                  placeholder="Enter PF establishment code"
-                  value={formData.pfCode}
-                  onChange={(e) => handleInputChange('pfCode', e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="esiCode">ESI Number</Label>
-                <Input
-                  id="esiCode"
-                  placeholder="Enter ESI number"
-                  value={formData.esiCode}
-                  onChange={(e) => handleInputChange('esiCode', e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="ptState">PT State</Label>
-                <Input
-                  id="ptState"
-                  placeholder="Enter PT state"
-                  value={formData.ptState}
-                  onChange={(e) => handleInputChange('ptState', e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="flex justify-end gap-3 pt-4">
-                <Button type="button" variant="outline" onClick={() => setSetupOpen(false)}>
-                  Cancel
-                </Button>
-                <Button type="submit">
-                  Complete Setup
-                </Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
+        <GetStartedCard
+          icon={<Users className="w-8 h-8 text-primary" />}
+          title="Employee Taxes Setup"
+          subtitle="Setup your employee-related tax details to begin."
+          fields={EMPLOYEE_TAX_FIELDS}
+          onSubmit={handleSetupComplete}
+        />
         <p className="text-sm text-muted-foreground">
           Setup takes less than 5 minutes
         </p>
@@ -158,9 +97,9 @@ const TaxesEmployeeTaxesPage = () => {
         <p className="text-muted-foreground">Manage PF, ESI, and Professional Tax filings</p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-3">
         {employeeTaxForms.map((form) => (
-          <Card key={form.id} className="hover:shadow-md transition-shadow">
+          <Card key={form.id} className={`${getCardSize(form.importance)} hover:shadow-md transition-shadow`}>
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
                 <div>
