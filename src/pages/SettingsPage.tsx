@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -7,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
-import { User, Wrench, Link, Building2, Calculator, FileText, BookOpen } from 'lucide-react';
+import { User, Wrench, Link, Building2, Calculator, FileText, BookOpen, MessageSquare, Smartphone, Zap, Mail, Calendar } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 
 const SettingsPage = () => {
@@ -21,7 +20,7 @@ const SettingsPage = () => {
       name: 'RazorpayX Banking',
       description: 'Connect your banking and payment solutions',
       icon: <Building2 className="h-8 w-8" />,
-      isAvailable: true,
+      isAvailable: false,
       category: 'Banking'
     },
     {
@@ -47,6 +46,46 @@ const SettingsPage = () => {
       icon: <BookOpen className="h-8 w-8" />,
       isAvailable: false,
       category: 'Accounting'
+    },
+    {
+      id: 'slack',
+      name: 'Slack',
+      description: 'Team communication and collaboration',
+      icon: <MessageSquare className="h-8 w-8" />,
+      isAvailable: false,
+      category: 'Communication'
+    },
+    {
+      id: 'whatsapp-business',
+      name: 'WhatsApp Business',
+      description: 'Business messaging and customer support',
+      icon: <Smartphone className="h-8 w-8" />,
+      isAvailable: false,
+      category: 'Communication'
+    },
+    {
+      id: 'zapier',
+      name: 'Zapier',
+      description: 'Automate workflows between apps',
+      icon: <Zap className="h-8 w-8" />,
+      isAvailable: false,
+      category: 'Automation'
+    },
+    {
+      id: 'gmail',
+      name: 'Gmail',
+      description: 'Email integration and management',
+      icon: <Mail className="h-8 w-8" />,
+      isAvailable: false,
+      category: 'Communication'
+    },
+    {
+      id: 'google-calendar',
+      name: 'Google Calendar',
+      description: 'Schedule and manage appointments',
+      icon: <Calendar className="h-8 w-8" />,
+      isAvailable: false,
+      category: 'Productivity'
     }
   ];
   
@@ -149,7 +188,7 @@ const SettingsPage = () => {
               </CardFooter>
             </Card>
           </TabsContent>
-
+          
           <TabsContent value="integrations" className="space-y-4 mt-6">
             <Card>
               <CardHeader>
@@ -162,13 +201,11 @@ const SettingsPage = () => {
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {integrationApps.map((app) => (
                     <Card key={app.id} className="relative">
-                      {!app.isAvailable && (
-                        <div className="absolute top-2 right-2 z-10">
-                          <Badge variant="secondary" className="text-xs">
-                            Coming Soon
-                          </Badge>
-                        </div>
-                      )}
+                      <div className="absolute top-2 right-2 z-10">
+                        <Badge variant="secondary" className="text-xs">
+                          Coming Soon
+                        </Badge>
+                      </div>
                       <CardContent className="p-4">
                         <div className="flex items-center gap-3 mb-3">
                           <div className="text-primary">
@@ -184,10 +221,10 @@ const SettingsPage = () => {
                         </p>
                         <Button 
                           className="w-full" 
-                          variant={app.isAvailable ? "default" : "secondary"}
-                          disabled={!app.isAvailable}
+                          variant="secondary"
+                          disabled={true}
                         >
-                          {app.isAvailable ? 'Connect' : 'Coming Soon'}
+                          Coming Soon
                         </Button>
                       </CardContent>
                     </Card>
