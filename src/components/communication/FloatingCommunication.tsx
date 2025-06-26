@@ -1,61 +1,188 @@
 
 import React, { useState } from 'react';
-import { MessageCircle, X, Send, Minimize2 } from 'lucide-react';
+import { MessageCircle, X, Send, Minimize2, Paperclip, ArrowLeft, Plus, File } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-interface Message {
+interface TeamMember {
+  id: string;
+  name: string;
+  role: 'ca' | 'cs' | 'lawyer' | 'compliance_manager';
+  avatar?: string;
+  isOnline: boolean;
+}
+
+interface ChatMessage {
   id: string;
   text: string;
   sender: 'user' | 'professional';
   timestamp: Date;
   senderName: string;
+  attachments?: FileAttachment[];
 }
+
+interface FileAttachment {
+  id: string;
+  name: string;
+  size: number;
+  type: string;
+  url: string;
+}
+
+interface Chat {
+  id: string;
+  title: string;
+  serviceType: string;
+  teamMember: TeamMember;
+  messages: ChatMessage[];
+  unreadCount: number;
+  lastActivity: Date;
+}
+
+const teamMembers: TeamMember[] = [
+  { id: '1', name: 'CA Sharma', role: 'ca', isOnline: true },
+  { id: '2', name: 'CS Patel', role: 'cs', isOnline: false },
+  { id: '3', name: 'Advocate Kumar', role: 'lawyer', isOnline: true },
+  { id: '4', name: 'Compliance Manager', role: 'compliance_manager', isOnline: true },
+];
+
+const dummyChats: Chat[] = [
+  {
+    id: '1',
+    title: 'GST Filing - March 2024',
+    serviceType: 'GST Compliance',
+    teamMember: teamMembers[0],
+    unreadCount: 2,
+    lastActivity: new Date(Date.now() - 3600000),
+    messages: [
+      {
+        id: '1',
+        text: 'Hi! I need help with GST filing for March 2024.',
+        sender: 'user',
+        timestamp: new Date(Date.now() - 7200000),
+        senderName: 'You'
+      },
+      {
+        id: '2',
+        text: 'Hello! I\'ll help you with the GST filing. Please share your sales invoices for March.',
+        sender: 'professional',
+        timestamp: new Date(Date.now() - 3600000),
+        senderName: 'CA Sharma'
+      }
+    ]
+  },
+  {
+    id: '2',
+    title: 'Company Registration',
+    serviceType: 'Legal Service',
+    teamMember: teamMembers[2],
+    unreadCount: 0,
+    lastActivity: new Date(Date.now() - 86400000),
+    messages: [
+      {
+        id: '1',
+        text: 'I want to register a new company. What documents do I need?',
+        sender: 'user',
+        timestamp: new Date(Date.now() - 86400000),
+        senderName: 'You'
+      }
+    ]
+  }
+];
 
 const FloatingCommunication = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [currentView, setCurrentView] = useState<'list' | 'chat' | 'new'>('list');
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+  const [chats, setChats] = useState<Chat[]>(dummyChats);
   const [newMessage, setNewMessage] = useState('');
-  const [unreadCount, setUnreadCount] = useState(2);
-  
-  // Mock messages
-  const [messages] = useState<Message[]>([
-    {
-      id: '1',
-      text: 'Hi! I have a question about the GST filing for this month.',
-      sender: 'user',
-      timestamp: new Date(Date.now() - 3600000),
-      senderName: 'You'
-    },
-    {
-      id: '2',
-      text: 'Hello! I\'ll help you with that. What specific information do you need about the GST filing?',
-      sender: 'professional',
-      timestamp: new Date(Date.now() - 3000000),
-      senderName: 'CA Sharma'
-    }
-  ]);
+  const [selectedTeamMember, setSelectedTeamMember] = useState<string>('');
+  const [newChatTitle, setNewChatTitle] = useState('');
+  const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
+
+  const totalUnreadCount = chats.reduce((sum, chat) => sum + chat.unreadCount, 0);
 
   const handleSendMessage = () => {
-    if (newMessage.trim()) {
-      // Here you would typically send the message to your backend
-      console.log('Sending message:', newMessage);
+    if (newMessage.trim() && selectedChat) {
+      const newMsg: ChatMessage = {
+        id: Date.now().toString(),
+        text: newMessage,
+        sender: 'user',
+        timestamp: new Date(),
+        senderName: 'You',
+        attachments: attachedFiles.length > 0 ? attachedFiles.map(file => ({
+          id: Date.now().toString(),
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          url: URL.createObjectURL(file)
+        })) : undefined
+      };
+
+      setChats(chats.map(chat => 
+        chat.id === selectedChat.id 
+          ? { ...chat, messages: [...chat.messages, newMsg], lastActivity: new Date() }
+          : chat
+      ));
+      
       setNewMessage('');
+      setAttachedFiles([]);
     }
+  };
+
+  const handleFileAttach = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    setAttachedFiles([...attachedFiles, ...files]);
+  };
+
+  const removeAttachedFile = (index: number) => {
+    setAttachedFiles(attachedFiles.filter((_, i) => i !== index));
+  };
+
+  const handleCreateNewChat = () => {
+    if (newChatTitle.trim() && selectedTeamMember) {
+      const teamMember = teamMembers.find(tm => tm.id === selectedTeamMember);
+      if (teamMember) {
+        const newChat: Chat = {
+          id: Date.now().toString(),
+          title: newChatTitle,
+          serviceType: 'New Service',
+          teamMember,
+          messages: [],
+          unreadCount: 0,
+          lastActivity: new Date()
+        };
+        setChats([newChat, ...chats]);
+        setSelectedChat(newChat);
+        setCurrentView('chat');
+        setNewChatTitle('');
+        setSelectedTeamMember('');
+      }
+    }
+  };
+
+  const handleChatSelect = (chat: Chat) => {
+    setSelectedChat(chat);
+    setCurrentView('chat');
+    // Mark as read
+    setChats(chats.map(c => c.id === chat.id ? { ...c, unreadCount: 0 } : c));
   };
 
   const handleOpen = () => {
     setIsOpen(true);
-    setUnreadCount(0);
   };
 
   const handleClose = () => {
     setIsOpen(false);
     setIsMinimized(false);
+    setCurrentView('list');
+    setSelectedChat(null);
   };
 
   const handleMinimize = () => {
@@ -73,28 +200,45 @@ const FloatingCommunication = () => {
             size="icon"
           >
             <MessageCircle className="h-6 w-6" />
-            {unreadCount > 0 && (
+            {totalUnreadCount > 0 && (
               <Badge 
                 variant="destructive" 
                 className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 flex items-center justify-center text-xs"
               >
-                {unreadCount}
+                {totalUnreadCount}
               </Badge>
             )}
           </Button>
         </div>
       )}
 
-      {/* Chat Panel */}
+      {/* Communication Panel */}
       {isOpen && (
         <div className="fixed bottom-6 right-6 z-50 w-80 sm:w-96">
           <Card className="shadow-xl border-0 bg-background">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <MessageCircle className="h-5 w-5" />
-                  Communication
-                </CardTitle>
+                <div className="flex items-center gap-2">
+                  {currentView !== 'list' && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        if (currentView === 'chat') setCurrentView('list');
+                        if (currentView === 'new') setCurrentView('list');
+                      }}
+                      className="h-8 w-8 p-0 mr-1"
+                    >
+                      <ArrowLeft className="h-4 w-4" />
+                    </Button>
+                  )}
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <MessageCircle className="h-5 w-5" />
+                    {currentView === 'list' && 'Communications'}
+                    {currentView === 'chat' && selectedChat?.title}
+                    {currentView === 'new' && 'New Chat'}
+                  </CardTitle>
+                </div>
                 <div className="flex gap-1">
                   <Button
                     variant="ghost"
@@ -118,65 +262,195 @@ const FloatingCommunication = () => {
             
             {!isMinimized && (
               <CardContent className="p-0">
-                {/* Messages Area */}
-                <ScrollArea className="h-64 px-4">
-                  <div className="space-y-3">
-                    {messages.map((message) => (
-                      <div
-                        key={message.id}
-                        className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                {/* Chat List View */}
+                {currentView === 'list' && (
+                  <>
+                    <div className="p-4 pb-2">
+                      <Button
+                        onClick={() => setCurrentView('new')}
+                        className="w-full"
+                        size="sm"
                       >
-                        <div
-                          className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${
-                            message.sender === 'user'
-                              ? 'bg-primary text-primary-foreground'
-                              : 'bg-muted text-muted-foreground'
-                          }`}
-                        >
-                          <div className="font-medium text-xs mb-1 opacity-70">
-                            {message.senderName}
+                        <Plus className="mr-2 h-4 w-4" />
+                        New Chat
+                      </Button>
+                    </div>
+                    <ScrollArea className="h-64 px-4">
+                      <div className="space-y-2">
+                        {chats.map((chat) => (
+                          <div
+                            key={chat.id}
+                            onClick={() => handleChatSelect(chat)}
+                            className="p-3 rounded-lg border cursor-pointer hover:bg-muted/50 transition-colors"
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <div className="font-medium text-sm truncate">{chat.title}</div>
+                              {chat.unreadCount > 0 && (
+                                <Badge variant="destructive" className="text-xs h-5 w-5 rounded-full p-0 flex items-center justify-center">
+                                  {chat.unreadCount}
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="text-xs text-muted-foreground mb-1">{chat.serviceType}</div>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1">
+                                <div className={`w-2 h-2 rounded-full ${chat.teamMember.isOnline ? 'bg-green-500' : 'bg-gray-300'}`} />
+                                <span className="text-xs text-muted-foreground">{chat.teamMember.name}</span>
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {chat.lastActivity.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                              </div>
+                            </div>
                           </div>
-                          <div>{message.text}</div>
-                          <div className="text-xs opacity-60 mt-1">
-                            {message.timestamp.toLocaleTimeString([], { 
-                              hour: '2-digit', 
-                              minute: '2-digit' 
-                            })}
-                          </div>
-                        </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </ScrollArea>
+                    </ScrollArea>
+                  </>
+                )}
 
-                {/* Message Input */}
-                <div className="p-4 border-t">
-                  <div className="flex gap-2">
-                    <Textarea
-                      placeholder="Type your message..."
-                      value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      className="flex-1 min-h-[40px] max-h-[80px] resize-none"
-                      onKeyPress={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                          e.preventDefault();
-                          handleSendMessage();
-                        }
-                      }}
-                    />
+                {/* New Chat View */}
+                {currentView === 'new' && (
+                  <div className="p-4 space-y-4">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Chat Title</label>
+                      <Input
+                        placeholder="e.g., GST Filing - April 2024"
+                        value={newChatTitle}
+                        onChange={(e) => setNewChatTitle(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Select Team Member</label>
+                      <Select value={selectedTeamMember} onValueChange={setSelectedTeamMember}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Choose professional" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {teamMembers.map((member) => (
+                            <SelectItem key={member.id} value={member.id}>
+                              <div className="flex items-center gap-2">
+                                <div className={`w-2 h-2 rounded-full ${member.isOnline ? 'bg-green-500' : 'bg-gray-300'}`} />
+                                {member.name}
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                     <Button
-                      onClick={handleSendMessage}
-                      disabled={!newMessage.trim()}
-                      size="sm"
-                      className="self-end"
+                      onClick={handleCreateNewChat}
+                      disabled={!newChatTitle.trim() || !selectedTeamMember}
+                      className="w-full"
                     >
-                      <Send className="h-4 w-4" />
+                      Start Chat
                     </Button>
                   </div>
-                  <div className="text-xs text-muted-foreground mt-2">
-                    Press Enter to send, Shift+Enter for new line
-                  </div>
-                </div>
+                )}
+
+                {/* Chat View */}
+                {currentView === 'chat' && selectedChat && (
+                  <>
+                    <ScrollArea className="h-64 px-4">
+                      <div className="space-y-3">
+                        {selectedChat.messages.map((message) => (
+                          <div
+                            key={message.id}
+                            className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                          >
+                            <div
+                              className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${
+                                message.sender === 'user'
+                                  ? 'bg-primary text-primary-foreground'
+                                  : 'bg-muted text-muted-foreground'
+                              }`}
+                            >
+                              <div className="font-medium text-xs mb-1 opacity-70">
+                                {message.senderName}
+                              </div>
+                              <div>{message.text}</div>
+                              {message.attachments && message.attachments.length > 0 && (
+                                <div className="mt-2 space-y-1">
+                                  {message.attachments.map((file) => (
+                                    <div key={file.id} className="flex items-center gap-2 p-1 bg-background/20 rounded text-xs">
+                                      <File className="h-3 w-3" />
+                                      <span className="truncate">{file.name}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                              <div className="text-xs opacity-60 mt-1">
+                                {message.timestamp.toLocaleTimeString([], { 
+                                  hour: '2-digit', 
+                                  minute: '2-digit' 
+                                })}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </ScrollArea>
+
+                    {/* Message Input */}
+                    <div className="p-4 border-t space-y-2">
+                      {attachedFiles.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {attachedFiles.map((file, index) => (
+                            <div key={index} className="flex items-center gap-1 bg-muted px-2 py-1 rounded text-xs">
+                              <File className="h-3 w-3" />
+                              <span className="truncate max-w-20">{file.name}</span>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => removeAttachedFile(index)}
+                                className="h-4 w-4 p-0 hover:bg-destructive hover:text-destructive-foreground"
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      <div className="flex gap-2">
+                        <div className="flex-1 relative">
+                          <Textarea
+                            placeholder="Type your message..."
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            className="min-h-[40px] max-h-[80px] resize-none pr-10"
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter' && !e.shiftKey) {
+                                e.preventDefault();
+                                handleSendMessage();
+                              }
+                            }}
+                          />
+                          <label className="absolute right-2 top-2 cursor-pointer">
+                            <input
+                              type="file"
+                              multiple
+                              onChange={handleFileAttach}
+                              className="hidden"
+                              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt"
+                            />
+                            <Paperclip className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />
+                          </label>
+                        </div>
+                        <Button
+                          onClick={handleSendMessage}
+                          disabled={!newMessage.trim()}
+                          size="sm"
+                          className="self-end"
+                        >
+                          <Send className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Press Enter to send, Shift+Enter for new line
+                      </div>
+                    </div>
+                  </>
+                )}
               </CardContent>
             )}
           </Card>
