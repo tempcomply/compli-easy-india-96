@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Calendar, FileCheck, Shield, Building, Layers, CheckCircle, Landmark, TrendingUp, GanttChart, UserCheck, Users, Handshake } from 'lucide-react';
@@ -45,6 +44,11 @@ const Index = () => {
       {/* Hero Section - Focused on Business Users */}
       <section className="py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
+          <div className="mb-4">
+            <Badge className="bg-primary/10 text-primary border-primary/20 px-3 py-1">
+              Built for the Founder's Office
+            </Badge>
+          </div>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 animate-fade-in">
             Revolutionizing Ease of Doing Business in India
           </h1>

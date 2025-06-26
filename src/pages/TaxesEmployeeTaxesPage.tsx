@@ -2,9 +2,12 @@
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Users } from 'lucide-react';
-import GetStartedCard from '@/components/taxes/GetStartedCard';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useForm } from 'react-hook-form';
+import { Input } from '@/components/ui/input';
 import MakePaymentDialog from '@/components/taxes/MakePaymentDialog';
 import { toast } from "@/hooks/use-toast";
 
@@ -47,22 +50,15 @@ const employeeTaxForms = [
 
 const TaxesEmployeeTaxesPage = () => {
   const [isSetup, setIsSetup] = useState(false);
+  const [isSetupDialogOpen, setIsSetupDialogOpen] = useState(false);
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
   
-  const handleSetupComplete = (data: any) => {
+  const handleSetupSubmit = handleSubmit((data) => {
+    console.log('Employee Tax setup data:', data);
     setIsSetup(true);
+    setIsSetupDialogOpen(false);
     toast({ title: "Employee Tax Setup Complete", description: "You can now manage employee tax compliance." });
-  };
-
-  const getCardSize = (importance: string) => {
-    switch (importance) {
-      case 'high':
-        return 'md:col-span-2';
-      case 'medium':
-        return 'md:col-span-1';
-      default:
-        return 'md:col-span-1';
-    }
-  };
+  });
 
   const EmptyState = () => (
     <div className="text-center py-16 space-y-6">
@@ -76,13 +72,46 @@ const TaxesEmployeeTaxesPage = () => {
         </p>
       </div>
       <div className="space-y-4">
-        <GetStartedCard
-          icon={<Users className="w-8 h-8 text-primary" />}
-          title="Employee Taxes Setup"
-          subtitle="Setup your employee-related tax details to begin."
-          fields={EMPLOYEE_TAX_FIELDS}
-          onSubmit={handleSetupComplete}
-        />
+        <Dialog open={isSetupDialogOpen} onOpenChange={setIsSetupDialogOpen}>
+          <DialogTrigger asChild>
+            <Button size="lg" className="gap-2">
+              <Users className="w-5 h-5" />
+              Get Started
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-primary" />
+                Employee Tax Setup
+              </DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSetupSubmit} className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Setup your employee-related tax details to begin.
+              </p>
+              {EMPLOYEE_TAX_FIELDS.map((field) => (
+                <div key={field.name} className="space-y-2">
+                  <label htmlFor={field.name} className="text-sm font-medium">
+                    {field.label}
+                  </label>
+                  <Input
+                    id={field.name}
+                    type={field.type || "text"}
+                    {...register(field.name, { required: true })}
+                    disabled={isSubmitting}
+                  />
+                  {errors[field.name] && (
+                    <span className="text-xs text-red-500">Required</span>
+                  )}
+                </div>
+              ))}
+              <Button type="submit" className="w-full" disabled={isSubmitting}>
+                {isSubmitting ? "Setting up..." : "Complete Setup"}
+              </Button>
+            </form>
+          </DialogContent>
+        </Dialog>
         <p className="text-sm text-muted-foreground">
           Setup takes less than 5 minutes
         </p>
@@ -97,9 +126,9 @@ const TaxesEmployeeTaxesPage = () => {
         <p className="text-muted-foreground">Manage PF, ESI, and Professional Tax filings</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2">
         {employeeTaxForms.map((form) => (
-          <Card key={form.id} className={`${getCardSize(form.importance)} hover:shadow-md transition-shadow`}>
+          <Card key={form.id} className="hover:shadow-md transition-shadow">
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
                 <div>

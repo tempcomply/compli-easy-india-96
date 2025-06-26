@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -51,10 +50,6 @@ const availableServices = {
   'Legal Services': {
     icon: Scale,
     services: [
-      { name: 'Employment Agreement Drafting', description: 'Comprehensive employment contracts with terms and policies', price: '₹3,000-5,000', days: '3-5 days' },
-      { name: 'Non-Disclosure Agreement (NDA)', description: 'Confidentiality agreements for employees and partners', price: '₹2,000-3,000', days: '2-3 days' },
-      { name: 'Partnership Agreement', description: 'Legal partnership documentation with profit sharing', price: '₹8,000-12,000', days: '7-10 days' },
-      { name: 'Vendor Agreement', description: 'Supplier and vendor contracts with terms', price: '₹3,000-5,000', days: '3-5 days' },
       { name: 'Legal Notice Drafting', description: 'Formal legal notices for business disputes', price: '₹3,000-5,000', days: '2-3 days' },
       { name: 'Contract Review & Analysis', description: 'Legal review of existing contracts', price: '₹3,000-6,000', days: '3-5 days' },
     ]
