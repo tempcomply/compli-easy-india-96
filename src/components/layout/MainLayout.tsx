@@ -4,6 +4,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import ClientSidebar from './ClientSidebar';
+import FloatingCommunication from '../communication/FloatingCommunication';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface MainLayoutProps {
@@ -46,9 +47,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           {children}
         </main>
       </div>
+      
+      {/* Floating Communication - appears on all pages */}
+      <FloatingCommunication />
     </div>
   );
 };
 
 export default MainLayout;
-
