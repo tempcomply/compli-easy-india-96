@@ -46,19 +46,6 @@ const TaxesGstPage = () => {
     setIsSetup(true);
   };
 
-  const getCardSize = (importance: string) => {
-    switch (importance) {
-      case 'high':
-        return 'md:col-span-2';
-      case 'medium':
-        return 'md:col-span-1';
-      case 'low':
-        return 'md:col-span-1';
-      default:
-        return 'md:col-span-1';
-    }
-  };
-
   const EmptyState = () => (
     <div className="text-center py-16 space-y-6">
       <div className="mx-auto w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center">
@@ -86,9 +73,9 @@ const TaxesGstPage = () => {
         <p className="text-muted-foreground">Select a form to file your GST return</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2">
         {gstForms.map((form) => (
-          <Card key={form.id} className={`${getCardSize(form.importance)} hover:shadow-md transition-shadow`}>
+          <Card key={form.id} className="hover:shadow-md transition-shadow">
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
                 <div>
