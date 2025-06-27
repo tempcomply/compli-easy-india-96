@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,9 +11,9 @@ import MakePaymentDialog from '@/components/taxes/MakePaymentDialog';
 import { toast } from "@/hooks/use-toast";
 
 const EMPLOYEE_TAX_FIELDS = [
-  { name: "pf_code", label: "PF Establishment Code" },
-  { name: "esi_code", label: "ESI Number" },
-  { name: "pt_state", label: "PT State" },
+  { name: "pf_code", label: "PF Establishment Code", type: "text" },
+  { name: "esi_code", label: "ESI Number", type: "text" },
+  { name: "pt_state", label: "PT State", type: "text" },
 ];
 
 const employeeTaxForms = [

@@ -1,5 +1,7 @@
+
 import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Calendar, FileCheck, Shield, Building, Layers, CheckCircle, Landmark, TrendingUp, GanttChart, UserCheck, Users, Handshake } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '@/components/Logo';
