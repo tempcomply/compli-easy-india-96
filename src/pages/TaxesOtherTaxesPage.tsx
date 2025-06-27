@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,9 +12,9 @@ import MakePaymentDialog from '@/components/taxes/MakePaymentDialog';
 import { toast } from "@/hooks/use-toast";
 
 const OTHER_TAX_FIELDS = [
-  { name: "tax_type", label: "Tax Type", type: "text" },
-  { name: "registration_no", label: "Registration Number", type: "text" },
-  { name: "description", label: "Description", type: "text" },
+  { name: "tax_type", label: "Tax Type" },
+  { name: "registration_no", label: "Registration Number" },
+  { name: "description", label: "Description" },
 ];
 
 const otherTaxTypes = [

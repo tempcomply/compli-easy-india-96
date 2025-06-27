@@ -24,7 +24,7 @@ import {
   Settings
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useDocuments, documentCategories as originalDocumentCategories, Document } from '@/hooks/useDocuments';
+import { useDocuments, documentCategories, Document } from '@/hooks/useDocuments';
 
 interface RequiredDocument {
   id: string;
@@ -173,9 +173,6 @@ const DocumentsPage = () => {
       default: return 'bg-gray-100 text-gray-800';
     }
   };
-
-  // Updated document categories without "Branding"
-  const documentCategories = ['All Documents', 'Financial', 'Tax', 'Compliance', 'Banking'];
   
   return (
     <MainLayout>

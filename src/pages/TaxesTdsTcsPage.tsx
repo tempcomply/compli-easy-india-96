@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,9 +12,9 @@ import MakePaymentDialog from '@/components/taxes/MakePaymentDialog';
 import { toast } from "@/hooks/use-toast";
 
 const TDS_FIELDS = [
-  { name: "tan", label: "TAN", type: "text" },
-  { name: "deductor_name", label: "Deductor Name", type: "text" },
-  { name: "pin_code", label: "Office PIN Code", type: "text" }
+  { name: "tan", label: "TAN" },
+  { name: "deductor_name", label: "Deductor Name" },
+  { name: "pin_code", label: "Office PIN Code" }
 ];
 
 const tdsTcsForms = [

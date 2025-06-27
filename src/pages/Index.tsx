@@ -1,7 +1,5 @@
-
 import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Calendar, FileCheck, Shield, Building, Layers, CheckCircle, Landmark, TrendingUp, GanttChart, UserCheck, Users, Handshake } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '@/components/Logo';
@@ -48,7 +46,7 @@ const Index = () => {
         <div className="max-w-5xl mx-auto text-center">
           <div className="mb-4">
             <Badge className="bg-primary/10 text-primary border-primary/20 px-3 py-1">
-              Built with ❤️ for founders office by founders
+              Built for the Founder's Office
             </Badge>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 animate-fade-in">
