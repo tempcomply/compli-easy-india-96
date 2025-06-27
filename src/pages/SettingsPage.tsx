@@ -5,9 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
-import { User, Wrench, Link, Building2, Calculator, FileText, BookOpen, MessageSquare, Zap, Mail, Calendar } from 'lucide-react';
+import { User, Wrench, Link, Building2, Calculator, FileText, BookOpen, MessageSquare, Zap, Calendar } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 
 const SettingsPage = () => {
@@ -63,14 +62,6 @@ const SettingsPage = () => {
       icon: <Zap className="h-8 w-8" />,
       isAvailable: false,
       category: 'Automation'
-    },
-    {
-      id: 'gmail',
-      name: 'Gmail',
-      description: 'Email integration for notifications',
-      icon: <Mail className="h-8 w-8" />,
-      isAvailable: false,
-      category: 'Communication'
     },
     {
       id: 'google-calendar',
@@ -193,12 +184,7 @@ const SettingsPage = () => {
               <CardContent>
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {integrationApps.map((app) => (
-                    <Card key={app.id} className="relative">
-                      <div className="absolute top-2 right-2 z-10">
-                        <Badge variant="secondary" className="text-xs">
-                          Coming Soon
-                        </Badge>
-                      </div>
+                    <Card key={app.id}>
                       <CardContent className="p-4">
                         <div className="flex items-center gap-3 mb-3">
                           <div className="text-primary">

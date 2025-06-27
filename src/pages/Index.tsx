@@ -48,7 +48,7 @@ const Index = () => {
         <div className="max-w-5xl mx-auto text-center">
           <div className="mb-4">
             <Badge className="bg-primary/10 text-primary border-primary/20 px-3 py-1">
-              Built for the Founder's Office
+              Crafted with ❤️ by founders, for the founder's office
             </Badge>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 animate-fade-in">

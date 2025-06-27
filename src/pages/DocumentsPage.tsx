@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,7 +25,10 @@ import {
   Settings
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useDocuments, documentCategories, Document } from '@/hooks/useDocuments';
+import { useDocuments, Document } from '@/hooks/useDocuments';
+
+// Updated document categories without branding
+const documentCategories = ['All Documents', 'Financial', 'Legal', 'Tax', 'Compliance'];
 
 interface RequiredDocument {
   id: string;
@@ -127,13 +131,14 @@ const DocumentsPage = () => {
   const { documents, loading, downloadDocument, viewDocument } = useDocuments();
   const [activeCategory, setActiveCategory] = useState('All Documents');
   
-  // Filter documents based on search query and active category
+  // Filter out any branding documents and only show non-branding documents
   const filteredDocuments = documents.filter((doc) => {
+    const isNotBranding = doc.category !== 'branding' && doc.category !== 'Branding';
     const matchesSearch = doc.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           doc.category.toLowerCase().includes(searchQuery.toLowerCase());
     
-    if (activeCategory === 'All Documents') return matchesSearch;
-    return matchesSearch && doc.category === activeCategory;
+    if (activeCategory === 'All Documents') return isNotBranding && matchesSearch;
+    return isNotBranding && matchesSearch && doc.category === activeCategory;
   });
 
   // Filter required documents based on search only
