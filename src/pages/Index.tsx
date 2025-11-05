@@ -38,7 +38,7 @@ const Index = () => {
             <Button variant="ghost" onClick={() => navigate('/mission')}>Our Mission</Button>
             <Button variant="ghost" onClick={() => navigate('/partner')}>Partner with Us</Button>
             <Button variant="ghost" onClick={() => navigate('/client/home')}>Home</Button>
-            <Button onClick={() => navigate('/auth')}>Get Started</Button>
+            <Button onClick={() => navigate('/client-auth')}>Get Started</Button>
           </div>
         </div>
       </header>

@@ -20,7 +20,7 @@ const formSchema = z.object({
 });
 
 const ClientAuth = () => {
-  const [mode, setMode] = useState<AuthMode>('signIn');
+  const [mode, setMode] = useState<AuthMode>('signUp');
   const { signIn, signUp, user, isOnboardingComplete } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -87,7 +87,7 @@ const ClientAuth = () => {
         } else {
           toast({
             title: "Account created!",
-            description: "Please check your email to confirm your account.",
+            description: "Let's set up your company profile.",
           });
         }
       }
@@ -117,11 +117,11 @@ const ClientAuth = () => {
         
         <Card className="w-full">
           <CardHeader>
-            <CardTitle>{mode === 'signIn' ? 'Business Sign In' : 'Create Business Account'}</CardTitle>
+            <CardTitle>{mode === 'signIn' ? 'Business Sign In' : 'Get Started'}</CardTitle>
             <CardDescription>
               {mode === 'signIn' 
-                ? 'Enter your credentials to access your business account' 
-                : 'Sign up for a new business account to get started'}
+                ? 'Sign in to manage your business compliance' 
+                : 'Create your business account to streamline compliance'}
             </CardDescription>
           </CardHeader>
           
@@ -156,7 +156,7 @@ const ClientAuth = () => {
                 />
                 
                 <Button type="submit" className="w-full">
-                  {mode === 'signIn' ? 'Sign In' : 'Create Account'}
+                  {mode === 'signIn' ? 'Sign In' : 'Get Started'}
                 </Button>
               </form>
             </Form>

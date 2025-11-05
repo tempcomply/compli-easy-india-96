@@ -20,7 +20,7 @@ const Partner = () => {
             <Button variant="ghost" onClick={() => navigate('/mission')}>Our Mission</Button>
             <Button variant="ghost" onClick={() => navigate('/partner')}>Partner with Us</Button>
             <Button variant="ghost" onClick={() => navigate('/dashboard')}>Dashboard</Button>
-            <Button onClick={() => navigate('/auth')}>Get Started</Button>
+            <Button onClick={() => navigate('/professional-auth')}>Join as Professional</Button>
           </div>
         </div>
       </header>
@@ -253,7 +253,7 @@ const Partner = () => {
             Join our growing network of professionals and take advantage of our revolutionary platform to expand your practice.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button size="lg" onClick={() => navigate('/auth?role=professional')} className="gap-2">
+            <Button size="lg" onClick={() => navigate('/professional-auth')} className="gap-2">
               Sign Up as Professional <ArrowRight className="h-4 w-4" />
             </Button>
             <Button variant="outline" size="lg" onClick={() => navigate('/contact')}>

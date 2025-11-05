@@ -70,7 +70,7 @@ const App = () => (
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
+              <Route path="/auth" element={<ClientAuth />} />
               <Route path="/client-auth" element={<ClientAuth />} />
               <Route path="/professional-auth" element={<ProfessionalAuth />} />
               <Route path="/about" element={<About />} />
@@ -83,7 +83,9 @@ const App = () => (
               
               {/* Protected routes for users/clients */}
               <Route path="/home" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/onboarding" element={<ProtectedRoute><ClientOnboarding /></ProtectedRoute>} />
+              <Route path="/client/onboarding" element={<ProtectedRoute><ClientOnboarding /></ProtectedRoute>} />
               <Route path="/client-onboarding" element={<ProtectedRoute><ClientOnboarding /></ProtectedRoute>} />
               
               {/* Client routes */}
