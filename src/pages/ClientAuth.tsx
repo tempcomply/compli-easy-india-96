@@ -34,7 +34,8 @@ const ClientAuth = () => {
     }
   }, [searchParams]);
 
-  // Redirect if user is already logged in
+  // DEMO MODE: Commented out redirect since we're bypassing auth
+  /*
   useEffect(() => {
     if (user) {
       if (isOnboardingComplete) {
@@ -44,6 +45,7 @@ const ClientAuth = () => {
       }
     }
   }, [user, isOnboardingComplete, navigate]);
+  */
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -56,6 +58,17 @@ const ClientAuth = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const { email, password } = values;
+      
+      // DEMO MODE: Skip actual authentication, go straight to onboarding
+      toast({
+        title: "Demo Mode Active",
+        description: "Proceeding to onboarding flow (backend not connected)",
+      });
+      
+      // Navigate directly to onboarding
+      navigate('/client/onboarding');
+      
+      /* Actual authentication code - commented out until backend is ready
       const role = 'business';
       
       console.log(`Attempting ${mode} with role: ${role}`);
@@ -91,6 +104,7 @@ const ClientAuth = () => {
           });
         }
       }
+      */
     } catch (error: any) {
       console.error('Auth error:', error);
       toast({

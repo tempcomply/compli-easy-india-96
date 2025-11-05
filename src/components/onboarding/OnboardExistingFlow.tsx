@@ -123,12 +123,26 @@ export const OnboardExistingFlow = ({ onBack }: { onBack: () => void }) => {
 
   const handleSubmit = async () => {
     try {
+      // DEMO MODE: Skip actual backend call
+      toast({
+        title: "Onboarding complete! (Demo)",
+        description: "Your company has been successfully onboarded.",
+      });
+      
+      // Show summary of collected data in console for review
+      console.log('Existing Company Data Collected:', formData);
+      
+      // Navigate to a demo dashboard
+      navigate('/dashboard');
+      
+      /* Actual backend code - uncomment when ready
       await completeOnboarding(formData.businessStructure);
       toast({
         title: "Onboarding complete!",
         description: "Your company has been successfully onboarded.",
       });
       navigate('/dashboard');
+      */
     } catch (error) {
       toast({
         title: "Error",

@@ -116,12 +116,26 @@ export const IncorporateNewFlow = ({ onBack }: { onBack: () => void }) => {
 
   const handleSubmit = async () => {
     try {
+      // DEMO MODE: Skip actual backend call
+      toast({
+        title: "Onboarding complete! (Demo)",
+        description: "Your incorporation request has been submitted.",
+      });
+      
+      // Show summary of collected data in console for review
+      console.log('Incorporation Data Collected:', formData);
+      
+      // Navigate to a demo dashboard or show completion
+      navigate('/dashboard');
+      
+      /* Actual backend code - uncomment when ready
       await completeOnboarding(formData.businessStructure);
       toast({
         title: "Onboarding complete!",
         description: "Your incorporation request has been submitted.",
       });
       navigate('/dashboard');
+      */
     } catch (error) {
       toast({
         title: "Error",

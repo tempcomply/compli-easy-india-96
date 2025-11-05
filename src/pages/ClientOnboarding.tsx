@@ -14,10 +14,13 @@ const ClientOnboarding = () => {
   const navigate = useNavigate();
   const [selectedPath, setSelectedPath] = useState<OnboardingPath>(null);
 
+  // DEMO MODE: Commented out auth check
+  /*
   if (!user) {
     navigate('/client-auth');
     return null;
   }
+  */
 
   if (!selectedPath) {
     return (
